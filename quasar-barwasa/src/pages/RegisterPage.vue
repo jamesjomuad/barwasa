@@ -33,7 +33,7 @@
               :rules="validation.required"
             />
           </div>
-          <div class="col-12">
+          <!-- <div class="col-12">
             <q-input
               square
               filled
@@ -41,8 +41,8 @@
               label="Address"
               :rules="validation.required"
             />
-          </div>
-          <div class="col-6">
+          </div> -->
+          <!-- <div class="col-6">
             <q-input
               square
               filled
@@ -50,8 +50,8 @@
               label="Username"
               :rules="validation.required"
             />
-          </div>
-          <div class="col-6">
+          </div> -->
+          <div class="col-12">
             <q-input
               square
               filled
