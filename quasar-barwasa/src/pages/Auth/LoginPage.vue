@@ -20,14 +20,14 @@
               square
               filled
               clearable
-              v-model="$form.username"
-              label="Username"
+              v-model="$user.email"
+              label="Email"
               :rules="[(val) => !!val || 'Field is required']"
             />
             <q-input
               square
               filled
-              v-model="$form.password"
+              v-model="$user.password"
               label="Password"
               :rules="[(val) => !!val || 'Field is required']"
               :type="isPwd ? 'password' : 'text'"
@@ -50,9 +50,11 @@
             type="submit"
           />
         </q-card-actions>
-        <!-- <q-card-section class="text-center q-pa-none">
-          <p class="text-grey-6">Not reigistered? Created an Account</p>
-        </q-card-section> -->
+        <q-card-section class="text-center q-pa-none">
+          <p class="text-grey-6">
+            Not registered? <a href="#/register">Created an Account</a>
+          </p>
+        </q-card-section>
       </q-card>
     </form>
   </q-page>
@@ -60,10 +62,20 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-const $form = reactive({ username: null, password: null });
+import axios from "axios";
+
+const $user = reactive({ email: null, password: null });
 const isPwd = ref(true);
 
-function onLogin(params) {
-  console.log($form);
+async function onLogin(params) {
+  try {
+    const { data } = await axios.post(
+      "http://barwasa.test/api/auth/login",
+      $user
+    );
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>

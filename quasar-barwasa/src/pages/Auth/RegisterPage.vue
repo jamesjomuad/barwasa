@@ -15,11 +15,30 @@
       </q-card-section>
       <q-card-section>
         <q-form class="row q-col-gutter-md" @submit.prevent="onRegister">
+          <div class="col-12">
+            <q-input
+              square
+              filled
+              v-model="$user.name"
+              label="Username"
+              :rules="validation.required"
+            />
+          </div>
+          <div class="col-12">
+            <q-input
+              square
+              filled
+              v-model="$user.email"
+              label="Email"
+              type="email"
+              :rules="validation.required"
+            />
+          </div>
           <div class="col-6">
             <q-input
               square
               filled
-              v-model="$user.firstName"
+              v-model="$user.first_name"
               label="First Name"
               :rules="validation.required"
             />
@@ -28,36 +47,8 @@
             <q-input
               square
               filled
-              v-model="$user.lastName"
+              v-model="$user.last_name"
               label="Last Name"
-              :rules="validation.required"
-            />
-          </div>
-          <!-- <div class="col-12">
-            <q-input
-              square
-              filled
-              v-model="$user.address"
-              label="Address"
-              :rules="validation.required"
-            />
-          </div> -->
-          <!-- <div class="col-6">
-            <q-input
-              square
-              filled
-              v-model="$user.username"
-              label="Username"
-              :rules="validation.required"
-            />
-          </div> -->
-          <div class="col-12">
-            <q-input
-              square
-              filled
-              v-model="$user.email"
-              label="Email"
-              type="email"
               :rules="validation.required"
             />
           </div>
@@ -105,17 +96,27 @@
           </div>
         </q-form>
       </q-card-section>
+      <q-card-section class="text-center q-pa-none">
+        <p class="text-grey-6">
+          Already registered? <a href="#/login">Login</a>
+        </p>
+      </q-card-section>
     </q-card>
   </q-page>
 </template>
 
 <script setup>
+import axios from "axios";
 import { ref, reactive, computed } from "vue";
+import { useQuasar } from "quasar";
+import { useRoute } from "vue-router";
+
+const $q = useQuasar();
 const $user = reactive({
-  firstName: null,
-  lastName: null,
+  first_name: null,
+  last_name: null,
   address: null,
-  username: null,
+  name: null,
   password: null,
   passwordConfirm: null,
 });
@@ -127,7 +128,25 @@ const validation = reactive({
   required: computed(() => [(val) => !!val || "Field is required"]),
 });
 
-function onRegister() {
-  console.log($user);
+async function onRegister() {
+  try {
+    const { data } = await axios.post(
+      "http://barwasa.test/api/auth/register",
+      $user
+    );
+    if (data.status) {
+      $q.notify({
+        message: data.message,
+        color: "primary",
+      });
+    } else {
+      $q.notify({
+        message: data.message,
+        color: "negative",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 </script>

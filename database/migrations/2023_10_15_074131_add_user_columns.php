@@ -14,7 +14,7 @@ class AddUserColumns extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('first_name')->nullable()->after('remember_token');
+            $table->string('first_name')->nullable()->after('name');
             $table->string('last_name')->nullable()->after('first_name');
             $table->integer('role_id')->nullable()->after('last_name');
         });
