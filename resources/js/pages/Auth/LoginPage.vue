@@ -67,7 +67,9 @@ import { ref, reactive } from "vue";
 import axios from "axios";
 import { useStore } from "vuex"
 import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 
+const $q = useQuasar()
 const $store = useStore();
 const $router = useRouter();
 const $user = reactive({ email: null, password: null });
@@ -80,13 +82,10 @@ const ui = reactive({
 async function onLogin(params) {
     ui.btnLoginLoading = true
     try {
-        const { data } = await axios.post(
-        "/api/auth/login",
-        $user
-        );
+        const { data } = await axios.post( "/api/auth/login", $user );
         if(data.status){
             $store.commit('auth/setToken', data.token)
-            $router.push(`/`)
+            $router.push(`/dashboard`)
         }
     } catch (error) {
         console.log(error);

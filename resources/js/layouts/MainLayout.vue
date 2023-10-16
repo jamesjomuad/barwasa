@@ -1,116 +1,92 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+    <q-layout view="lHh Lpr lff">
+        <q-header elevated class="bg-primary text-white">
+            <q-toolbar>
+                <q-toolbar-title>
+                    <q-avatar>
+                        <img src="/images/logo.png" />
+                    </q-avatar>
+                </q-toolbar-title>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+                <q-toggle
+                    icon-color="dark"
+                    color="white"
+                    v-model="isDark"
+                    unchecked-icon="light_mode"
+                    checked-icon="nightlight_round"
+                />
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+                <q-toolbar-title shrink>
+                    <span class="text-subtitle2">James Jomuad</span>
+                </q-toolbar-title>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
+                <q-btn round flat icon="account_circle">
+                    <q-menu auto-close :offset="[110, 0]">
+                        <q-toolbar class="bg-secondary text-white">
+                            <q-toolbar-title class="text-subtitle2">Barwasa</q-toolbar-title>
+                        </q-toolbar>
+                        <q-list style="min-width: 150px">
+                            <q-item clickable @click.prevent="onLogout">
+                                <q-item-section>Logout</q-item-section>
+                            </q-item>
+                        </q-list>
+                    </q-menu>
+                </q-btn>
+            </q-toolbar>
+        </q-header>
+
+        <q-drawer
+            :dark="$q.dark.isActive"
+            v-model="drawer"
+            show-if-above
+            :mini="miniState"
+            @mouseover="miniState = false"
+            @mouseout="miniState = true"
+            :width="200"
+            :breakpoint="500"
+            bordered
+            :class="[{'bg-white': !$q.dark.isActive}]"
         >
-          Essential Links
-        </q-item-label>
+            <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+                <q-list>
+                    <menu-item label="Dashboard" icon="dashboard" to="/" exact/>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+                    <q-item-label header>System</q-item-label>
+                        <menu-item label="Users" icon="people" to="/system/users"/>
+                        <menu-item label="Roles" icon="security" to="/system/roles"/>
+                        <menu-item label="Logs" icon="list_alt" to="/system/logs"/>
+                    <q-separator />
+                </q-list>
+            </q-scroll-area>
+        </q-drawer>
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+        <q-page-container class="bg-grey-3">
+            <router-view />
+        </q-page-container>
+    </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+<script setup>
+import { ref } from 'vue'
+import { useStore } from "vuex"
+import { useRouter } from 'vue-router'
+import menuItem from "../components/MenuItem";
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
 
-export default defineComponent({
-  name: 'MainLayout',
+const $router = useRouter();
+const $store = useStore();
+const leftDrawerOpen = ref(false)
+const isDark = ref(true)
+const drawer = ref(false)
+const miniState = ref(true)
 
-  components: {
-    EssentialLink
-  },
+function toggleLeftDrawer () {
+    leftDrawerOpen.value = !leftDrawerOpen.value
+}
 
-  setup () {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
+function onLogout(){
+    console.log('logout')
+    $store.commit('auth/logout')
+    $router.push(`/`)
+}
 </script>

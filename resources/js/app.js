@@ -1,7 +1,7 @@
 require('./bootstrap');
 
 import { createApp } from 'vue'
-import { Quasar, LoadingBar, Loading, Notify, Dialog } from 'quasar'
+import { Quasar, LoadingBar, Loading, Notify, Dialog, LocalStorage, SessionStorage } from 'quasar'
 import store from './store'
 import router from "./router";
 import App from "./App.vue";
@@ -22,7 +22,9 @@ app.use(Quasar, {
         Loading,
         LoadingBar,
         Notify,
-        Dialog
+        Dialog,
+        LocalStorage,
+        SessionStorage
     },
     config: {
         loadingBar: {

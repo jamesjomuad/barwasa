@@ -17111,7 +17111,9 @@ app.use(quasar__WEBPACK_IMPORTED_MODULE_1__.Quasar, {
     Loading: quasar__WEBPACK_IMPORTED_MODULE_1__.Loading,
     LoadingBar: quasar__WEBPACK_IMPORTED_MODULE_1__.LoadingBar,
     Notify: quasar__WEBPACK_IMPORTED_MODULE_1__.Notify,
-    Dialog: quasar__WEBPACK_IMPORTED_MODULE_1__.Dialog
+    Dialog: quasar__WEBPACK_IMPORTED_MODULE_1__.Dialog,
+    LocalStorage: quasar__WEBPACK_IMPORTED_MODULE_1__.LocalStorage,
+    SessionStorage: quasar__WEBPACK_IMPORTED_MODULE_1__.SessionStorage
   },
   config: {
     loadingBar: {
@@ -17206,7 +17208,7 @@ __webpack_require__.r(__webpack_exports__);
         next();
         return;
       }
-      next("/login");
+      next("/");
     } else {
       next();
     }
@@ -17235,16 +17237,8 @@ var routes = [{
     return __webpack_require__.e(/*! import() */ "resources_js_layouts_BlankLayout_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/BlankLayout.vue */ "./resources/js/layouts/BlankLayout.vue"));
   },
   children: [{
-    path: "",
-    component: function component() {
-      return __webpack_require__.e(/*! import() */ "resources_js_pages_Dashboard_IndexPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Dashboard/IndexPage.vue */ "./resources/js/pages/Dashboard/IndexPage.vue"));
-    },
-    meta: {
-      requiresAuth: true
-    }
-  }, {
     name: "Login",
-    path: "login",
+    path: "",
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Auth_LoginPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Auth/LoginPage.vue */ "./resources/js/pages/Auth/LoginPage.vue"));
     },
@@ -17259,8 +17253,24 @@ var routes = [{
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Auth_RegisterPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Auth/RegisterPage.vue */ "./resources/js/pages/Auth/RegisterPage.vue"));
     },
+    beforeEnter: function beforeEnter(to, from) {
+      if (_store__WEBPACK_IMPORTED_MODULE_0__["default"].getters['auth/isAuthenticated']) {
+        return false;
+      }
+    }
+  }]
+}, {
+  path: "/dashboard",
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ "resources_js_layouts_MainLayout_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/MainLayout.vue */ "./resources/js/layouts/MainLayout.vue"));
+  },
+  children: [{
+    path: "",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_pages_Dashboard_IndexPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Dashboard/IndexPage.vue */ "./resources/js/pages/Dashboard/IndexPage.vue"));
+    },
     meta: {
-      requiresAuth: false
+      requiresAuth: true
     }
   }]
 },
@@ -17302,12 +17312,12 @@ function someAction( /* context */
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   isAuthenticated: () => (/* binding */ isAuthenticated),
-/* harmony export */   someGetter: () => (/* binding */ someGetter),
 /* harmony export */   stateUser: () => (/* binding */ stateUser)
 /* harmony export */ });
-function someGetter( /* state */
-) {}
+/* harmony import */ var quasar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! quasar */ "./node_modules/quasar/dist/quasar.esm.prod.js");
+
 function isAuthenticated(state) {
+  state.token = quasar__WEBPACK_IMPORTED_MODULE_0__.SessionStorage.getItem('token');
   return !!state.token;
 }
 function stateUser(state) {
@@ -17354,21 +17364,23 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   LogOut: () => (/* binding */ LogOut),
+/* harmony export */   logout: () => (/* binding */ logout),
 /* harmony export */   setToken: () => (/* binding */ setToken),
-/* harmony export */   setUser: () => (/* binding */ setUser),
-/* harmony export */   someMutation: () => (/* binding */ someMutation)
+/* harmony export */   setUser: () => (/* binding */ setUser)
 /* harmony export */ });
-function someMutation( /* state */
-) {}
+/* harmony import */ var quasar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! quasar */ "./node_modules/quasar/dist/quasar.esm.prod.js");
+
 function setUser(state, username) {
   state.user = username;
 }
 function setToken(state, token) {
+  quasar__WEBPACK_IMPORTED_MODULE_0__.SessionStorage.set('token', token);
   state.token = token;
 }
-function LogOut(state) {
+function logout(state) {
+  quasar__WEBPACK_IMPORTED_MODULE_0__.SessionStorage.set('token', false);
   state.user = null;
+  state.token = null;
 }
 
 /***/ }),
@@ -45853,7 +45865,7 @@ function useRoute() {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_layouts_BlankLayout_vue":1,"resources_js_pages_Dashboard_IndexPage_vue":1,"resources_js_pages_Auth_LoginPage_vue":1,"resources_js_pages_Auth_RegisterPage_vue":1,"resources_js_pages_ErrorNotFound_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_layouts_BlankLayout_vue":1,"resources_js_pages_Auth_LoginPage_vue":1,"resources_js_pages_Auth_RegisterPage_vue":1,"resources_js_layouts_MainLayout_vue":1,"resources_js_pages_Dashboard_IndexPage_vue":1,"resources_js_pages_ErrorNotFound_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

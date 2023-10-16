@@ -6,15 +6,8 @@ const routes = [
         component: () => import("../layouts/BlankLayout.vue"),
         children: [
             {
-                path: "",
-                component: () => import("../pages/Dashboard/IndexPage.vue"),
-                meta: {
-                    requiresAuth: true
-                }
-            },
-            {
                 name: "Login",
-                path: "login",
+                path: "",
                 component: () => import("../pages/Auth/LoginPage.vue"),
                 beforeEnter: (to, from) => {
                     if(store.getters['auth/isAuthenticated']){
@@ -26,8 +19,24 @@ const routes = [
                 name: "Register",
                 path: "register",
                 component: () => import("../pages/Auth/RegisterPage.vue"),
+                beforeEnter: (to, from) => {
+                    if(store.getters['auth/isAuthenticated']){
+                        return false;
+                    }
+                }
+            }
+        ]
+    },
+
+    {
+        path: "/dashboard",
+        component: () => import("../layouts/MainLayout.vue"),
+        children: [
+            {
+                path: "",
+                component: () => import("../pages/Dashboard/IndexPage.vue"),
                 meta: {
-                    requiresAuth: false
+                    requiresAuth: true
                 }
             }
         ]
