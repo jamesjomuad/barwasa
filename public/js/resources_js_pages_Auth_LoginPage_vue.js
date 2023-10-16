@@ -157,7 +157,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.onLogin, ["prevent"])
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card, {
         bordered: "",
-        "class": "q-pa-lg shadow-1",
+        "class": "q-pa-lg shadow-1 animate__animated animate__zoomIn animate__delay-2s",
         style: {
           "min-width": "450px"
         }

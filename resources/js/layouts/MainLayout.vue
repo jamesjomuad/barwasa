@@ -1,6 +1,6 @@
 <template>
     <q-layout view="lHh Lpr lff">
-        <q-header elevated class="bg-primary text-white">
+        <q-header elevated class="text-white" :class="{'bg-dark':$q.dark.isActive}">
             <q-toolbar>
                 <q-toolbar-title>
                     <q-avatar>
@@ -11,7 +11,7 @@
                 <q-toggle
                     icon-color="dark"
                     color="white"
-                    v-model="isDark"
+                    v-model="$q.dark.isActive"
                     unchecked-icon="light_mode"
                     checked-icon="nightlight_round"
                 />
@@ -50,11 +50,18 @@
             <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
                 <q-list>
                     <menu-item label="Dashboard" icon="dashboard" to="/" exact/>
+                    <q-separator />
+
+                    <q-item-label header>Customers</q-item-label>
+                    <menu-item label="Users" icon="people" to="/customers"/>
+                    <!-- <menu-item label="Roles" icon="security" to="/system/roles"/> -->
+                    <!-- <menu-item label="Logs" icon="list_alt" to="/system/logs"/> -->
+                    <q-separator />
 
                     <q-item-label header>System</q-item-label>
-                        <menu-item label="Users" icon="people" to="/system/users"/>
-                        <menu-item label="Roles" icon="security" to="/system/roles"/>
-                        <menu-item label="Logs" icon="list_alt" to="/system/logs"/>
+                    <menu-item label="Users" icon="people" to="/system/users"/>
+                    <!-- <menu-item label="Roles" icon="security" to="/system/roles"/> -->
+                    <!-- <menu-item label="Logs" icon="list_alt" to="/system/logs"/> -->
                     <q-separator />
                 </q-list>
             </q-scroll-area>

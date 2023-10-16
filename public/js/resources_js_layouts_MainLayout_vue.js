@@ -161,8 +161,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_q_menu = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-menu");
   var _component_q_btn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-btn");
   var _component_q_header = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-header");
-  var _component_q_item_label = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-item-label");
   var _component_q_separator = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-separator");
+  var _component_q_item_label = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-item-label");
   var _component_q_scroll_area = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-scroll-area");
   var _component_q_drawer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-drawer");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
@@ -174,7 +174,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_header, {
         elevated: "",
-        "class": "bg-primary text-white"
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["text-white", {
+          'bg-dark': _ctx.$q.dark.isActive
+        }])
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_toolbar, null, {
@@ -193,9 +195,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_toggle, {
                 "icon-color": "dark",
                 color: "white",
-                modelValue: $setup.isDark,
+                modelValue: _ctx.$q.dark.isActive,
                 "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-                  return $setup.isDark = $event;
+                  return _ctx.$q.dark.isActive = $event;
                 }),
                 "unchecked-icon": "light_mode",
                 "checked-icon": "nightlight_round"
@@ -271,7 +273,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
 
         _: 1 /* STABLE */
-      }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_drawer, {
+      }, 8 /* PROPS */, ["class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_drawer, {
         dark: _ctx.$q.dark.isActive,
         modelValue: $setup.drawer,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
@@ -307,7 +309,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                     icon: "dashboard",
                     to: "/",
                     exact: ""
-                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_item_label, {
+                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_separator), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_item_label, {
+                    header: ""
+                  }, {
+                    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Customers")];
+                    }),
+                    _: 1 /* STABLE */
+                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["menuItem"], {
+                    label: "Users",
+                    icon: "people",
+                    to: "/customers"
+                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Roles\" icon=\"security\" to=\"/system/roles\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Logs\" icon=\"list_alt\" to=\"/system/logs\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_separator), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_item_label, {
                     header: ""
                   }, {
                     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -318,15 +331,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                     label: "Users",
                     icon: "people",
                     to: "/system/users"
-                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["menuItem"], {
-                    label: "Roles",
-                    icon: "security",
-                    to: "/system/roles"
-                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["menuItem"], {
-                    label: "Logs",
-                    icon: "list_alt",
-                    to: "/system/logs"
-                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_separator)];
+                  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Roles\" icon=\"security\" to=\"/system/roles\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Logs\" icon=\"list_alt\" to=\"/system/logs\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_separator)];
                 }),
                 _: 1 /* STABLE */
               })];

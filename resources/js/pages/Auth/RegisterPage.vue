@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center bg-secondary">
-    <q-card bordered class="q-pa-lg shadow-1" style="max-width: 750px">
+    <q-card bordered class="q-pa-lg shadow-1 animate__animated animate__zoomIn animate__delay-2s" style="max-width: 750px">
       <!-- <q-card-section>
         <img
           alt="Quasar logo"
@@ -98,7 +98,7 @@
       </q-card-section>
       <q-card-section class="text-center q-pa-none">
         <p class="text-grey-6">
-          Already registered? <a href="#/login">Login</a>
+          Already registered? <a href="#/">Login</a>
         </p>
       </q-card-section>
     </q-card>

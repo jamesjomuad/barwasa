@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome to Quasar</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/quasar.variables.css') }}" rel="stylesheet" type="text/css">
 </head>
