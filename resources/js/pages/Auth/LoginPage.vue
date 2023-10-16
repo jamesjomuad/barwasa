@@ -2,10 +2,10 @@
   <q-page class="flex flex-center bg-secondary">
     <form class="row" @submit.prevent="onLogin">
       <q-card bordered class="q-pa-lg shadow-1" style="min-width: 450px">
-        <!-- <q-card-section>
+        <q-card-section>
           <img
             alt="Quasar logo"
-            src="~assets/logo.png"
+            src="/images/logo.png"
             style="
               width: 150px;
               margin: 0 auto;
@@ -13,7 +13,7 @@
               margin-top: -100px;
             "
           />
-        </q-card-section> -->
+        </q-card-section>
         <q-card-section>
           <q-form class="q-gutter-md">
             <q-input
@@ -43,16 +43,18 @@
         <q-card-actions class="q-px-md">
           <q-btn
             unelevated
-            color="light-green-7"
+            color="accent"
             size="lg"
             class="full-width"
             label="Login"
             type="submit"
+            :loading="ui.btnLoginLoading"
+            :disable="ui.btnLoginLoading"
           />
         </q-card-actions>
         <q-card-section class="text-center q-pa-none">
           <p class="text-grey-6">
-            Not registered? <a href="/register">Created an Account</a>
+            Not registered? <a href="#/register">Created an Account</a>
           </p>
         </q-card-section>
       </q-card>
@@ -63,19 +65,32 @@
 <script setup>
 import { ref, reactive } from "vue";
 import axios from "axios";
+import { useStore } from "vuex"
+import { useRouter } from 'vue-router'
 
+const $store = useStore();
+const $router = useRouter();
 const $user = reactive({ email: null, password: null });
 const isPwd = ref(true);
+const ui = reactive({
+    btnLoginLoading: false
+})
+
 
 async function onLogin(params) {
-  try {
-    const { data } = await axios.post(
-      "http://barwasa.test/api/auth/login",
-      $user
-    );
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
+    ui.btnLoginLoading = true
+    try {
+        const { data } = await axios.post(
+        "/api/auth/login",
+        $user
+        );
+        if(data.status){
+            $store.commit('auth/setToken', data.token)
+            $router.push(`/`)
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    ui.btnLoginLoading = false
 }
 </script>

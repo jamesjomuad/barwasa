@@ -1,22 +1,34 @@
-const routes = [
+import store from '../store'
 
+const routes = [
     {
         path: "/",
         component: () => import("../layouts/BlankLayout.vue"),
         children: [
             {
                 path: "",
-                component: () => import("../pages/Dashboard/IndexPage.vue")
+                component: () => import("../pages/Dashboard/IndexPage.vue"),
+                meta: {
+                    requiresAuth: true
+                }
             },
             {
                 name: "Login",
                 path: "login",
-                component: () => import("../pages/Auth/LoginPage.vue")
+                component: () => import("../pages/Auth/LoginPage.vue"),
+                beforeEnter: (to, from) => {
+                    if(store.getters['auth/isAuthenticated']){
+                        return false;
+                    }
+                }
             },
             {
                 name: "Register",
                 path: "register",
-                component: () => import("../pages/Auth/RegisterPage.vue")
+                component: () => import("../pages/Auth/RegisterPage.vue"),
+                meta: {
+                    requiresAuth: false
+                }
             }
         ]
     },

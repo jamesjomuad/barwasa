@@ -11,6 +11,23 @@ const baseUrl = "laravel-quasar.test"
  | file for the application as well as bundling up all the JS files.
  |
  */
+
+mix.webpackConfig(webpack => {
+    return {
+        module: {
+            rules: [{
+                test: /(\.(png|jpe?g|gif|webp)$|^((?!font).)*\.svg$)/,
+                use: [{
+                    loader: require.resolve('file-loader'),
+                    options: {
+                        esModule: false
+                    }
+                }]
+            }]
+        }
+    };
+});
+
 mix.disableSuccessNotifications();
 
 mix.js('resources/js/app.js', 'public/js')

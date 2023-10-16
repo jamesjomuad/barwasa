@@ -30,11 +30,11 @@ app.use(Quasar, {
             size: '3px',
             position: 'top'
         },
-        brand: {
-            primary: '#DA1F33',
-            secondary: '#f1f1f1',
-            accent: '#ff5f70'
-        }
+        // brand: {
+        //     primary: '#DA1F33',
+        //     secondary: '#f1f1f1',
+        //     accent: '#ff5f70'
+        // }
     },
 })
 
