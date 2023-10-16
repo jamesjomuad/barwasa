@@ -10,9 +10,22 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "axios": "^0.21",
+        "browser-sync": "^2.29.3",
+        "browser-sync-webpack-plugin": "2.3.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.69.3",
+        "sass-loader": "^12.1.0",
+        "vue-loader": "^16.2.0"
+    },
+    "dependencies": {
+        "@quasar/extras": "^1.16.4",
+        "axios": "^1.2.1",
+        "quasar": "^2.6.0",
+        "vue": "^3.3.4",
+        "vue-router": "^4.0.0",
+        "vuex": "^4.0.1"
     }
 }

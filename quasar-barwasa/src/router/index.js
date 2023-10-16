@@ -26,5 +26,11 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  Router.beforeEach((to, from, next) => {
+    let isAuthenticated= false;
+    if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+    else next()
+  })
+
   return Router
 })

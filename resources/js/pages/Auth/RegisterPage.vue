@@ -98,7 +98,7 @@
       </q-card-section>
       <q-card-section class="text-center q-pa-none">
         <p class="text-grey-6">
-          Already registered? <a href="#/login">Login</a>
+          Already registered? <a href="/login">Login</a>
         </p>
       </q-card-section>
     </q-card>

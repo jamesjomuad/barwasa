@@ -52,7 +52,7 @@
         </q-card-actions>
         <q-card-section class="text-center q-pa-none">
           <p class="text-grey-6">
-            Not registered? <a href="#/register">Created an Account</a>
+            Not registered? <a href="/register">Created an Account</a>
           </p>
         </q-card-section>
       </q-card>
