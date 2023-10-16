@@ -1,3 +1,5 @@
 <template>
-    <router-view></router-view>
+    <div>
+        hhhhhhhhhxxxxxxxxxxxxxxxxxxxx
+    </div>
 </template>
