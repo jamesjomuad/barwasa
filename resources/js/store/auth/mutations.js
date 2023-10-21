@@ -1,7 +1,8 @@
 import {  SessionStorage } from 'quasar'
 
-export function setUser(state, username){
-    state.user = username
+export function setUser(state, user){
+    SessionStorage.set('user', user)
+    state.user = user
 }
 
 export function setToken(state, token){

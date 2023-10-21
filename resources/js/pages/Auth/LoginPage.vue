@@ -96,7 +96,9 @@ async function onLogin(params) {
     try {
         const { data } = await axios.post( "/api/auth/login", $user );
         if(data.status){
+            let response = await axios.get( "/api/user", { headers: {"Authorization" : `Bearer ${data.token}`} });
             $store.commit('auth/setToken', data.token)
+            $store.commit('auth/setUser', response.data)
             $router.push(`/`)
         }
     } catch (error) {

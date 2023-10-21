@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
 import menuItem from "../components/MenuItem";
@@ -100,6 +100,12 @@ const leftDrawerOpen = ref(false)
 const isDark = ref(true)
 const drawer = ref(false)
 const miniState = ref(false)
+
+
+
+onMounted(()=>{
+    console.log($store.getters['auth/user'])
+})
 
 function toggleLeftDrawer () {
     leftDrawerOpen.value = !leftDrawerOpen.value

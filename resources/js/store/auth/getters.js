@@ -10,7 +10,7 @@ export function token(state){
     return state.token
 }
 
-export function stateUser(state){
+export function user(state){
     return state.user
 }
 
