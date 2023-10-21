@@ -9,11 +9,11 @@
                 binary-state-sort
                 title="Consumers"
                 row-key="id"
-                v-model:pagination="pagination"
-                :rows="rows"
-                :columns="columns"
-                :loading="loading"
-                :filter="filter"
+                v-model:pagination="table.pagination"
+                :rows="table.rows"
+                :columns="table.columns"
+                :loading="table.loading"
+                :filter="table.filter"
                 @request="onRequest"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
             >
@@ -23,7 +23,7 @@
                         dense
                         ref="search"
                         debounce="300"
-                        v-model="filter"
+                        v-model="table.filter"
                         placeholder="Search"
                         class="q-ma-xs"
                     >
@@ -128,98 +128,88 @@
 
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useQuasar } from 'quasar'
 
 
 const $q = useQuasar()
-const columns = ref([
-    {
-        label: "#",
-        name: "id",
-        field: "id",
-        sortable: true,
-    },
-    {
-        label: "First name",
-        name: "first_name",
-        field: "first_name",
-        sortable: true,
-    },
-    {
-        label: "Last Name",
-        name: "last_name",
-        field: "last_name",
-        sortable: true,
-    },
-    {
-        label: "Email",
-        name: "email",
-        field: "email",
-        sortable: true,
-    },
-    {
-        label: "Phone",
-        name: "phone",
-        field: "phone",
-        sortable: true,
-    },
-    {
-        label: "Phone 2",
-        name: "phone_2",
-        field: "phone_2",
-        sortable: true,
-    },
-    {
-        label: "Meter ID",
-        name: "meter_id",
-        field: "meter_id",
-        sortable: true,
-    },
-    {
-        label: "Active",
-        name: "is_active",
-        field: "is_active",
-        sortable: true,
-        format: (val, row) => {
-            return !!val
+const table = reactive({
+    loading: false,
+    filter: '',
+    rows: [],
+    columns: [
+        {
+            label: "#",
+            name: "id",
+            field: "id",
+            sortable: true,
         },
-    },
-    {
-        label: 'Created',
-        field: 'created_at',
-        sortable: true,
-        align: 'left',
-        format: (val, row) => {
-            // return moment(val).format("MMMM DD, YYYY (h:mm a)");
-            return moment(val).format("YYYY-MM-d");
+        {
+            label: "First name",
+            name: "first_name",
+            field: "first_name",
+            sortable: true,
         },
-    },
-    {
-        label: 'Updated',
-        field: 'updated_at',
-        sortable: true,
-        align: 'left',
-        format: (val, row) => {
-            return moment(val).format("YYYY-MM-d");
+        {
+            label: "Last Name",
+            name: "last_name",
+            field: "last_name",
+            sortable: true,
+        },
+        {
+            label: "Email",
+            name: "email",
+            field: "email",
+            sortable: true,
+        },
+        {
+            label: "Phone",
+            name: "phone",
+            field: "phone",
+            sortable: true,
+        },
+        {
+            label: "Active",
+            name: "is_active",
+            field: "is_active",
+            sortable: true,
+            format: (val, row) => {
+                return !!val
+            },
+        },
+        {
+            label: 'Created',
+            field: 'created_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
+                return moment(val).format("YYYY-MM-d");
+            },
+        },
+        {
+            label: 'Updated',
+            field: 'updated_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                return moment(val).format("YYYY-MM-d");
+            }
         }
+    ],
+    pagination: {
+        sortBy: "id",
+        descending: true,
+        page: 1,
+        rowsPerPage: 10,
+        rowsNumber: 10,
     }
-]);
-const rows = ref([]);
-const filter = ref('')
-const loading = ref(false);
-const pagination = ref({
-    sortBy: "id",
-    descending: true,
-    page: 1,
-    rowsPerPage: 10,
-    rowsNumber: 10,
-});
+})
 
 
 onMounted(() => {
     onRequest({
-        pagination: pagination.value,
+        pagination: table.pagination,
         filter: null,
     });
 });
@@ -230,10 +220,10 @@ async function onRequest(props) {
     const { page, rowsPerPage, sortBy, descending } = props.pagination;
     const filter = props.filter; //  Search bar value
 
-    loading.value = true;
+    table.loading = true;
 
     // get all rows if "All" (0) is selected
-    const fetchCount = (rowsPerPage === 0) ? pagination.value.rowsNumber : rowsPerPage;
+    const fetchCount = (rowsPerPage === 0) ? table.pagination.rowsNumber : rowsPerPage;
 
     const params = {
         filter: filter,
@@ -245,18 +235,18 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/consumers`)
+        const { data } = await axios.get(`/api/consumers`, params)
 
-        pagination.value.rowsNumber = data.total;
+        table.pagination.rowsNumber = data.total;
 
         // clear out existing data and add new
-        rows.value.splice(0, rows.value.length, ...data.data);
+        table.rows.splice(0, table.rows.length, ...data.data);
 
         // don't forget to update local pagination object
-        pagination.value.page = page;
-        pagination.value.rowsPerPage = rowsPerPage;
-        pagination.value.sortBy = sortBy;
-        pagination.value.descending = descending;
+        table.pagination.page = page;
+        table.pagination.rowsPerPage = rowsPerPage;
+        table.pagination.sortBy = sortBy;
+        table.pagination.descending = descending;
     } catch (error) {
         $q.notify({
             color: 'negative',
@@ -264,11 +254,11 @@ async function onRequest(props) {
             icon: 'report_problem',
             position: 'bottom-right'
         })
-        loading.value = false;
+        table.loading = false;
     }
 
     // ...and turn of loading indicator
-    loading.value = false;
+    table.loading = false;
 }
 
 </script>
