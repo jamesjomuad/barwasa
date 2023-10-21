@@ -20,11 +20,6 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
@@ -33,20 +28,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
-    var columns = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
+    var columns = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([{
+      label: "#",
+      name: "id",
+      field: "id",
+      sortable: true
+    }, {
+      label: "First name",
+      name: "first_name",
+      field: "first_name",
+      sortable: true
+    }, {
+      label: "Last Name",
+      name: "last_name",
+      field: "last_name",
+      sortable: true
+    }, {
+      label: 'Created',
+      field: 'created_at',
+      sortable: true,
+      align: 'left',
+      format: function format(val, row) {
+        return moment(val).format("MMMM DD, YYYY (h:mm a)");
+      }
+    }, {
+      label: 'Updated',
+      field: 'updated_at',
+      sortable: true,
+      align: 'left',
+      format: function format(val, row) {
+        return moment(val).format("MMMM DD, YYYY (h:mm a)");
+      }
+    }]);
     var rows = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
     var filter = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
     var loading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
-    var dateRange = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({
-      range: null,
-      ref: null
-    });
     var pagination = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)({
       sortBy: "id",
       descending: true,
       page: 1,
       rowsPerPage: 10,
       rowsNumber: 10
+    });
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
+      onRequest({
+        pagination: pagination.value,
+        filter: null
+      });
     });
 
     //  Server Request
@@ -55,7 +83,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
     function _onRequest() {
       _onRequest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(props) {
-        var _props$pagination, page, rowsPerPage, sortBy, descending, filter, fetchCount, params, _dateRange$value$rang, from, to, min, max, _rows$value, _yield$$booking$getBo, data;
+        var _props$pagination, page, rowsPerPage, sortBy, descending, filter, fetchCount, params, _rows$value, _yield$axios$get, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -73,31 +101,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 page: page,
                 per_page: rowsPerPage
               };
-              if (!_.isEmpty('$axcelerate.organisationName') && _.get($axcelerate, 'role') != "Administrator") {
-                params.organisation = _.get($axcelerate, 'organisationName', '');
-              }
-              if (!_.isEmpty(dateRange.value.range)) {
-                _dateRange$value$rang = _objectSpread({}, dateRange.value.range), from = _dateRange$value$rang.from, to = _dateRange$value$rang.to;
-                min = date.buildDate({
-                  year: from.year,
-                  month: from.month,
-                  day: from.day
-                });
-                max = date.buildDate({
-                  year: to.year,
-                  month: to.month,
-                  day: to.day
-                });
-                params.from = date.formatDate(min, 'YYYY-MM-DD');
-                params.to = date.formatDate(max, 'YYYY-MM-DD');
-              }
-              _context.prev = 7;
-              _context.next = 10;
-              return $booking.getBookings(params);
-            case 10:
-              _yield$$booking$getBo = _context.sent;
-              data = _yield$$booking$getBo.data;
-              pagination.value.rowsNumber = data.meta.total;
+              _context.prev = 5;
+              _context.next = 8;
+              return axios.get("/api/consumers");
+            case 8:
+              _yield$axios$get = _context.sent;
+              data = _yield$axios$get.data;
+              console.log(data);
+              pagination.value.rowsNumber = data.total;
 
               // clear out existing data and add new
               (_rows$value = rows.value).splice.apply(_rows$value, [0, rows.value.length].concat(_toConsumableArray(data.data)));
@@ -107,11 +118,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               pagination.value.rowsPerPage = rowsPerPage;
               pagination.value.sortBy = sortBy;
               pagination.value.descending = descending;
-              _context.next = 24;
+              _context.next = 23;
               break;
-            case 20:
-              _context.prev = 20;
-              _context.t0 = _context["catch"](7);
+            case 19:
+              _context.prev = 19;
+              _context.t0 = _context["catch"](5);
               $q.notify({
                 color: 'negative',
                 message: _context.t0.response.statusText,
@@ -119,14 +130,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 position: 'bottom-right'
               });
               loading.value = false;
-            case 24:
+            case 23:
               // ...and turn of loading indicator
               loading.value = false;
-            case 25:
+            case 24:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[7, 20]]);
+        }, _callee, null, [[5, 19]]);
       }));
       return _onRequest.apply(this, arguments);
     }
@@ -135,11 +146,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       rows: rows,
       filter: filter,
       loading: loading,
-      dateRange: dateRange,
       pagination: pagination,
       onRequest: onRequest,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
-      reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive
+      onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -205,7 +215,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         flat: "",
         bordered: "",
         "binary-state-sort": "",
-        title: "Bookings",
+        title: "Consumers",
         "row-key": "id",
         pagination: $setup.pagination,
         "onUpdate:pagination": _cache[1] || (_cache[1] = function ($event) {

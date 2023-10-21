@@ -17,9 +17,11 @@ class ConsumerController extends Controller
      */
     public function index(Request $request)
     {
-        dd(
-            $request
-        );
+        $per_page = $request->get('per_page') ? : 50;
+
+        $query = Model::query();
+
+        return $query->paginate($per_page);
     }
 
     /**

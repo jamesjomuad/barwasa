@@ -1,5 +1,8 @@
 import  store  from './store/index'
+
+
 window._ = require('lodash');
+window.moment = require('moment');
 
 
 /**

@@ -7,7 +7,7 @@
                 flat
                 bordered
                 binary-state-sort
-                title="Bookings"
+                title="Consumers"
                 row-key="id"
                 v-model:pagination="pagination"
                 :rows="rows"
@@ -128,20 +128,64 @@
 
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, onMounted } from "vue";
 
 
-const columns = ref([]);
+const columns = ref([
+    {
+        label: "#",
+        name: "id",
+        field: "id",
+        sortable: true,
+    },
+    {
+        label: "First name",
+        name: "first_name",
+        field: "first_name",
+        sortable: true,
+    },
+    {
+        label: "Last Name",
+        name: "last_name",
+        field: "last_name",
+        sortable: true,
+    },
+    {
+        label: 'Created',
+        field: 'created_at',
+        sortable: true,
+        align: 'left',
+        format: (val, row) => {
+            return moment(val).format("MMMM DD, YYYY (h:mm a)");
+        },
+    },
+    {
+        label: 'Updated',
+        field: 'updated_at',
+        sortable: true,
+        align: 'left',
+        format: (val, row) => {
+            return moment(val).format("MMMM DD, YYYY (h:mm a)");
+        }
+    }
+]);
 const rows = ref([]);
 const filter = ref('')
 const loading = ref(false);
-const dateRange = ref({range: null, ref: null})
 const pagination = ref({
     sortBy: "id",
     descending: true,
     page: 1,
     rowsPerPage: 10,
     rowsNumber: 10,
+});
+
+
+onMounted(() => {
+    onRequest({
+        pagination: pagination.value,
+        filter: null,
+    });
 });
 
 
@@ -164,21 +208,13 @@ async function onRequest(props) {
         per_page: rowsPerPage
     };
 
-    if(!_.isEmpty('$axcelerate.organisationName') && _.get($axcelerate,'role') != "Administrator"){
-        params.organisation = _.get($axcelerate,'organisationName','')
-    }
-
-    if(!_.isEmpty(dateRange.value.range)){
-        let {from, to} = {...dateRange.value.range}
-        let min = date.buildDate({ year: from.year, month: from.month, day: from.day })
-        let max = date.buildDate({ year: to.year, month: to.month, day: to.day })
-        params.from = date.formatDate(min, 'YYYY-MM-DD')
-        params.to = date.formatDate(max, 'YYYY-MM-DD')
-    }
 
     try {
-        const {data} = await $booking.getBookings(params);
-        pagination.value.rowsNumber = data.meta.total;
+        const { data } = await axios.get(`/api/consumers`)
+
+        console.log(data)
+
+        pagination.value.rowsNumber = data.total;
 
         // clear out existing data and add new
         rows.value.splice(0, rows.value.length, ...data.data);
