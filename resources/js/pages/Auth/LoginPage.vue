@@ -97,7 +97,7 @@ async function onLogin(params) {
         const { data } = await axios.post( "/api/auth/login", $user );
         if(data.status){
             $store.commit('auth/setToken', data.token)
-            $router.push(`/dashboard`)
+            $router.push(`/`)
         }
     } catch (error) {
         ui.isInvalid = true

@@ -18,7 +18,7 @@ export default route(function (/* { store, ssrContext } */) {
             next();
             return;
         }
-        next("/");
+        next("/login");
     } else {
         next();
     }

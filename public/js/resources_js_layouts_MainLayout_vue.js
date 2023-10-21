@@ -54,7 +54,7 @@ __webpack_require__.r(__webpack_exports__);
     function onLogout() {
       console.log('logout');
       $store.commit('auth/logout');
-      $router.push("/");
+      $router.push("/login");
     }
     var __returned__ = {
       $route: $route,

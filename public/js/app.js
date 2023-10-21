@@ -17214,7 +17214,7 @@ __webpack_require__.r(__webpack_exports__);
         next();
         return;
       }
-      next("/");
+      next("/login");
     } else {
       next();
     }
@@ -17238,13 +17238,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
 
 var routes = [{
-  path: "/",
+  path: "/auth",
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_layouts_BlankLayout_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/BlankLayout.vue */ "./resources/js/layouts/BlankLayout.vue"));
   },
   children: [{
     name: "Login",
-    path: "",
+    path: "/login",
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Auth_LoginPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Auth/LoginPage.vue */ "./resources/js/pages/Auth/LoginPage.vue"));
     },
@@ -17266,7 +17266,7 @@ var routes = [{
     }
   }]
 }, {
-  path: "/dashboard",
+  path: "/",
   component: function component() {
     return __webpack_require__.e(/*! import() */ "resources_js_layouts_MainLayout_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../layouts/MainLayout.vue */ "./resources/js/layouts/MainLayout.vue"));
   },

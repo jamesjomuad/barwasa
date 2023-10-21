@@ -108,6 +108,6 @@ function toggleLeftDrawer () {
 function onLogout(){
     console.log('logout')
     $store.commit('auth/logout')
-    $router.push(`/`)
+    $router.push(`/login`)
 }
 </script>

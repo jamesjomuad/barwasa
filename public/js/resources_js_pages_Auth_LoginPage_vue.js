@@ -61,7 +61,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               data = _yield$axios$post.data;
               if (data.status) {
                 $store.commit('auth/setToken', data.token);
-                $router.push("/dashboard");
+                $router.push("/");
               }
               _context.next = 14;
               break;

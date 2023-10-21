@@ -129,8 +129,10 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useQuasar } from 'quasar'
 
 
+const $q = useQuasar()
 const columns = ref([
     {
         label: "#",
@@ -151,12 +153,46 @@ const columns = ref([
         sortable: true,
     },
     {
+        label: "Email",
+        name: "email",
+        field: "email",
+        sortable: true,
+    },
+    {
+        label: "Phone",
+        name: "phone",
+        field: "phone",
+        sortable: true,
+    },
+    {
+        label: "Phone 2",
+        name: "phone_2",
+        field: "phone_2",
+        sortable: true,
+    },
+    {
+        label: "Meter ID",
+        name: "meter_id",
+        field: "meter_id",
+        sortable: true,
+    },
+    {
+        label: "Active",
+        name: "is_active",
+        field: "is_active",
+        sortable: true,
+        format: (val, row) => {
+            return !!val
+        },
+    },
+    {
         label: 'Created',
         field: 'created_at',
         sortable: true,
         align: 'left',
         format: (val, row) => {
-            return moment(val).format("MMMM DD, YYYY (h:mm a)");
+            // return moment(val).format("MMMM DD, YYYY (h:mm a)");
+            return moment(val).format("YYYY-MM-d");
         },
     },
     {
@@ -165,7 +201,7 @@ const columns = ref([
         sortable: true,
         align: 'left',
         format: (val, row) => {
-            return moment(val).format("MMMM DD, YYYY (h:mm a)");
+            return moment(val).format("YYYY-MM-d");
         }
     }
 ]);
@@ -208,11 +244,8 @@ async function onRequest(props) {
         per_page: rowsPerPage
     };
 
-
     try {
         const { data } = await axios.get(`/api/consumers`)
-
-        console.log(data)
 
         pagination.value.rowsNumber = data.total;
 

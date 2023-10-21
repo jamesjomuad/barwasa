@@ -129,6 +129,8 @@
             <q-btn
               color="primary"
               type="submit"
+              :disable="ui.loading"
+              :loading="ui.loading"
             >
               Create
             </q-btn>
@@ -142,7 +144,16 @@
 
 <script setup>
 import { ref, reactive, } from "vue";
+import { useRoute, useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 
+
+const $route = useRoute()
+const $router = useRouter()
+const $q = useQuasar()
+const ui = reactive({
+    loading: false
+})
 const $form = reactive({
     first_name: "",
     last_name: "",
@@ -154,8 +165,22 @@ const $form = reactive({
 
 
 async function onCreate(){
-    const { data } = await axios.post(`/api/consumers`, $form)
-    console.log(data)
+    ui.loading = true
+    try{
+        const { data } = await axios.post(`/api/consumers`, $form)
+        $q.notify({
+            type: 'positive',
+            message: `${data.data.first_name} ${data.data.last_name} created successfully!`
+        })
+        $router.push('/consumers')
+    }catch(error){
+        console.log(error)
+        $q.notify({
+            type: 'negative',
+            message: "Error!"
+        })
+    }
+    ui.loading = false
 }
 
 </script>

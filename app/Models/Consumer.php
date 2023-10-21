@@ -18,7 +18,8 @@ class Consumer extends Model
         "email",
         "first_name",
         "last_name",
-        "phone",
+        "meter_id",
         "phone_2",
+        "phone",
     ];
 }
