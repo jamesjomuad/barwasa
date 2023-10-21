@@ -20,7 +20,7 @@
                 />
 
                 <q-toolbar-title shrink>
-                    <span class="text-subtitle2">James Jomuad</span>
+                    <span class="text-subtitle2">{{ user?.fullname }}</span>
                 </q-toolbar-title>
 
                 <q-btn round flat icon="account_circle">
@@ -74,8 +74,8 @@
                     <q-avatar size="90px" class="q-mb-sm">
                         <img src="/images/logo.png">
                     </q-avatar>
-                    <div class="text-weight-bold">Razvan Stoenescu</div>
-                    <div>@rstoenescu</div>
+                    <div class="text-weight-bold">{{ user?.fullname }}</div>
+                    <!-- <div>@{{ $store.getters['auth/user']?.email }}</div> -->
                 </div>
             </div>
         </q-drawer>
@@ -87,7 +87,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
 import menuItem from "../components/MenuItem";
@@ -100,12 +100,9 @@ const leftDrawerOpen = ref(false)
 const isDark = ref(true)
 const drawer = ref(false)
 const miniState = ref(false)
+const user = computed(()=>$store.getters['auth/user'])
 
 
-
-onMounted(()=>{
-    console.log($store.getters['auth/user'])
-})
 
 function toggleLeftDrawer () {
     leftDrawerOpen.value = !leftDrawerOpen.value

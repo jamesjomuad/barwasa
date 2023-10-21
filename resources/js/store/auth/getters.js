@@ -11,6 +11,7 @@ export function token(state){
 }
 
 export function user(state){
+    state.user = SessionStorage.getItem('user')
     return state.user
 }
 
