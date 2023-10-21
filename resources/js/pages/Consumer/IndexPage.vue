@@ -14,8 +14,9 @@
                 :columns="table.columns"
                 :loading="table.loading"
                 :filter="table.filter"
-                @request="onRequest"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
+                @request="onRequest"
+                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-input
@@ -130,8 +131,10 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 
 
+const $router = useRouter();
 const $q = useQuasar()
 const table = reactive({
     loading: false,
@@ -259,6 +262,10 @@ async function onRequest(props) {
 
     // ...and turn of loading indicator
     table.loading = false;
+}
+
+function onRow(evt, row, index){
+    $router.push(`/consumers/${row.id}`)
 }
 
 </script>

@@ -55,6 +55,14 @@ const routes = [
                     title: "New Consumer",
                     requiresAuth: true
                 }
+            },
+            {
+                path: "/consumers/:id",
+                component: () => import("../pages/Consumer/UpdatePage.vue"),
+                meta: {
+                    title: "New Consumer",
+                    requiresAuth: true
+                }
             }
         ]
     },

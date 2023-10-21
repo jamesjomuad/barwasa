@@ -54,7 +54,7 @@ class ConsumerController extends Controller
         return response()->json([
             'message' => 'Customer created successfully',
             'data'    => $consumer
-        ], 201);;
+        ], 201);
     }
 
     /**
@@ -65,7 +65,14 @@ class ConsumerController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            return Model::findorfail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response([
+                'status' => false,
+                'message' => '404 not found'
+            ], 404);
+        }
     }
 
     /**
@@ -77,7 +84,11 @@ class ConsumerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $model = Model::findOrFail($id);
+        return [
+            'status' => $model->update($request->all()),
+            'data'   => $model
+        ];
     }
 
     /**
