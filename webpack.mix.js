@@ -30,10 +30,10 @@ mix.webpackConfig(webpack => {
 
 mix.disableSuccessNotifications();
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/build/js')
     .vue()
-    .sass('resources/css/quasar.variables.scss', 'public/css')
-    .postCss('resources/css/app.css', 'public/css', [
+    .sass('resources/css/quasar.variables.scss', 'public/build/css')
+    .postCss('resources/css/app.css', 'public/build/css', [
         //
     ])
     .version()

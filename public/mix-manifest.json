@@ -1,5 +1,5 @@
 {
-    "/js/app.js": "/js/app.js?id=1c57fca2c3f9e6ff2fedf68a165e1cd7",
-    "/css/app.css": "/css/app.css?id=1708f7f2dd456941f86f69ac4e9ce9be",
-    "/css/quasar.variables.css": "/css/quasar.variables.css?id=3dcc4ee8c68dc69828f68a311d81f0fc"
+    "/build/js/app.js": "/build/js/app.js?id=2dbcccd0064ca86fe75a8c998c705306",
+    "/build/css/app.css": "/build/css/app.css?id=1708f7f2dd456941f86f69ac4e9ce9be",
+    "/build/css/quasar.variables.css": "/build/css/quasar.variables.css?id=3dcc4ee8c68dc69828f68a311d81f0fc"
 }
