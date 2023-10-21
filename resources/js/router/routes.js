@@ -52,7 +52,7 @@ const routes = [
                 path: "/consumers/create",
                 component: () => import("../pages/Consumer/CreatePage.vue"),
                 meta: {
-                    title: "Consumers",
+                    title: "New Consumer",
                     requiresAuth: true
                 }
             }

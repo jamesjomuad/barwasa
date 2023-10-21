@@ -25,19 +25,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var $form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
       first_name: "",
       last_name: "",
+      email: "",
       billing_address: "",
       phone: "",
-      phone_2: "",
-      age: ""
+      phone_2: ""
     });
     function onCreate() {
       return _onCreate.apply(this, arguments);
     }
     function _onCreate() {
       _onCreate = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _yield$axios$post, data;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
+              _context.next = 2;
+              return axios.post("/api/consumers", $form);
+            case 2:
+              _yield$axios$post = _context.sent;
+              data = _yield$axios$post.data;
+              console.log(data);
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -82,16 +90,22 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_3 = {
   "class": "row q-col-gutter-md"
 };
+var _hoisted_4 = {
+  "class": "row items-center justify-end q-gutter-sm"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_q_card_section = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-card-section");
   var _component_q_icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-icon");
   var _component_q_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-input");
-  var _component_q_separator = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-separator");
   var _component_q_btn = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-btn");
+  var _component_q_date = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-date");
+  var _component_q_popup_proxy = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-popup-proxy");
+  var _component_q_separator = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-separator");
   var _component_q_card_actions = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-card-actions");
   var _component_q_card = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-card");
   var _component_q_form = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-form");
   var _component_q_page = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-page");
+  var _directive_close_popup = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective)("close-popup");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_q_page, {
     padding: "",
     "class": "bg-grey-2"
@@ -187,8 +201,84 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                     }),
                     _: 1 /* STABLE */
                   }, 8 /* PROPS */, ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
-                    modelValue: $setup.$form.billing_address,
+                    modelValue: $setup.$form.email,
                     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+                      return $setup.$form.email = $event;
+                    }),
+                    dense: "",
+                    outlined: "",
+                    label: "Email",
+                    "lazy-rules": "",
+                    "class": "col-6"
+                  }, {
+                    prepend: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_icon, {
+                        name: "email"
+                      })];
+                    }),
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
+                    modelValue: $setup.$form.dob,
+                    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+                      return $setup.$form.dob = $event;
+                    }),
+                    dense: "",
+                    outlined: "",
+                    label: "Date of Birth",
+                    "lazy-rules": "",
+                    "class": "col-6",
+                    readonly: ""
+                  }, {
+                    prepend: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_icon, {
+                        name: "calendar_month"
+                      })];
+                    }),
+                    after: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
+                        icon: "event",
+                        round: "",
+                        color: "primary"
+                      }, {
+                        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_popup_proxy, {
+                            cover: "",
+                            "transition-show": "scale",
+                            "transition-hide": "scale"
+                          }, {
+                            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_date, {
+                                modelValue: $setup.$form.dob,
+                                "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+                                  return $setup.$form.dob = $event;
+                                })
+                              }, {
+                                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
+                                    label: "Cancel",
+                                    color: "primary",
+                                    flat: ""
+                                  }, null, 512 /* NEED_PATCH */), [[_directive_close_popup]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
+                                    label: "OK",
+                                    color: "primary",
+                                    flat: ""
+                                  }, null, 512 /* NEED_PATCH */), [[_directive_close_popup]])])];
+                                }),
+                                _: 1 /* STABLE */
+                              }, 8 /* PROPS */, ["modelValue"])];
+                            }),
+                            _: 1 /* STABLE */
+                          })];
+                        }),
+
+                        _: 1 /* STABLE */
+                      })];
+                    }),
+
+                    _: 1 /* STABLE */
+                  }, 8 /* PROPS */, ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
+                    modelValue: $setup.$form.billing_address,
+                    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
                       return $setup.$form.billing_address = $event;
                     }),
                     dense: "",

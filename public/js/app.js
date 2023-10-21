@@ -17293,7 +17293,7 @@ var routes = [{
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Consumer_CreatePage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Consumer/CreatePage.vue */ "./resources/js/pages/Consumer/CreatePage.vue"));
     },
     meta: {
-      title: "Consumers",
+      title: "New Consumer",
       requiresAuth: true
     }
   }]
