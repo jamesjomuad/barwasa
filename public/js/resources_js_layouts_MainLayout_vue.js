@@ -41,12 +41,13 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(__props, _ref) {
     var __expose = _ref.expose;
     __expose();
+    var $route = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRoute)();
     var $router = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRouter)();
     var $store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.useStore)();
     var leftDrawerOpen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     var isDark = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(true);
     var drawer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
-    var miniState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(true);
+    var miniState = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     function toggleLeftDrawer() {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     }
@@ -56,6 +57,7 @@ __webpack_require__.r(__webpack_exports__);
       $router.push("/");
     }
     var __returned__ = {
+      $route: $route,
       $router: $router,
       $store: $store,
       leftDrawerOpen: leftDrawerOpen,
@@ -67,6 +69,9 @@ __webpack_require__.r(__webpack_exports__);
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
       get useStore() {
         return vuex__WEBPACK_IMPORTED_MODULE_3__.useStore;
+      },
+      get useRoute() {
+        return vue_router__WEBPACK_IMPORTED_MODULE_2__.useRoute;
       },
       get useRouter() {
         return vue_router__WEBPACK_IMPORTED_MODULE_2__.useRouter;
@@ -143,16 +148,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
-  src: "/images/logo.png"
-}, null, -1 /* HOISTED */);
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "text-subtitle2"
 }, "James Jomuad", -1 /* HOISTED */);
+var _hoisted_2 = {
+  "class": "absolute-top bg-accent",
+  style: {
+    "height": "170px"
+  }
+};
+var _hoisted_3 = {
+  "class": "absolute-bottom bg-transparent q-pa-md"
+};
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  src: "/images/logo.png"
+}, null, -1 /* HOISTED */);
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "text-weight-bold"
+}, "Razvan Stoenescu", -1 /* HOISTED */);
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "@rstoenescu", -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_q_avatar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-avatar");
   var _component_q_toolbar_title = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-toolbar-title");
+  var _component_q_space = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-space");
   var _component_q_toggle = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-toggle");
   var _component_q_toolbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-toolbar");
   var _component_q_item_section = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-item-section");
@@ -164,6 +182,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_q_separator = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-separator");
   var _component_q_item_label = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-item-label");
   var _component_q_scroll_area = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-scroll-area");
+  var _component_q_avatar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-avatar");
   var _component_q_drawer = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-drawer");
   var _component_router_view = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-view");
   var _component_q_page_container = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("q-page-container");
@@ -183,16 +202,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_toolbar_title, null, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_avatar, null, {
-                    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                      return [_hoisted_1];
-                    }),
-                    _: 1 /* STABLE */
-                  })];
+                  var _$setup$$route$meta;
+                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$setup$$route$meta = $setup.$route.meta) === null || _$setup$$route$meta === void 0 ? void 0 : _$setup$$route$meta.title), 1 /* TEXT */)];
                 }),
 
                 _: 1 /* STABLE */
-              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_toggle, {
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <q-toolbar-title>\n                    <q-avatar>\n                        <img src=\"/images/logo.png\" />\n                    </q-avatar>\n                </q-toolbar-title> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_space), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_toggle, {
                 "icon-color": "dark",
                 color: "white",
                 modelValue: _ctx.$q.dark.isActive,
@@ -205,7 +220,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 shrink: ""
               }, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [_hoisted_2];
+                  return [_hoisted_1];
                 }),
                 _: 1 /* STABLE */
               }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
@@ -227,7 +242,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                             "class": "text-subtitle2"
                           }, {
                             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Barwasa")];
+                              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("BARWSA")];
                             }),
                             _: 1 /* STABLE */
                           })];
@@ -273,23 +288,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
 
         _: 1 /* STABLE */
-      }, 8 /* PROPS */, ["class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_drawer, {
-        dark: _ctx.$q.dark.isActive,
+      }, 8 /* PROPS */, ["class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" @mouseover=\"miniState = false\"\n        @mouseout=\"miniState = true\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_drawer, {
+        bordered: "",
+        "show-if-above": "",
         modelValue: $setup.drawer,
         "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
           return $setup.drawer = $event;
         }),
-        "show-if-above": "",
+        style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)(!$setup.miniState ? 'margin-top: 170px;' : ''),
+        dark: _ctx.$q.dark.isActive,
         mini: $setup.miniState,
-        onMouseover: _cache[2] || (_cache[2] = function ($event) {
-          return $setup.miniState = false;
-        }),
-        onMouseout: _cache[3] || (_cache[3] = function ($event) {
-          return $setup.miniState = true;
-        }),
         width: 200,
         breakpoint: 500,
-        bordered: "",
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
           'bg-white': !_ctx.$q.dark.isActive
         }])
@@ -317,9 +327,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                     }),
                     _: 1 /* STABLE */
                   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["menuItem"], {
-                    label: "Users",
+                    label: "Consumers",
                     icon: "people",
-                    to: "/customers"
+                    to: "/consumers"
                   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Roles\" icon=\"security\" to=\"/system/roles\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <menu-item label=\"Logs\" icon=\"list_alt\" to=\"/system/logs\"/> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_separator), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_item_label, {
                     header: ""
                   }, {
@@ -338,11 +348,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             }),
 
             _: 1 /* STABLE */
-          })];
+          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_avatar, {
+            size: "90px",
+            "class": "q-mb-sm"
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [_hoisted_4];
+            }),
+            _: 1 /* STABLE */
+          }), _hoisted_5, _hoisted_6])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, !$setup.miniState]])];
         }),
-
         _: 1 /* STABLE */
-      }, 8 /* PROPS */, ["dark", "modelValue", "mini", "class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_page_container, {
+      }, 8 /* PROPS */, ["modelValue", "style", "dark", "mini", "class"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_page_container, {
         "class": "bg-grey-3"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {

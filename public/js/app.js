@@ -17137,7 +17137,11 @@ app.mount('#app');
 /*!***********************************!*\
   !*** ./resources/js/bootstrap.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
 
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
@@ -17149,6 +17153,7 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/dist/browser/axios.cjs");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Authorization'] = "Bearer ".concat(_store_index__WEBPACK_IMPORTED_MODULE_0__["default"].getters['auth/token']);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -17249,7 +17254,7 @@ var routes = [{
     }
   }, {
     name: "Register",
-    path: "register",
+    path: "/register",
     component: function component() {
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Auth_RegisterPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Auth/RegisterPage.vue */ "./resources/js/pages/Auth/RegisterPage.vue"));
     },
@@ -17270,6 +17275,25 @@ var routes = [{
       return __webpack_require__.e(/*! import() */ "resources_js_pages_Dashboard_IndexPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Dashboard/IndexPage.vue */ "./resources/js/pages/Dashboard/IndexPage.vue"));
     },
     meta: {
+      title: "Dashboard",
+      requiresAuth: true
+    }
+  }, {
+    path: "/consumers",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_pages_Consumer_IndexPage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Consumer/IndexPage.vue */ "./resources/js/pages/Consumer/IndexPage.vue"));
+    },
+    meta: {
+      title: "Consumers",
+      requiresAuth: true
+    }
+  }, {
+    path: "/consumers/create",
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ "resources_js_pages_Consumer_CreatePage_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/Consumer/CreatePage.vue */ "./resources/js/pages/Consumer/CreatePage.vue"));
+    },
+    meta: {
+      title: "Consumers",
       requiresAuth: true
     }
   }]
@@ -17312,13 +17336,18 @@ function someAction( /* context */
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   isAuthenticated: () => (/* binding */ isAuthenticated),
-/* harmony export */   stateUser: () => (/* binding */ stateUser)
+/* harmony export */   stateUser: () => (/* binding */ stateUser),
+/* harmony export */   token: () => (/* binding */ token)
 /* harmony export */ });
 /* harmony import */ var quasar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! quasar */ "./node_modules/quasar/dist/quasar.esm.prod.js");
 
 function isAuthenticated(state) {
   state.token = quasar__WEBPACK_IMPORTED_MODULE_0__.SessionStorage.getItem('token');
   return !!state.token;
+}
+function token(state) {
+  state.token = quasar__WEBPACK_IMPORTED_MODULE_0__.SessionStorage.getItem('token');
+  return state.token;
 }
 function stateUser(state) {
   return state.user;
@@ -45835,6 +45864,18 @@ function useRoute() {
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -45865,7 +45906,7 @@ function useRoute() {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_layouts_BlankLayout_vue":1,"resources_js_pages_Auth_LoginPage_vue":1,"resources_js_pages_Auth_RegisterPage_vue":1,"resources_js_layouts_MainLayout_vue":1,"resources_js_pages_Dashboard_IndexPage_vue":1,"resources_js_pages_ErrorNotFound_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_layouts_BlankLayout_vue":1,"resources_js_pages_Auth_LoginPage_vue":1,"resources_js_pages_Auth_RegisterPage_vue":1,"resources_js_layouts_MainLayout_vue":1,"resources_js_pages_Dashboard_IndexPage_vue":1,"resources_js_pages_Consumer_IndexPage_vue":1,"resources_js_pages_Consumer_CreatePage_vue":1,"resources_js_pages_ErrorNotFound_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

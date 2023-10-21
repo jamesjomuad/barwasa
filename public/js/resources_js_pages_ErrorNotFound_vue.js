@@ -53,7 +53,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     color: "white",
     "text-color": "blue",
     unelevated: "",
-    to: "/",
+    to: "/dashboard",
     label: "Go Home",
     "no-caps": ""
   })])]);

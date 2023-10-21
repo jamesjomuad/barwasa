@@ -2,11 +2,14 @@
     <q-layout view="lHh Lpr lff">
         <q-header elevated class="text-white" :class="{'bg-dark':$q.dark.isActive}">
             <q-toolbar>
-                <q-toolbar-title>
+                <q-toolbar-title>{{ $route.meta?.title }} </q-toolbar-title>
+                <!-- <q-toolbar-title>
                     <q-avatar>
                         <img src="/images/logo.png" />
                     </q-avatar>
-                </q-toolbar-title>
+                </q-toolbar-title> -->
+
+                <q-space />
 
                 <q-toggle
                     icon-color="dark"
@@ -23,7 +26,7 @@
                 <q-btn round flat icon="account_circle">
                     <q-menu auto-close :offset="[110, 0]">
                         <q-toolbar class="bg-secondary text-white">
-                            <q-toolbar-title class="text-subtitle2">Barwasa</q-toolbar-title>
+                            <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
                             <q-item clickable @click.prevent="onLogout">
@@ -35,16 +38,17 @@
             </q-toolbar>
         </q-header>
 
+        <!-- @mouseover="miniState = false"
+        @mouseout="miniState = true" -->
         <q-drawer
-            :dark="$q.dark.isActive"
-            v-model="drawer"
+            bordered
             show-if-above
+            v-model="drawer"
+            :style="!miniState?'margin-top: 170px;':''"
+            :dark="$q.dark.isActive"
             :mini="miniState"
-            @mouseover="miniState = false"
-            @mouseout="miniState = true"
             :width="200"
             :breakpoint="500"
-            bordered
             :class="[{'bg-white': !$q.dark.isActive}]"
         >
             <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
@@ -53,7 +57,7 @@
                     <q-separator />
 
                     <q-item-label header>Customers</q-item-label>
-                    <menu-item label="Users" icon="people" to="/customers"/>
+                    <menu-item label="Consumers" icon="people" to="/consumers"/>
                     <!-- <menu-item label="Roles" icon="security" to="/system/roles"/> -->
                     <!-- <menu-item label="Logs" icon="list_alt" to="/system/logs"/> -->
                     <q-separator />
@@ -65,6 +69,15 @@
                     <q-separator />
                 </q-list>
             </q-scroll-area>
+            <div v-show="!miniState" class="absolute-top bg-accent" style="height: 170px">
+                <div class="absolute-bottom bg-transparent q-pa-md">
+                    <q-avatar size="90px" class="q-mb-sm">
+                        <img src="/images/logo.png">
+                    </q-avatar>
+                    <div class="text-weight-bold">Razvan Stoenescu</div>
+                    <div>@rstoenescu</div>
+                </div>
+            </div>
         </q-drawer>
 
         <q-page-container class="bg-grey-3">
@@ -76,16 +89,17 @@
 <script setup>
 import { ref } from 'vue'
 import { useStore } from "vuex"
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import menuItem from "../components/MenuItem";
 
 
+const $route = useRoute();
 const $router = useRouter();
 const $store = useStore();
 const leftDrawerOpen = ref(false)
 const isDark = ref(true)
 const drawer = ref(false)
-const miniState = ref(true)
+const miniState = ref(false)
 
 function toggleLeftDrawer () {
     leftDrawerOpen.value = !leftDrawerOpen.value

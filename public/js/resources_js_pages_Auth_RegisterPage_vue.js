@@ -61,7 +61,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               _context.prev = 0;
               _context.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post("http://barwasa.test/api/auth/register", $user);
+              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post("/api/auth/register", $user);
             case 3:
               _yield$axios$post = _context.sent;
               data = _yield$axios$post.data;

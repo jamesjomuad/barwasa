@@ -39,7 +39,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     });
     var isPwd = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(true);
     var ui = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({
-      btnLoginLoading: false
+      btnLoginLoading: false,
+      isInvalid: false
     });
     function onLogin(_x) {
       return _onLogin.apply(this, arguments);
@@ -50,30 +51,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
+              ui.isInvalid = false;
               ui.btnLoginLoading = true;
-              _context.prev = 1;
-              _context.next = 4;
+              _context.prev = 2;
+              _context.next = 5;
               return axios__WEBPACK_IMPORTED_MODULE_4__["default"].post("/api/auth/login", $user);
-            case 4:
+            case 5:
               _yield$axios$post = _context.sent;
               data = _yield$axios$post.data;
               if (data.status) {
                 $store.commit('auth/setToken', data.token);
                 $router.push("/dashboard");
               }
-              _context.next = 12;
+              _context.next = 14;
               break;
-            case 9:
-              _context.prev = 9;
-              _context.t0 = _context["catch"](1);
-              console.log(_context.t0);
-            case 12:
+            case 10:
+              _context.prev = 10;
+              _context.t0 = _context["catch"](2);
+              ui.isInvalid = true;
+              $q.notify({
+                message: _context.t0.response.data.message,
+                color: "negative"
+              });
+            case 14:
               ui.btnLoginLoading = false;
-            case 13:
+            case 15:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[1, 9]]);
+        }, _callee, null, [[2, 10]]);
       }));
       return _onLogin.apply(this, arguments);
     }
@@ -152,99 +158,110 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "flex flex-center bg-secondary"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-        "class": "row",
-        onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.onLogin, ["prevent"])
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card, {
-        bordered: "",
-        "class": "q-pa-lg shadow-1 animate__animated animate__zoomIn animate__delay-2s",
-        style: {
-          "min-width": "450px"
-        }
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, {
+        appear: "",
+        "enter-active-class": "animate__animated animate__zoomIn animate__delay-2s"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, null, {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+            "class": "row",
+            onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.onLogin, ["prevent"])
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card, {
+            bordered: "",
+            "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["q-pa-lg shadow-1 animate__animated", {
+              'animate__shakeX': $setup.ui.isInvalid
+            }]),
+            style: {
+              "min-width": "450px"
+            }
+          }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_2];
-            }),
-            _: 1 /* STABLE */
-          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, null, {
-            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_form, {
-                "class": "q-gutter-md"
-              }, {
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, null, {
                 "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
-                    square: "",
-                    filled: "",
-                    clearable: "",
-                    modelValue: $setup.$user.email,
-                    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-                      return $setup.$user.email = $event;
-                    }),
-                    label: "Email",
-                    rules: [function (val) {
-                      return !!val || 'Field is required';
-                    }]
-                  }, null, 8 /* PROPS */, ["modelValue", "rules"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
-                    square: "",
-                    filled: "",
-                    modelValue: $setup.$user.password,
-                    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-                      return $setup.$user.password = $event;
-                    }),
-                    label: "Password",
-                    rules: [function (val) {
-                      return !!val || 'Field is required';
-                    }],
-                    type: $setup.isPwd ? 'password' : 'text'
+                  return [_hoisted_2];
+                }),
+                _: 1 /* STABLE */
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, null, {
+                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_form, {
+                    "class": "q-gutter-md"
                   }, {
-                    append: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_icon, {
-                        name: $setup.isPwd ? 'visibility_off' : 'visibility',
-                        "class": "cursor-pointer",
-                        onClick: _cache[1] || (_cache[1] = function ($event) {
-                          return $setup.isPwd = !$setup.isPwd;
-                        })
-                      }, null, 8 /* PROPS */, ["name"])];
+                    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
+                        square: "",
+                        filled: "",
+                        clearable: "",
+                        modelValue: $setup.$user.email,
+                        "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+                          return $setup.$user.email = $event;
+                        }),
+                        label: "Email",
+                        rules: [function (val) {
+                          return !!val || 'Field is required';
+                        }]
+                      }, null, 8 /* PROPS */, ["modelValue", "rules"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_input, {
+                        square: "",
+                        filled: "",
+                        modelValue: $setup.$user.password,
+                        "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+                          return $setup.$user.password = $event;
+                        }),
+                        label: "Password",
+                        rules: [function (val) {
+                          return !!val || 'Field is required';
+                        }],
+                        type: $setup.isPwd ? 'password' : 'text'
+                      }, {
+                        append: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_icon, {
+                            name: $setup.isPwd ? 'visibility_off' : 'visibility',
+                            "class": "cursor-pointer",
+                            onClick: _cache[1] || (_cache[1] = function ($event) {
+                              return $setup.isPwd = !$setup.isPwd;
+                            })
+                          }, null, 8 /* PROPS */, ["name"])];
+                        }),
+                        _: 1 /* STABLE */
+                      }, 8 /* PROPS */, ["modelValue", "rules", "type"])];
                     }),
                     _: 1 /* STABLE */
-                  }, 8 /* PROPS */, ["modelValue", "rules", "type"])];
+                  })];
+                }),
+
+                _: 1 /* STABLE */
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_actions, {
+                "class": "q-px-md"
+              }, {
+                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                  return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
+                    unelevated: "",
+                    color: "accent",
+                    size: "lg",
+                    "class": "full-width q-mb-md",
+                    label: "Login",
+                    type: "submit",
+                    loading: $setup.ui.btnLoginLoading,
+                    disable: $setup.ui.btnLoginLoading
+                  }, null, 8 /* PROPS */, ["loading", "disable"])];
+                }),
+                _: 1 /* STABLE */
+              }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, {
+                "class": "text-center q-pa-none"
+              }, {
+                "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+                  return [_hoisted_3];
                 }),
                 _: 1 /* STABLE */
               })];
             }),
 
             _: 1 /* STABLE */
-          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_actions, {
-            "class": "q-px-md"
-          }, {
-            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_btn, {
-                unelevated: "",
-                color: "accent",
-                size: "lg",
-                "class": "full-width",
-                label: "Login",
-                type: "submit",
-                loading: $setup.ui.btnLoginLoading,
-                disable: $setup.ui.btnLoginLoading
-              }, null, 8 /* PROPS */, ["loading", "disable"])];
-            }),
-            _: 1 /* STABLE */
-          }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_q_card_section, {
-            "class": "text-center q-pa-none"
-          }, {
-            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-              return [_hoisted_3];
-            }),
-            _: 1 /* STABLE */
-          })];
+          }, 8 /* PROPS */, ["class"])], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_1)];
         }),
-
         _: 1 /* STABLE */
-      })], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_1)];
+      })];
     }),
+
     _: 1 /* STABLE */
   });
 }

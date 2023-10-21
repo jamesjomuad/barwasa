@@ -131,7 +131,7 @@ const validation = reactive({
 async function onRegister() {
   try {
     const { data } = await axios.post(
-      "http://barwasa.test/api/auth/register",
+      "/api/auth/register",
       $user
     );
     if (data.status) {

@@ -1,13 +1,49 @@
 <template>
-  <q-page padding class="bg-grey-2">
-    Adipisicing enim incididunt officia ipsum cupidatat ipsum. Irure aute laborum Lorem elit reprehenderit minim adipisicing ea eiusmod non do veniam esse voluptate. Eu aliqua consequat excepteur incididunt amet incididunt laborum dolor reprehenderit aliqua.
-
-    Ea non aliqua cupidatat minim nostrud ex aliqua laboris. Qui veniam exercitation sint consequat enim laborum aliqua aliqua. Lorem eu nostrud labore nostrud adipisicing esse. Anim occaecat ea dolor enim. Aliquip mollit reprehenderit quis reprehenderit id. Magna ad laborum consectetur sunt sit commodo aute enim reprehenderit occaecat. Velit laboris do labore dolore commodo sint.
-
-    Est id cupidatat anim consequat aute commodo do aliquip est cillum. Nostrud consectetur adipisicing ex occaecat occaecat nisi Lorem. Sint aliqua ut mollit duis non velit magna tempor cillum sunt.
-
-    Occaecat aliqua occaecat excepteur id ipsum fugiat qui adipisicing pariatur consequat exercitation enim. Pariatur sunt commodo proident ut exercitation culpa est adipisicing proident magna excepteur consequat ex. Sint esse excepteur laboris fugiat. Proident deserunt nostrud mollit ea quis.
-
-    Fugiat deserunt velit sunt adipisicing incididunt proident eu enim. Sunt sint mollit proident cillum qui deserunt sint. Consectetur eiusmod eu amet ea laboris eu. Proident eiusmod officia Lorem veniam. Minim minim qui aute aliqua commodo exercitation nulla fugiat sint deserunt. Consectetur exercitation elit exercitation adipisicing nisi consectetur amet in consectetur.
-  </q-page>
+    <q-page padding class="bg-grey-2">
+            <div class="row q-mb-lg q-col-gutter-md">
+                <!-- Bookings Daily -->
+                <div class="col-xs-12 col-sm-6 col-md-6">
+                    <q-card flat bordered class="radius-8" style="min-height:400px;">
+                        <q-card-section>
+                            <apexcharts
+                                height="350"
+                                type="bar"
+                                :options="chart.options"
+                                :series="chart.series"
+                            ></apexcharts>
+                        </q-card-section>
+                        <q-inner-loading :showing="loading"/>
+                    </q-card>
+                </div>
+            </div>
+    </q-page>
 </template>
+
+
+<script setup>
+import { ref, reactive } from "vue";
+// import axios from "axios";
+import apexcharts from "vue3-apexcharts";
+import _ from 'lodash'
+
+
+
+const loading = ref(false)
+const chart = reactive({
+    options: {
+        chart: {
+            id: "vuechart-example",
+        },
+        xaxis: {
+            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        },
+    },
+    series: [
+        {
+            name: "series-1",
+            data: [30, 40, 35, 50, 49, 60, 70, 91],
+        },
+    ],
+})
+
+</script>

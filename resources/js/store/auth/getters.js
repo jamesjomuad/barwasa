@@ -5,6 +5,12 @@ export function isAuthenticated(state){
     return !!state.token
 }
 
+export function token(state){
+    state.token = SessionStorage.getItem('token')
+    return state.token
+}
+
 export function stateUser(state){
     return state.user
 }
+

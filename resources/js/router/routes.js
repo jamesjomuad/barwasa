@@ -17,7 +17,7 @@ const routes = [
             },
             {
                 name: "Register",
-                path: "register",
+                path: "/register",
                 component: () => import("../pages/Auth/RegisterPage.vue"),
                 beforeEnter: (to, from) => {
                     if(store.getters['auth/isAuthenticated']){
@@ -36,6 +36,23 @@ const routes = [
                 path: "",
                 component: () => import("../pages/Dashboard/IndexPage.vue"),
                 meta: {
+                    title: "Dashboard",
+                    requiresAuth: true
+                }
+            },
+            {
+                path: "/consumers",
+                component: () => import("../pages/Consumer/IndexPage.vue"),
+                meta: {
+                    title: "Consumers",
+                    requiresAuth: true
+                }
+            },
+            {
+                path: "/consumers/create",
+                component: () => import("../pages/Consumer/CreatePage.vue"),
+                meta: {
+                    title: "Consumers",
                     requiresAuth: true
                 }
             }
