@@ -1,10 +1,7 @@
 <template>
-  <q-page class="flex flex-center bg-secondary">
-    <transition
-        appear
-        enter-active-class="animate__animated animate__zoomIn animate__delay-2s"
-    >
-        <form class="row" @submit.prevent="onLogin">
+  <q-page class="bg-secondary flex flex-center" :class="{'xs':$q.screen.xs}">
+    <transition appear enter-active-class="animate__animated animate__zoomIn animate__delay-2s">
+        <form @submit.prevent="onLogin">
             <q-card
                 bordered
                 class="q-pa-lg shadow-1 animate__animated"
@@ -15,12 +12,8 @@
                 <img
                     alt="Quasar logo"
                     src="/images/logo.png"
-                    style="
-                    width: 150px;
-                    margin: 0 auto;
-                    display: block;
-                    margin-top: -100px;
-                    "
+                    style=" width: 150px; margin: 0 auto; display: block; margin-top: -100px; "
+                    class="logo"
                 />
                 </q-card-section>
                 <q-card-section>
@@ -73,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
 import { useStore } from "vuex"
 import { useRouter } from 'vue-router'
@@ -89,6 +82,10 @@ const ui = reactive({
     isInvalid: false
 })
 
+
+onMounted(()=>{
+    console.log($q.screen.xs)
+})
 
 async function onLogin(params) {
     ui.isInvalid = false
@@ -111,3 +108,9 @@ async function onLogin(params) {
     ui.btnLoginLoading = false
 }
 </script>
+
+
+<style>
+.xs .logo{margin: 0 auto!important;}
+.xs .q-card{min-width: 100%!important;}
+</style>

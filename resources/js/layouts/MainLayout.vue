@@ -2,7 +2,8 @@
     <q-layout view="lHh Lpr lff">
         <q-header elevated class="text-white" :class="{'bg-dark':$q.dark.isActive}">
             <q-toolbar>
-                <q-toolbar-title>{{ $route.meta?.title }} </q-toolbar-title>
+                <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+                <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>
                 <!-- <q-toolbar-title>
                     <q-avatar>
                         <img src="/images/logo.png" />
@@ -96,17 +97,12 @@ import menuItem from "../components/MenuItem";
 const $route = useRoute();
 const $router = useRouter();
 const $store = useStore();
-const leftDrawerOpen = ref(false)
-const isDark = ref(true)
 const drawer = ref(false)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
 
 
 
-function toggleLeftDrawer () {
-    leftDrawerOpen.value = !leftDrawerOpen.value
-}
 
 function onLogout(){
     console.log('logout')
