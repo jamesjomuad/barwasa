@@ -1,3 +1,4 @@
+<!-- eslint-disable brace-style -->
 <template>
   <q-page
     padding
@@ -125,7 +126,30 @@
             </div>
           </q-card-section>
           <q-separator />
+          <q-card-section>
+            <div class="row q-col-gutter-md">
+              <q-input
+                v-model="$form.meter_id"
+                dense
+                outlined
+                label="Meter ID"
+                lazy-rules
+                class="col-12"
+                readonly
+              >
+              </q-input>
+            </div>
+          </q-card-section>
+          <q-separator />
           <q-card-actions align="right">
+            <q-btn
+              color="negative"
+              @click="onRemove"
+              :disable="ui.loading"
+              :loading="ui.loading"
+            >
+              Remove
+            </q-btn>
             <q-btn
               color="primary"
               type="submit"
@@ -167,6 +191,8 @@ const $form = ref({
 onMounted(async ()=>{
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
 
+    console.log(data)
+
     $form.value = {...$form, ...data}
 })
 
@@ -181,7 +207,8 @@ async function onUpdate(){
                 message: `${data.data.first_name} ${data.data.last_name} updated successfully!`
             })
         }
-    }catch(error){
+    }
+catch(error){
         console.log(error)
         $q.notify({
             type: 'negative',
@@ -189,6 +216,37 @@ async function onUpdate(){
         })
     }
     ui.loading = false
+}
+
+function onRemove(){
+    $q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to procceed?',
+        cancel: true,
+        persistent: true
+    }).onOk(async () => {
+        ui.loading = true
+        try{
+            const { data } = await axios.post(`/api/consumers/${$route.params.id}`, {
+                _method: 'delete'
+            })
+            if(data){
+                $router.push('/consumers')
+                $q.notify({
+                    type: 'positive',
+                    message: `${$form.value.first_name} ${$form.value.last_name} remove successfully!`
+                })
+            }
+        } catch(error){
+            console.log(error)
+            $q.notify({
+                type: 'negative',
+                message: "Error!"
+            })
+        }
+        ui.loading = false
+    })
+
 }
 
 </script>

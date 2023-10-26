@@ -40,6 +40,8 @@ const routes = [
                     requiresAuth: true
                 }
             },
+
+            // Consumers
             {
                 path: "/consumers",
                 component: () => import("../pages/Consumer/IndexPage.vue"),
@@ -60,7 +62,17 @@ const routes = [
                 path: "/consumers/:id",
                 component: () => import("../pages/Consumer/UpdatePage.vue"),
                 meta: {
-                    title: "New Consumer",
+                    title: "Update Consumer",
+                    requiresAuth: true
+                }
+            },
+
+            // Consumptions
+            {
+                path: "/consumptions",
+                component: () => import("../pages/Consumption/IndexPage.vue"),
+                meta: {
+                    title: "Consumptions",
                     requiresAuth: true
                 }
             }

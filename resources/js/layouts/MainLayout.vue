@@ -58,15 +58,13 @@
                     <q-separator />
 
                     <q-item-label header>Customers</q-item-label>
+                    <menu-item label="Billing" icon="receipt" to="/billing"/>
                     <menu-item label="Consumers" icon="people" to="/consumers"/>
-                    <!-- <menu-item label="Roles" icon="security" to="/system/roles"/> -->
-                    <!-- <menu-item label="Logs" icon="list_alt" to="/system/logs"/> -->
+                    <menu-item label="Consumptions" icon="water_drop" to="/consumptions"/>
                     <q-separator />
 
                     <q-item-label header>System</q-item-label>
                     <menu-item label="Users" icon="people" to="/system/users"/>
-                    <!-- <menu-item label="Roles" icon="security" to="/system/roles"/> -->
-                    <!-- <menu-item label="Logs" icon="list_alt" to="/system/logs"/> -->
                     <q-separator />
                 </q-list>
             </q-scroll-area>
