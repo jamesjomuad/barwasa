@@ -238,7 +238,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/consumers`, params)
+        const { data } = await axios.get(`/api/consumers`, {params})
 
         table.pagination.rowsNumber = data.total;
 

@@ -27,8 +27,8 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Control
 
     # Consumers
     Route::resource('consumers', 'ConsumerController');
+
 });
 
-Route::get('/test', function(Illuminate\Http\Request $request){
-    dd($request);
-});
+# Consumptions
+Route::resource('activity', 'App\Http\Controllers\Api\ConsumptionController');
