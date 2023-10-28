@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWaterActivity extends Migration
+class CreateCustomerConsumption extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateWaterActivity extends Migration
      */
     public function up()
     {
-        Schema::create('water_activity', function (Blueprint $table) {
+        Schema::create('customer_consumption', function (Blueprint $table) {
             $table->id();
             $table->string('meter_id')->nullable();
             $table->float('volume', 10, 2);

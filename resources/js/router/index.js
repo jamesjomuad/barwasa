@@ -19,7 +19,8 @@ export default route(function (/* { store, ssrContext } */) {
             return;
         }
         next("/login");
-    } else {
+    }
+    else {
         next();
     }
   })

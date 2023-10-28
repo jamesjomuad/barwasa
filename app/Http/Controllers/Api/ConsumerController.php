@@ -63,7 +63,8 @@ class ConsumerController extends Controller
 
         $data = $request->all();
 
-        $data['meter_id'] = Str::uuid()->toString();
+        // Generate Meter ID
+        $data['meter_id'] = uniqid();       //Str::uuid()->toString();
 
         $consumer = Model::create($data);
 

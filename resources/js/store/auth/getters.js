@@ -1,17 +1,17 @@
-import {  SessionStorage } from 'quasar'
+import {  LocalStorage } from 'quasar'
 
 export function isAuthenticated(state){
-    state.token = SessionStorage.getItem('token')
+    state.token = LocalStorage.getItem('token')
     return !!state.token
 }
 
 export function token(state){
-    state.token = SessionStorage.getItem('token')
+    state.token = LocalStorage.getItem('token')
     return state.token
 }
 
 export function user(state){
-    state.user = SessionStorage.getItem('user')
+    state.user = LocalStorage.getItem('user')
     return state.user
 }
 
