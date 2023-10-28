@@ -30,6 +30,9 @@
                             <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
+                            <q-item>
+                                <q-item-section>{{store.getters['auth/token']}}</q-item-section>
+                            </q-item>
                             <q-item clickable @click.prevent="onLogout">
                                 <q-item-section>Logout</q-item-section>
                             </q-item>
@@ -90,6 +93,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
 import menuItem from "../components/MenuItem";
+import  store  from '../store/index'
+
 
 
 const $route = useRoute();

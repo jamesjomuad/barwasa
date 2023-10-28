@@ -16,7 +16,6 @@
                   :filter="table.filter"
                   :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                   @request="onRequest"
-                  @row-click="onRow"
               >
                   <template v-slot:top-right="props">
                       <q-input
@@ -111,7 +110,7 @@
               </q-table>
           </div>
     </q-page>
-  </template>
+</template>
 
 
   <script setup>
@@ -135,39 +134,32 @@
           },
           {
               label: "First name",
-              name: "first_name",
-              field: "first_name",
+              name: "consumer",
+              field: "consumer",
+              format: (val, row) => val.first_name,
+              sortable: false,
+          },
+          {
+              label: "Last name",
+              name: "consumer",
+              field: "consumer",
+              format: (val, row) => val.last_name,
+              sortable: false,
+          },
+          {
+              label: "Volume",
+              name: "volume",
+              field: "volume",
               sortable: true,
           },
           {
-              label: "Last Name",
-              name: "last_name",
-              field: "last_name",
-              sortable: true,
+              label: "Unit",
+              name: "unit",
+              field: "unit",
+              sortable: false,
           },
           {
-              label: "Email",
-              name: "email",
-              field: "email",
-              sortable: true,
-          },
-          {
-              label: "Phone",
-              name: "phone",
-              field: "phone",
-              sortable: true,
-          },
-          {
-              label: "Active",
-              name: "is_active",
-              field: "is_active",
-              sortable: true,
-              format: (val, row) => {
-                  return !!val
-              },
-          },
-          {
-              label: 'Created',
+              label: 'Created At',
               field: 'created_at',
               sortable: true,
               align: 'left',
@@ -175,15 +167,6 @@
                   // return moment(val).format("MMMM DD, YYYY (h:mm a)");
                   return moment(val).format("YYYY-MM-d");
               },
-          },
-          {
-              label: 'Updated',
-              field: 'updated_at',
-              sortable: true,
-              align: 'left',
-              format: (val, row) => {
-                  return moment(val).format("YYYY-MM-d");
-              }
           }
       ],
       pagination: {
@@ -224,7 +207,7 @@
       };
 
       try {
-          const { data } = await axios.get(`/api/consumers`, params)
+          const { data } = await axios.get(`/api/consumption`, params)
 
           table.pagination.rowsNumber = data.total;
 

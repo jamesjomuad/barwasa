@@ -19,7 +19,7 @@ class ConsumptionController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::query();
+        $query = Model::with('consumer');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
@@ -49,7 +49,7 @@ class ConsumptionController extends Controller
     public function store(Request $request)
     {
         try {
-            $consumer = Consumer::where('meter_id', $request->input('id'))->first();
+            $consumer = Consumer::where('meter_id', $request->input('id'))->firstOrFail();
 
             $consumption = new Consumption([
                 'volume'    => $request->input('volume'),

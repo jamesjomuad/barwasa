@@ -29,7 +29,7 @@ class Consumption extends Model
     }
 
 
-    public function customer()
+    public function consumer()
     {
         return $this->belongsTo(Consumer::class, 'consumer_id');
     }
