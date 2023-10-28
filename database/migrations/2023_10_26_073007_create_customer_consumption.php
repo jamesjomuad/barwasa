@@ -15,9 +15,10 @@ class CreateCustomerConsumption extends Migration
     {
         Schema::create('customer_consumption', function (Blueprint $table) {
             $table->id();
-            $table->string('meter_id')->nullable();
+            $table->unsignedBigInteger('consumer_id');
             $table->float('volume', 10, 2);
-            $table->string('note')->nullable();
+            $table->string('unit')->nullable();
+            // $table->float('cost_per_unit')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateCustomerConsumption extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('water_activity');
+        Schema::dropIfExists('customer_consumption');
     }
 }

@@ -11,6 +11,10 @@ class Consumer extends Model
 
     protected $table = "customer";
 
+    // protected $primaryKey = 'meter_id';
+
+    // protected $keyType = 'string';
+
     protected $fillable = [
         "age",
         "billing_address",
@@ -22,4 +26,9 @@ class Consumer extends Model
         "phone_2",
         "phone",
     ];
+
+    public function consumptions()
+    {
+        return $this->hasMany(Consumption::class, 'consumer_id');
+    }
 }

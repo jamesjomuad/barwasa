@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Activity as Model;
+use App\Models\Consumer;
+use App\Models\Consumption as Model;
+use App\Models\Consumption;
 
 class ConsumptionController extends Controller
 {
@@ -46,10 +48,20 @@ class ConsumptionController extends Controller
      */
     public function store(Request $request)
     {
-        return Model::create([
-            'meter_id'  => $request->input('id'),
-            'volume'    => $request->input('volume'),
-        ]);
+        try {
+            $consumer = Consumer::where('meter_id', $request->input('id'))->first();
+
+            $consumption = new Consumption([
+                'volume'    => $request->input('volume'),
+            ]);
+
+            return $consumer
+                ->consumptions()
+                ->save($consumption)
+            ;
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Post not found'], 404);
+        }
     }
 
     /**
