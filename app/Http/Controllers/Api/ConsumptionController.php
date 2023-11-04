@@ -60,7 +60,7 @@ class ConsumptionController extends Controller
                 ->save($consumption)
             ;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['error' => 'Post not found'], 404);
+            return response()->json(['error' => 'ID not found'], 404);
         }
     }
 

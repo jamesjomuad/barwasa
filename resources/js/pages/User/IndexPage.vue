@@ -7,7 +7,7 @@
                   flat
                   bordered
                   binary-state-sort
-                  title="Consumptions"
+                  title="Users"
                   row-key="id"
                   v-model:pagination="table.pagination"
                   :rows="table.rows"
@@ -34,10 +34,10 @@
                       <q-btn
                           round
                           size="md"
-                          color="info"
+                          color="primary"
                           class="q-ml-sm"
-                          icon="refresh"
-                          @click="onRefresh">
+                          icon="add"
+                          to="/consumers/create">
                       </q-btn>
                       <q-btn
                           flat
@@ -113,136 +113,128 @@
 </template>
 
 
-<script setup>
-import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+  <script setup>
+  import { ref, reactive, onMounted } from "vue";
+  import { useQuasar } from 'quasar'
+  import { useRouter } from 'vue-router'
 
 
-const $router = useRouter();
-const $q = useQuasar()
-const table = reactive({
-    loading: false,
-    filter: '',
-    rows: [],
-    columns: [
-        {
-            label: "#",
-            name: "id",
-            field: "id",
-            sortable: true,
-        },
-        {
-            label: "First name",
-            name: "consumer",
-            field: "consumer",
-            format: (val, row) => val.first_name,
-            sortable: false,
-        },
-        {
-            label: "Last name",
-            name: "consumer",
-            field: "consumer",
-            format: (val, row) => val.last_name,
-            sortable: false,
-        },
-        {
-            label: "Volume",
-            name: "volume",
-            field: "volume",
-            sortable: true,
-        },
-        {
-            label: "Unit",
-            name: "unit",
-            field: "unit",
-            sortable: false,
-        },
-        {
-            label: 'Created At',
-            field: 'created_at',
-            sortable: true,
-            align: 'left',
-            format: (val, row) => {
-                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
-                return moment(val).format("YYYY-MM-d");
-            },
-        }
-    ],
-    pagination: {
-        sortBy: "id",
-        descending: true,
-        page: 1,
-        rowsPerPage: 10,
-        rowsNumber: 10,
-    }
-})
+  const $router = useRouter();
+  const $q = useQuasar()
+  const table = reactive({
+      loading: false,
+      filter: '',
+      rows: [],
+      columns: [
+          {
+              label: "#",
+              name: "id",
+              field: "id",
+              sortable: true,
+          },
+          {
+              label: "First name",
+              name: "consumer",
+              field: "consumer",
+              format: (val, row) => val.first_name,
+              sortable: false,
+          },
+          {
+              label: "Last name",
+              name: "consumer",
+              field: "consumer",
+              format: (val, row) => val.last_name,
+              sortable: false,
+          },
+          {
+              label: "Volume",
+              name: "volume",
+              field: "volume",
+              sortable: true,
+          },
+          {
+              label: "Unit",
+              name: "unit",
+              field: "unit",
+              sortable: false,
+          },
+          {
+              label: 'Created At',
+              field: 'created_at',
+              sortable: true,
+              align: 'left',
+              format: (val, row) => {
+                  // return moment(val).format("MMMM DD, YYYY (h:mm a)");
+                  return moment(val).format("YYYY-MM-d");
+              },
+          }
+      ],
+      pagination: {
+          sortBy: "id",
+          descending: true,
+          page: 1,
+          rowsPerPage: 10,
+          rowsNumber: 10,
+      }
+  })
 
 
-onMounted(() => {
-    onRequest({
-        pagination: table.pagination,
-        filter: null,
-    });
-});
+  onMounted(() => {
+      onRequest({
+          pagination: table.pagination,
+          filter: null,
+      });
+  });
 
 
   //  Server Request
-async function onRequest(props) {
-    const { page, rowsPerPage, sortBy, descending } = props.pagination;
-    const filter = props.filter; //  Search bar value
+  async function onRequest(props) {
+      const { page, rowsPerPage, sortBy, descending } = props.pagination;
+      const filter = props.filter; //  Search bar value
 
-    table.loading = true;
+      table.loading = true;
 
-    // get all rows if "All" (0) is selected
-    const fetchCount = (rowsPerPage === 0) ? table.pagination.rowsNumber : rowsPerPage;
+      // get all rows if "All" (0) is selected
+      const fetchCount = (rowsPerPage === 0) ? table.pagination.rowsNumber : rowsPerPage;
 
-    const params = {
-        filter: filter,
-        limit: fetchCount == 1 ? -1 : fetchCount,
-        sortBy: sortBy,
-        orderBy: descending ? "desc" : "asc",
-        page: page,
-        per_page: rowsPerPage
-    };
+      const params = {
+          filter: filter,
+          limit: fetchCount == 1 ? -1 : fetchCount,
+          sortBy: sortBy,
+          orderBy: descending ? "desc" : "asc",
+          page: page,
+          per_page: rowsPerPage
+      };
 
-    try {
-        const { data } = await axios.get(`/api/consumption`, {params})
+      try {
+          const { data } = await axios.get(`/api/consumption`, params)
 
-        table.pagination.rowsNumber = data.total;
+          table.pagination.rowsNumber = data.total;
 
-        // clear out existing data and add new
-        table.rows.splice(0, table.rows.length, ...data.data);
+          // clear out existing data and add new
+          table.rows.splice(0, table.rows.length, ...data.data);
 
-        // don't forget to update local pagination object
-        table.pagination.page = page;
-        table.pagination.rowsPerPage = rowsPerPage;
-        table.pagination.sortBy = sortBy;
-        table.pagination.descending = descending;
-    } catch (error) {
-        $q.notify({
-            color: 'negative',
-            message: error.response.statusText,
-            icon: 'report_problem',
-            position: 'bottom-right'
-        })
-        table.loading = false;
-    }
+          // don't forget to update local pagination object
+          table.pagination.page = page;
+          table.pagination.rowsPerPage = rowsPerPage;
+          table.pagination.sortBy = sortBy;
+          table.pagination.descending = descending;
+      } catch (error) {
+          $q.notify({
+              color: 'negative',
+              message: error.response.statusText,
+              icon: 'report_problem',
+              position: 'bottom-right'
+          })
+          table.loading = false;
+      }
 
-    // ...and turn of loading indicator
-    table.loading = false;
-}
+      // ...and turn of loading indicator
+      table.loading = false;
+  }
 
   function onRow(evt, row, index){
       $router.push(`/consumers/${row.id}`)
   }
-
-  function onRefresh(){
-    onRequest({
-        pagination: table.pagination,
-        filter: null,
-    });
-}
-
 
   </script>

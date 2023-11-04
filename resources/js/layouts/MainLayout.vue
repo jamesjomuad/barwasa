@@ -30,7 +30,7 @@
                             <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
-                            <q-item>
+                            <q-item clickable @click.prevent="copyToClipboard(store.getters['auth/token'])">
                                 <q-item-section>{{store.getters['auth/token']}}</q-item-section>
                             </q-item>
                             <q-item clickable @click.prevent="onLogout">
@@ -68,6 +68,7 @@
 
                     <q-item-label header>System</q-item-label>
                     <menu-item label="Users" icon="people" to="/system/users"/>
+                    <menu-item label="Manual" icon="description" to="/system/manual"/>
                     <q-separator />
                 </q-list>
             </q-scroll-area>
@@ -92,8 +93,9 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
-import menuItem from "../components/MenuItem";
+import { copyToClipboard } from 'quasar'
 import  store  from '../store/index'
+import menuItem from "../components/MenuItem";
 
 
 

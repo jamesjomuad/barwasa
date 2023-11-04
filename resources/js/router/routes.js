@@ -75,6 +75,17 @@ const routes = [
                     title: "Consumptions",
                     requiresAuth: true
                 }
+            },
+
+
+            // Users
+            {
+                path: "/system/users",
+                component: () => import("../pages/User/IndexPage.vue"),
+                meta: {
+                    title: "Consumptions",
+                    requiresAuth: true
+                }
             }
         ]
     },

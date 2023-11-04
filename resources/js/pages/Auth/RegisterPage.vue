@@ -92,6 +92,8 @@
               class="full-width"
               label="Register"
               type="submit"
+              :disable="ui.loading"
+              :loading="ui.loading"
             />
           </div>
         </q-form>
@@ -107,46 +109,55 @@
 
 <script setup>
 import axios from "axios";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { useQuasar } from "quasar";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+
+
 
 const $q = useQuasar();
-const $user = reactive({
-  first_name: null,
-  last_name: null,
-  address: null,
-  name: null,
-  password: null,
-  passwordConfirm: null,
-});
+const $router = useRouter();
 const isPwd = ref(true);
+const ui = reactive({
+    loading: false
+})
+const $user = reactive({
+    first_name: null,
+    last_name: null,
+    address: null,
+    name: null,
+    password: null,
+    passwordConfirm: null,
+});
 const validation = reactive({
-  confirmPassword: computed(() => [
-    (val) => val == $user.password || "Password not matched!",
-  ]),
-  required: computed(() => [(val) => !!val || "Field is required"]),
+    confirmPassword: computed(() => [
+        (val) => val == $user.password || "Password not matched!",
+    ]),
+    required: computed(() => [(val) => !!val || "Field is required"]),
 });
 
+
 async function onRegister() {
-  try {
-    const { data } = await axios.post(
-      "/api/auth/register",
-      $user
-    );
-    if (data.status) {
-      $q.notify({
-        message: data.message,
-        color: "primary",
-      });
-    } else {
-      $q.notify({
-        message: data.message,
-        color: "negative",
-      });
+    ui.loading = true
+    try {
+        const { data } = await axios.post("/api/auth/register",$user);
+        if (data.status) {
+            $q.notify({
+                message: data.message,
+                color: "primary",
+            })
+            $router.push('/login')
+        }
+        else {
+            $q.notify({
+                message: data.message,
+                color: "negative",
+            })
+        }
     }
-  } catch (error) {
-    console.log(error);
-  }
+    catch (error) {
+        console.log(error);
+    }
+    ui.loading = false
 }
 </script>

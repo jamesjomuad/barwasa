@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Control
         return $request->user();
     });
 
+    # Users
+    Route::resource('users', 'UserController');
+
     # Consumers
     Route::resource('consumers', 'ConsumerController');
     Route::resource('consumption', 'ConsumptionController');
