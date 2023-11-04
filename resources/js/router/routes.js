@@ -81,12 +81,26 @@ const routes = [
             // Users
             {
                 path: "/system/users",
-                component: () => import("../pages/User/IndexPage.vue"),
-                meta: {
-                    title: "Consumptions",
-                    requiresAuth: true
-                }
-            }
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/User/IndexPage.vue"),
+                        meta: {
+                            title: "Users",
+                            requiresAuth: true
+                        },
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/User/UpdatePage.vue"),
+                        meta: {
+                            title: "Update User",
+                            requiresAuth: true
+                        }
+                    }
+                ]
+            },
+
         ]
     },
 

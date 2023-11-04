@@ -89,10 +89,6 @@ const ui = reactive({
 })
 
 
-onMounted(()=>{
-    console.log($q.screen.xs)
-})
-
 async function onLogin(params) {
     ui.isInvalid = false
     ui.btnLoginLoading = true

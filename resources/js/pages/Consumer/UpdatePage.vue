@@ -190,9 +190,6 @@ const $form = ref({
 
 onMounted(async ()=>{
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
-
-    console.log(data)
-
     $form.value = {...$form, ...data}
 })
 
