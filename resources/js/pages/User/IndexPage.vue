@@ -33,14 +33,6 @@
                             </template>
                         </q-input>
                         <q-btn
-                            round
-                            size="md"
-                            color="primary"
-                            class="q-ml-sm"
-                            icon="add"
-                            to="/consumers/create">
-                        </q-btn>
-                        <q-btn
                             flat
                             round
                             size="md"

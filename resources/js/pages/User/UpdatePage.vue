@@ -12,145 +12,122 @@
                     <!-- Fields -->
                     <q-card-section>
                         <div class="row q-col-gutter-md">
-                        <q-input
-                            v-model="$form.first_name"
-                            dense
-                            outlined
-                            label="First Name"
-                            name="first_name"
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="account_circle" />
-                            </template>
-                        </q-input>
+                            <q-input
+                                v-model="$form.first_name"
+                                dense
+                                outlined
+                                label="First Name"
+                                name="first_name"
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="account_circle" />
+                                </template>
+                            </q-input>
 
-                        <q-input
-                            v-model="$form.last_name"
-                            dense
-                            outlined
-                            lazy-rules
-                            label="Last name *"
-                            name="last_name"
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="account_circle" />
-                            </template>
-                        </q-input>
+                            <q-input
+                                v-model="$form.last_name"
+                                dense
+                                outlined
+                                lazy-rules
+                                label="Last name *"
+                                name="last_name"
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="account_circle" />
+                                </template>
+                            </q-input>
 
-                        <q-input
-                            v-model="$form.phone"
-                            dense
-                            outlined
-                            label="Phone"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="phone" />
-                            </template>
-                        </q-input>
+                            <q-input
+                                v-model="$form.phone"
+                                dense
+                                outlined
+                                label="Phone"
+                                lazy-rules
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="phone" />
+                                </template>
+                            </q-input>
 
-                        <q-input
-                            v-model="$form.phone_2"
-                            dense
-                            outlined
-                            label="Work Phone"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="phone" />
-                            </template>
-                        </q-input>
+                            <q-input
+                                v-model="$form.phone_2"
+                                dense
+                                outlined
+                                label="Work Phone"
+                                lazy-rules
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="phone" />
+                                </template>
+                            </q-input>
 
-                        <q-input
-                            v-model="$form.email"
-                            dense
-                            outlined
-                            label="Email"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="email" />
-                            </template>
-                        </q-input>
+                            <q-input
+                                v-model="$form.email"
+                                dense
+                                outlined
+                                label="Email"
+                                lazy-rules
+                                class="col-6"
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="email" />
+                                </template>
+                            </q-input>
 
-                        <q-input
-                            v-model="$form.dob"
-                            dense
-                            outlined
-                            label="Date of Birth"
-                            lazy-rules
-                            class="col-6"
-                            readonly
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="calendar_month" />
-                            </template>
-                            <template v-slot:after>
-                                <q-btn icon="event" round color="primary">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="$form.dob">
-                                        <div class="row items-center justify-end q-gutter-sm">
-                                            <q-btn label="Cancel" color="primary" flat v-close-popup />
-                                            <q-btn label="OK" color="primary" flat v-close-popup />
-                                        </div>
-                                        </q-date>
-                                    </q-popup-proxy>
-                                </q-btn>
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.billing_address"
-                            dense
-                            outlined
-                            label="Address"
-                            lazy-rules
-                            class="col-12"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="home" />
-                            </template>
-                        </q-input>
-                        </div>
-                    </q-card-section>
-                    <q-separator />
-                    <q-card-section>
-                        <div class="row q-col-gutter-md">
-                        <q-input
-                            v-model="$form.meter_id"
-                            dense
-                            outlined
-                            label="Meter ID"
-                            lazy-rules
-                            class="col-12"
-                            readonly
-                        >
-                        </q-input>
+                            <q-input
+                                v-model="$form.dob"
+                                dense
+                                outlined
+                                label="Date of Birth"
+                                lazy-rules
+                                class="col-6"
+                                readonly
+                            >
+                                <template v-slot:prepend>
+                                <q-icon name="calendar_month" />
+                                </template>
+                                <template v-slot:after>
+                                    <q-btn icon="event" round color="primary">
+                                        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                                            <q-date v-model="$form.dob">
+                                            <div class="row items-center justify-end q-gutter-sm">
+                                                <q-btn label="Cancel" color="primary" flat v-close-popup />
+                                                <q-btn label="OK" color="primary" flat v-close-popup />
+                                            </div>
+                                            </q-date>
+                                        </q-popup-proxy>
+                                    </q-btn>
+                                </template>
+                            </q-input>
                         </div>
                     </q-card-section>
                     <q-separator />
                     <q-card-actions align="right">
                         <q-btn
-                        color="negative"
-                        @click="onRemove"
-                        :disable="ui.loading"
-                        :loading="ui.loading"
-                        >
-                        Remove
-                        </q-btn>
+                            color="negative"
+                            label="Remove"
+                            @click="onRemove"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        />
+                        <!-- <q-btn
+                            color="warning"
+                            label="Change Password"
+                            @click="onChangePassword"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        /> -->
                         <q-btn
-                        color="primary"
-                        type="submit"
-                        :disable="ui.loading"
-                        :loading="ui.loading"
-                        >
-                        Update
-                        </q-btn>
+                            color="primary"
+                            type="submit"
+                            label="Update"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        />
                     </q-card-actions>
                 </q-card>
             </div>
@@ -184,8 +161,6 @@ const $form = ref({
 onMounted(async ()=>{
     const { data } = await axios.get(`/api/users/${$route.params.id}`)
     $form.value = {...$form, ...data}
-
-    console.log($form.value)
 })
 
 
@@ -239,6 +214,20 @@ function onRemove(){
         ui.loading = false
     })
 
+}
+
+function onChangePassword(){
+    $q.dialog({
+        title: 'Change password',
+        prompt: {
+            model: '',
+            type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+    }).onOk(async (data) => {
+        console.log('>>>> OK, received', data)
+    })
 }
 
 </script>

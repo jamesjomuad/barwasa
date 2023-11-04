@@ -44,27 +44,32 @@ const routes = [
             // Consumers
             {
                 path: "/consumers",
-                component: () => import("../pages/Consumer/IndexPage.vue"),
-                meta: {
-                    title: "Consumers",
-                    requiresAuth: true
-                }
-            },
-            {
-                path: "/consumers/create",
-                component: () => import("../pages/Consumer/CreatePage.vue"),
-                meta: {
-                    title: "New Consumer",
-                    requiresAuth: true
-                }
-            },
-            {
-                path: "/consumers/:id",
-                component: () => import("../pages/Consumer/UpdatePage.vue"),
-                meta: {
-                    title: "Update Consumer",
-                    requiresAuth: true
-                }
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/Consumer/IndexPage.vue"),
+                        meta: {
+                            title: "Consumers",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Consumer/CreatePage.vue"),
+                        meta: {
+                            title: "New Consumer",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Consumer/UpdatePage.vue"),
+                        meta: {
+                            title: "Update Consumer",
+                            requiresAuth: true
+                        }
+                    },
+                ]
             },
 
             // Consumptions
