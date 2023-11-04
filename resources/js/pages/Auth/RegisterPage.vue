@@ -87,7 +87,7 @@
             <div class="col-12">
                 <q-btn
                 unelevated
-                color="light-green-7"
+                color="accent"
                 size="lg"
                 class="full-width"
                 label="Register"
