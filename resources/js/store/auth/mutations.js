@@ -7,6 +7,7 @@ export function setUser(state, user){
 
 export function setToken(state, token){
     LocalStorage.set('token', token)
+    window.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     state.token = token
 }
 
