@@ -1,6 +1,7 @@
 import store from '../store'
 
 const routes = [
+    // BlankLayout
     {
         path: "/auth",
         component: () => import("../layouts/BlankLayout.vue"),
@@ -28,15 +29,27 @@ const routes = [
         ]
     },
 
+    // MainLayout
     {
         path: "/",
         component: () => import("../layouts/MainLayout.vue"),
         children: [
+            // Dashboard
             {
                 path: "",
                 component: () => import("../pages/Dashboard/IndexPage.vue"),
                 meta: {
                     title: "Dashboard",
+                    requiresAuth: true
+                }
+            },
+
+            // Billing
+            {
+                path: "/billing",
+                component: () => import("../pages/Billing/IndexPage.vue"),
+                meta: {
+                    title: "Billing",
                     requiresAuth: true
                 }
             },
@@ -81,7 +94,6 @@ const routes = [
                     requiresAuth: true
                 }
             },
-
 
             // Users
             {
