@@ -30,8 +30,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Control
 
     # Consumers
     Route::resource('consumers', 'ConsumerController');
-    Route::resource('consumption', 'ConsumptionController');
 });
+
+Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController');
 
 # Consumptions
 Route::resource('activity', 'App\Http\Controllers\Api\ConsumptionController');
