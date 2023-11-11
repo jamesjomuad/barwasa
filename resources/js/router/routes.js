@@ -9,9 +9,9 @@ const routes = [
                 name: "Login",
                 path: "/login",
                 component: () => import("../pages/Auth/LoginPage.vue"),
-                beforeEnter: (to, from) => {
+                beforeEnter: (to, from, next) => {
                     if(store.getters['auth/isAuthenticated']){
-                        return false;
+                        return next('/');
                     }
                 }
             },

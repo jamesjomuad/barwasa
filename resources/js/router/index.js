@@ -5,25 +5,25 @@ import store from '../store'
 
 
 export default route(function (/* { store, ssrContext } */) {
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes,
+    const Router = createRouter({
+        scrollBehavior: () => ({ left: 0, top: 0 }),
+        routes,
 
-    history: createWebHashHistory()
-  })
+        history: createWebHashHistory()
+    })
 
-  Router.beforeEach((to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (store.getters['auth/isAuthenticated']) {
-            next();
-            return;
+    Router.beforeEach((to, from, next) => {
+        if (to.matched.some((record) => record.meta.requiresAuth)) {
+            if (store.getters['auth/isAuthenticated']) {
+                next();
+                return;
+            }
+            next("/login");
         }
-        next("/login");
-    }
-    else {
-        next();
-    }
-  })
+        else {
+            next();
+        }
+    })
 
-  return Router
+    return Router
 })
