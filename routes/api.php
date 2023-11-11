@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/register', 'App\Http\Controllers\Api\AuthController@createUser');
 Route::post('/auth/login', 'App\Http\Controllers\Api\AuthController@loginUser');
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
+// Requires api token to access routes
 Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Controllers\Api'], function(){
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -32,7 +29,7 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Control
     Route::resource('consumers', 'ConsumerController');
 });
 
+// Consumptions endpoint; Ardiuno endpoint
 Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController');
 
-# Consumptions
-Route::resource('activity', 'App\Http\Controllers\Api\ConsumptionController');
+// Route::resource('activity', 'App\Http\Controllers\Api\ConsumptionController');

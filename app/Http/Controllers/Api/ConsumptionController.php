@@ -98,14 +98,4 @@ class ConsumptionController extends Controller
         //
     }
 
-    // public function log(Request $request, $id)
-    // {
-    //     $model = Model::create([
-    //         'meter_id'  => $id,
-    //         'volume'    => $request->input('volume'),
-    //     ]);
-
-    //     return $model;
-    // }
-
 }
