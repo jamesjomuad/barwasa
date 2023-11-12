@@ -1,29 +1,62 @@
-#include <ESP8266WiFi.h>        // Include the Wi-Fi library
+#include "Arduino.h"
 
-const char * ssid = "Dlink"; // The SSID (name) of the Wi-Fi network you want to connect to
-const char * password = "jandavid"; // The password of the Wi-Fi network
+#include "ESP8266WiFi.h"
 
-void setup() {
-    Serial.begin(115200); // Start the Serial communication to send messages to the computer
-    delay(10);
-    Serial.println('\n');
+#include "ESP8266HTTPClient.h"
 
-    WiFi.begin(ssid, password); // Connect to the network
-    Serial.print("Connecting to ");
-    Serial.print(ssid);
-    Serial.println(" ...");
+#include "WiFiClient.h"
 
-    int i = 0;
-    while (WiFi.status() != WL_CONNECTED) { // Wait for the Wi-Fi to connect
-        delay(1000);
-        Serial.print(++i);
-        Serial.print(' ');
+
+// WiFi parameters to be configured
+const char * ssid = "Dlink"; // Write here your router's username
+const char * password = "jandavid"; // Write here your router's passward
+const char * URL = "https://barwsa.tribelink.me/api/consumption";
+
+WiFiClient client;
+HTTPClient http;
+
+void setup(void) {
+    Serial.begin(9600);
+    // Connect to WiFi
+    WiFi.begin(ssid, password);
+
+    // while wifi not connected yet, print '.'
+    // then after it connected, get out of the loop
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
     }
+    //print a new line, then print WiFi connected and the IP address
+    Serial.println("");
+    Serial.println("WiFi connected");
+    // Print the IP address
+    Serial.println(WiFi.localIP());
 
-    Serial.println('\n');
-    Serial.println("Connection established!");
-    Serial.print("IP address:\t");
-    Serial.println(WiFi.localIP()); // Send the IP address of the ESP8266 to the computer
+    http_get();
 }
 
 void loop() {}
+
+void http_get() {
+    if (WiFi.status() == WL_CONNECTED) {
+        String endPoint = "https://barwsa.tribelink.me";
+
+        // Your Domain name with URL path or IP address with path
+        http.begin(client, endPoint.c_str());
+
+        // Specify content-type header
+        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        // Data to send with HTTP POST
+        String httpRequestData = "id=654ed642b1ba9&volume=23";
+
+        // Send HTTP POST request
+        int httpResponseCode = http.POST(httpRequestData);
+
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
+
+        // Free resources
+        http.end();
+    }
+}
