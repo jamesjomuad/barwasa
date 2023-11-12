@@ -11,10 +11,6 @@ class Consumer extends Model
 
     protected $table = "customer";
 
-    // protected $primaryKey = 'meter_id';
-
-    // protected $keyType = 'string';
-
     protected $fillable = [
         "age",
         "billing_address",
@@ -29,6 +25,12 @@ class Consumer extends Model
         "phone",
     ];
 
+    protected $appends = [
+        'total_volume',
+        'total_payable',
+        'consumption_dates'
+    ];
+
     public function consumptions()
     {
         return $this->hasMany(Consumption::class, 'consumer_id');
@@ -38,4 +40,39 @@ class Consumer extends Model
     {
         return $this->hasMany(Bill::class, 'consumer_id');
     }
+
+
+    public function getTotalVolumeAttribute()
+    {
+        if( $this->consumptions->isNotEmpty() ){
+            return $this->consumptions->sum('volume');
+        }
+
+        return 0;
+    }
+
+    public function getTotalPayableAttribute()
+    {
+        if( $this->consumptions->isNotEmpty() ){
+            return $this->consumptions->sum('volume') * 7.5;
+        }
+
+        return 0;
+    }
+
+    public function getConsumptionDatesAttribute()
+    {
+        if( $this->consumptions->isNotEmpty() ){
+            return [
+                'from' => $this->consumptions->pluck('created_at')->min()->format('F d, Y'),
+                'to' => $this->consumptions->pluck('created_at')->max()->format('F d, Y'),
+            ];
+        }
+
+        return [
+            'from' => '',
+            'to' => '',
+        ];
+    }
+
 }

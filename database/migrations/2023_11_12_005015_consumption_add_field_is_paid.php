@@ -13,7 +13,9 @@ class ConsumptionAddFieldIsPaid extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('customer_consumption', function (Blueprint $table) {
+            $table->boolean('is_paid')->default(0)->after('unit');
+        });
     }
 
     /**
@@ -23,6 +25,9 @@ class ConsumptionAddFieldIsPaid extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('customer_consumption', function (Blueprint $table) {
+            $table->dropColumn('is_paid');
+        });
     }
+
 }

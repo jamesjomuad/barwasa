@@ -7,7 +7,6 @@
                 flat
                 bordered
                 binary-state-sort
-                title="Billing"
                 row-key="id"
                 v-model:pagination="table.pagination"
                 :rows="table.rows"
@@ -16,7 +15,6 @@
                 :filter="table.filter"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                 @request="onRequest"
-                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-input
@@ -32,28 +30,14 @@
                             <q-icon name="search" />
                         </template>
                     </q-input>
-                    <!-- <q-btn
-                        round
-                        size="md"
-                        icon="event"
-                        class="q-ml-sm"
-                        color="primary">
-                        <q-menu ref="qDateMenu" anchor="bottom start" self="top left">
-                            <q-date
-                                range
-                                v-model="dateRange.ref"
-                                @range-end="onDateSelect">
-                            </q-date>
-                        </q-menu>
-                    </q-btn> -->
                     <q-btn
-                        round
-                        size="md"
-                        color="primary"
-                        class="q-ml-sm"
-                        icon="add"
-                        to="/consumers/create">
-                    </q-btn>
+                          round
+                          size="md"
+                          color="info"
+                          class="q-ml-sm"
+                          icon="refresh"
+                          @click="onRefresh">
+                      </q-btn>
                     <q-btn
                         flat
                         round
@@ -84,41 +68,11 @@
                 </template>
                 <template #body-cell-action="props">
                     <q-td :props="props">
-                        <div class="row justify-end q-gutter-sm">
-                            <q-btn-dropdown
-                                flat
-                                rounded
-                                color="primary"
-                                dropdown-icon="more_vert"
-                                class="card-action"
-                            >
-                                <q-list>
-                                    <q-item clickable @click="onView(props)">
-                                        <q-item-section>
-                                            <q-item-label>View</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                        <q-item-section>
-                                            <q-item-label>Generate Invoice</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-item-label>Resend Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable @click="mailTo(props.row)">
-                                        <q-item-section>
-                                            <q-item-label>Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-btn-dropdown>
+                        <div class="row justify-start q-gutter-sm">
+                            <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" />
                         </div>
                     </q-td>
                 </template>
-
                 <template v-slot:loading>
                     <q-inner-loading showing color="primary" />
                 </template>
@@ -145,60 +99,52 @@ const table = reactive({
             label: "#",
             name: "id",
             field: "id",
+            align: 'left',
             sortable: true,
         },
         {
             label: "First name",
             name: "first_name",
             field: "first_name",
+            align: 'left',
             sortable: true,
         },
         {
             label: "Last Name",
             name: "last_name",
             field: "last_name",
-            sortable: true,
-        },
-        {
-            label: "Email",
-            name: "email",
-            field: "email",
-            sortable: true,
-        },
-        {
-            label: "Phone",
-            name: "phone",
-            field: "phone",
-            sortable: true,
-        },
-        {
-            label: "Active",
-            name: "is_active",
-            field: "is_active",
-            sortable: true,
-            format: (val, row) => {
-                return !!val
-            },
-        },
-        {
-            label: 'Created',
-            field: 'created_at',
-            sortable: true,
             align: 'left',
-            format: (val, row) => {
-                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
-                return moment(val).format("YYYY-MM-d");
-            },
+            sortable: true,
         },
         {
-            label: 'Updated',
-            field: 'updated_at',
-            sortable: true,
+            label: "Consumptions",
+            name: "consumptions",
+            field: "total_volume",
             align: 'left',
-            format: (val, row) => {
-                return moment(val).format("YYYY-MM-d");
+        },
+        {
+            label: "Date Range",
+            name: "range",
+            field: "consumption_dates",
+            align: 'left',
+            format: (v, row) => {
+                return `${v.from} - ${v.to}`
             }
-        }
+        },
+        {
+            label: "Payable",
+            name: "payable",
+            field: "total_payable",
+            align: 'left',
+            format: (v) => {
+                return `₱${v}`
+            }
+        },
+        {
+            label: "Action",
+            name: "action",
+            align: 'left'
+        },
     ],
     pagination: {
         sortBy: "id",
@@ -238,7 +184,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/consumers`, {params})
+        const { data } = await axios.get(`/api/billing`, {params})
 
         table.pagination.rowsNumber = data.total;
 
@@ -264,8 +210,11 @@ async function onRequest(props) {
     table.loading = false;
 }
 
-function onRow(evt, row, index){
-    $router.push(`/consumers/${row.id}`)
+function onRefresh(){
+    onRequest({
+        pagination: table.pagination,
+        filter: null,
+    });
 }
 
 </script>

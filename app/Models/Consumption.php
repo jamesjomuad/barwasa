@@ -14,7 +14,7 @@ class Consumption extends Model
     protected $fillable = [
         'meter_id',
         'volume',
-        'note',
+        'is_paid',
     ];
 
 

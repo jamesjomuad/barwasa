@@ -15,9 +15,10 @@ class BillingController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Consumer::with(['consumptions' => function(){
-
+        $query = Consumer::with(['consumptions' => function($q){
+            $q->where('is_paid', 0);
         }]);
+
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {

@@ -237,7 +237,7 @@ function onRow(evt, row, index){
     $router.push(`/consumers/${row.id}`)
 }
 
-  function onRefresh(){
+function onRefresh(){
     onRequest({
         pagination: table.pagination,
         filter: null,
