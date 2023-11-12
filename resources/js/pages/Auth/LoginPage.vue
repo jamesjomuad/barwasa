@@ -88,7 +88,11 @@ const ui = reactive({
     showForm: true
 })
 
-
+onMounted(()=>{
+    if($store.getters['auth/isAuthenticated']){
+        $router.push(`/`)
+    }
+})
 
 async function onLogin(params) {
     ui.isInvalid = false
