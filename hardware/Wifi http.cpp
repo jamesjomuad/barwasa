@@ -67,19 +67,14 @@ void http_get()
 
 void http_post()
 {
-    String endPoint = "http://httpbin.org/post";
-
     // Your Domain name with URL path or IP address with path
-    http.begin(client, endPoint.c_str());
+    http.begin(client, "http://httpbin.org/post".c_str());
 
     // Specify content-type header
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Data to send with HTTP POST
-    String httpRequestData = "id=654ed642b1ba9&volume=23";
-
     // Send HTTP POST request
-    int httpResponseCode = http.POST(httpRequestData);
+    int httpResponseCode = http.POST("id=654ed642b1ba9&volume=23");
 
     if (httpResponseCode>0) {
         Serial.print("HTTP Response code: ");
