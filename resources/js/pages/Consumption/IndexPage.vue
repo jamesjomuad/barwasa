@@ -233,9 +233,9 @@ async function onRequest(props) {
     table.loading = false;
 }
 
-  function onRow(evt, row, index){
-      $router.push(`/consumers/${row.id}`)
-  }
+function onRow(evt, row, index){
+    $router.push(`/consumers/${row.id}`)
+}
 
   function onRefresh(){
     onRequest({
@@ -245,4 +245,4 @@ async function onRequest(props) {
 }
 
 
-  </script>
+</script>

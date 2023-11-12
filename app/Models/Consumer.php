@@ -20,6 +20,8 @@ class Consumer extends Model
         "billing_address",
         "dob",
         "email",
+        "barangay",
+        "sitio",
         "first_name",
         "last_name",
         "meter_id",
@@ -30,5 +32,10 @@ class Consumer extends Model
     public function consumptions()
     {
         return $this->hasMany(Consumption::class, 'consumer_id');
+    }
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class, 'consumer_id');
     }
 }

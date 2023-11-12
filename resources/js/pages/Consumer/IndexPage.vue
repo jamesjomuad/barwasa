@@ -1,130 +1,130 @@
 <template>
-  <q-page padding class="bg-grey-2">
-        <!-- Table -->
-        <div class="col-auto">
-            <q-table
-                :dark="$q.dark.isActive"
-                flat
-                bordered
-                binary-state-sort
-                title="Consumers"
-                row-key="id"
-                v-model:pagination="table.pagination"
-                :rows="table.rows"
-                :columns="table.columns"
-                :loading="table.loading"
-                :filter="table.filter"
-                :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
-                @request="onRequest"
-                @row-click="onRow"
-            >
-                <template v-slot:top-right="props">
-                    <q-input
-                        outlined
-                        dense
-                        ref="search"
-                        debounce="300"
-                        v-model="table.filter"
-                        placeholder="Search"
-                        class="q-ma-xs"
-                    >
-                        <template v-slot:append>
-                            <q-icon name="search" />
-                        </template>
-                    </q-input>
-                    <!-- <q-btn
-                        round
-                        size="md"
-                        icon="event"
-                        class="q-ml-sm"
-                        color="primary">
-                        <q-menu ref="qDateMenu" anchor="bottom start" self="top left">
-                            <q-date
-                                range
-                                v-model="dateRange.ref"
-                                @range-end="onDateSelect">
-                            </q-date>
-                        </q-menu>
-                    </q-btn> -->
-                    <q-btn
-                        round
-                        size="md"
-                        color="primary"
-                        class="q-ml-sm"
-                        icon="add"
-                        to="/consumers/create">
-                    </q-btn>
-                    <q-btn
-                        flat
-                        round
-                        size="md"
-                        class="q-ml-sm"
-                        color="grey-5"
-                        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                        @click="props.toggleFullscreen"
-                    >
-                        <q-tooltip>Toggle Fullscreen</q-tooltip>
-                    </q-btn>
-                </template>
-                <template #body-cell-invoice="props">
-                    <q-td :props="props">
-                        <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
-                            <q-icon v-else name="warning" color="negative"/>
-                        </div>
-                    </q-td>
-                </template>
-                <template #body-cell-payment="props">
-                    <q-td :props="props">
-                        <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
-                            <q-icon v-else name="warning" color="negative"/>
-                        </div>
-                    </q-td>
-                </template>
-                <template #body-cell-action="props">
-                    <q-td :props="props">
-                        <div class="row justify-end q-gutter-sm">
-                            <q-btn-dropdown
-                                flat
-                                rounded
-                                color="primary"
-                                dropdown-icon="more_vert"
-                                class="card-action"
-                            >
-                                <q-list>
-                                    <q-item clickable @click="onView(props)">
-                                        <q-item-section>
-                                            <q-item-label>View</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                        <q-item-section>
-                                            <q-item-label>Generate Invoice</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-item-label>Resend Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable @click="mailTo(props.row)">
-                                        <q-item-section>
-                                            <q-item-label>Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-btn-dropdown>
-                        </div>
-                    </q-td>
-                </template>
+    <q-page padding class="bg-grey-2">
+            <!-- Table -->
+            <div class="col-auto">
+                <q-table
+                    :dark="$q.dark.isActive"
+                    flat
+                    bordered
+                    binary-state-sort
+                    title="Consumers"
+                    row-key="id"
+                    v-model:pagination="table.pagination"
+                    :rows="table.rows"
+                    :columns="table.columns"
+                    :loading="table.loading"
+                    :filter="table.filter"
+                    :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
+                    @request="onRequest"
+                    @row-click="onRow"
+                >
+                    <template v-slot:top-right="props">
+                        <q-input
+                            outlined
+                            dense
+                            ref="search"
+                            debounce="300"
+                            v-model="table.filter"
+                            placeholder="Search"
+                            class="q-ma-xs"
+                        >
+                            <template v-slot:append>
+                                <q-icon name="search" />
+                            </template>
+                        </q-input>
+                        <!-- <q-btn
+                            round
+                            size="md"
+                            icon="event"
+                            class="q-ml-sm"
+                            color="primary">
+                            <q-menu ref="qDateMenu" anchor="bottom start" self="top left">
+                                <q-date
+                                    range
+                                    v-model="dateRange.ref"
+                                    @range-end="onDateSelect">
+                                </q-date>
+                            </q-menu>
+                        </q-btn> -->
+                        <q-btn
+                            round
+                            size="md"
+                            color="primary"
+                            class="q-ml-sm"
+                            icon="add"
+                            to="/consumers/create">
+                        </q-btn>
+                        <q-btn
+                            flat
+                            round
+                            size="md"
+                            class="q-ml-sm"
+                            color="grey-5"
+                            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                            @click="props.toggleFullscreen"
+                        >
+                            <q-tooltip>Toggle Fullscreen</q-tooltip>
+                        </q-btn>
+                    </template>
+                    <template #body-cell-invoice="props">
+                        <q-td :props="props">
+                            <div class="q-gutter-md" style="font-size: 2em">
+                                <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
+                                <q-icon v-else name="warning" color="negative"/>
+                            </div>
+                        </q-td>
+                    </template>
+                    <template #body-cell-payment="props">
+                        <q-td :props="props">
+                            <div class="q-gutter-md" style="font-size: 2em">
+                                <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
+                                <q-icon v-else name="warning" color="negative"/>
+                            </div>
+                        </q-td>
+                    </template>
+                    <template #body-cell-action="props">
+                        <q-td :props="props">
+                            <div class="row justify-end q-gutter-sm">
+                                <q-btn-dropdown
+                                    flat
+                                    rounded
+                                    color="primary"
+                                    dropdown-icon="more_vert"
+                                    class="card-action"
+                                >
+                                    <q-list>
+                                        <q-item clickable @click="onView(props)">
+                                            <q-item-section>
+                                                <q-item-label>View</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                        <q-item v-if="!props.row.xero_invoice_id" clickable>
+                                            <q-item-section>
+                                                <q-item-label>Generate Invoice</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                        <q-item clickable>
+                                            <q-item-section>
+                                                <q-item-label>Resend Email</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                        <q-item clickable @click="mailTo(props.row)">
+                                            <q-item-section>
+                                                <q-item-label>Email</q-item-label>
+                                            </q-item-section>
+                                        </q-item>
+                                    </q-list>
+                                </q-btn-dropdown>
+                            </div>
+                        </q-td>
+                    </template>
 
-                <template v-slot:loading>
-                    <q-inner-loading showing color="primary" />
-                </template>
-            </q-table>
-        </div>
-  </q-page>
+                    <template v-slot:loading>
+                        <q-inner-loading showing color="primary" />
+                    </template>
+                </q-table>
+            </div>
+    </q-page>
 </template>
 
 
@@ -171,15 +171,15 @@ const table = reactive({
             field: "phone",
             sortable: true,
         },
-        {
-            label: "Active",
-            name: "is_active",
-            field: "is_active",
-            sortable: true,
-            format: (val, row) => {
-                return !!val
-            },
-        },
+        // {
+        //     label: "Active",
+        //     name: "is_active",
+        //     field: "is_active",
+        //     sortable: true,
+        //     format: (val, row) => {
+        //         return !!val
+        //     },
+        // },
         {
             label: 'Created',
             field: 'created_at',

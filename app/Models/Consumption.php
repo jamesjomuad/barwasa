@@ -24,7 +24,7 @@ class Consumption extends Model
 
         static::saving(function ($model) {
             // Set a field value before saving
-            $model->unit = $model->unit ?? 'gallon';
+            $model->unit = $model->unit ?? 'Cubic Feet';
         });
     }
 

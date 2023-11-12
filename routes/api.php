@@ -27,6 +27,9 @@ Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Control
 
     # Consumers
     Route::resource('consumers', 'ConsumerController');
+
+    # Billing
+    Route::resource('billing', 'BillingController');
 });
 
 // Consumptions endpoint; Ardiuno endpoint
