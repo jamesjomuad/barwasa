@@ -5,7 +5,7 @@
             <q-card>
                 <!-- Title -->
                 <q-card-section class="q-py-sm">
-                    <div class="text-h6">Account</div>
+                    <div class="text-h6">Consumer</div>
                 </q-card-section>
                 <q-card-section>
                     <div class="row q-col-gutter-md">
@@ -56,72 +56,40 @@
             </q-card>
         </div>
 
-        <q-form class="q-mt-md row q-col-gutter-md" @submit="onUpdate">
-            <div class="col-md-12">
-                <q-card>
-                    <!-- Title -->
-                    <q-card-section class="q-py-sm">
-                        <div class="text-h6">Consumptions</div>
-                    </q-card-section>
-                    <!-- Fields -->
-                    <q-card-section>
-                        <div class="row q-col-gutter-md">
-                            <q-input
-                                v-model="$form.first_name"
-                                dense
-                                outlined
-                                label="First Name"
-                                class="col-6"
-                                :rules="[ val => val && val.length > 0 || 'Please type something']"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="account_circle" />
-                                </template>
-                            </q-input>
-
-                            <q-input
-                                v-model="$form.last_name"
-                                dense
-                                outlined
-                                label="Last name *"
-                                lazy-rules
-                                class="col-6"
-                                :rules="[ val => val && val.length > 0 || 'Please type something']"
-                            >
-                                <template v-slot:prepend>
-                                <q-icon name="account_circle" />
-                                </template>
-                            </q-input>
+        <q-form class="q-mt-md col-auto" @submit="onUpdate">
+            <q-table
+                :dark="$q.dark.isActive"
+                flat
+                bordered
+                binary-state-sort
+                title="Consumptions"
+                row-key="id"
+                v-model:pagination="table.pagination"
+                :rows="table.rows"
+                :columns="table.columns"
+                :loading="table.loading"
+                :filter="table.filter"
+                :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
+            >
+                <template v-slot:top-right="props">
+                    <q-btn
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="add"
+                        @click="onAddVolume">
+                    </q-btn>
+                </template>
+                <template #body-cell-is_paid="props">
+                    <q-td :props="props">
+                        <div class="q-gutter-md" style="font-size: 2em">
+                            <q-icon v-if="props.row.is_paid" name="check_circle" color="positive"/>
+                            <q-icon v-else name="warning" color="negative"/>
                         </div>
-                    </q-card-section>
-                    <q-separator />
-                    <q-card-section>
-                        <div class="row q-col-gutter-md">
-                        <q-input
-                            v-model="$form.meter_id"
-                            dense
-                            outlined
-                            label="Meter ID"
-                            lazy-rules
-                            class="col-12"
-                            readonly
-                        >
-                        </q-input>
-                        </div>
-                    </q-card-section>
-                    <q-separator />
-                    <q-card-actions align="right">
-                        <q-btn
-                        color="primary"
-                        type="submit"
-                        :disable="ui.loading"
-                        :loading="ui.loading"
-                        >
-                        Update
-                        </q-btn>
-                    </q-card-actions>
-                </q-card>
-            </div>
+                    </q-td>
+                </template>
+            </q-table>
         </q-form>
     </q-page>
 </template>
@@ -147,11 +115,65 @@ const $form = ref({
     phone: "",
     phone_2: "",
 });
+const table = reactive({
+    loading: false,
+    filter: '',
+    rows: [],
+    columns: [
+        {
+            label: "#",
+            name: "id",
+            field: "id",
+            align: 'left',
+            sortable: true,
+        },
+        {
+            label: "Volume",
+            name: "volume",
+            field: "volume",
+            align: 'left',
+            sortable: true,
+        },
+        {
+            label: "Is Paid",
+            name: "is_paid",
+            field: "is_paid",
+            align: 'left',
+        },
+        {
+            label: 'Created',
+            field: 'created_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
+                return moment(val).format("YYYY-MM-DD");
+            },
+        },
+        {
+            label: 'Updated',
+            field: 'updated_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                return moment(val).format("YYYY-MM-DD");
+            }
+        }
+    ],
+    pagination: {
+        sortBy: "id",
+        descending: true,
+        page: 1,
+        rowsPerPage: 10,
+        rowsNumber: 10,
+    }
+})
 
 
 onMounted(async ()=>{
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
     $form.value = {...$form, ...data}
+    table.rows = data.consumptions
 })
 
 
@@ -176,5 +198,22 @@ catch(error){
     ui.loading = false
 }
 
+function onAddVolume(){
+    $q.dialog({
+        title: 'Add Volume',
+        prompt: {
+            model: '',
+            type: 'number'
+        },
+        cancel: true,
+        persistent: true
+    }).onOk(async (volume) => {
+        const { data } = await axios.post(`/api/consumption`, {
+            id: $form.value.meter_id,
+            volume: volume
+        })
+        table.rows.push(data)
+    })
+}
 
 </script>

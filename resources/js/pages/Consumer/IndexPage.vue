@@ -187,7 +187,7 @@ const table = reactive({
             align: 'left',
             format: (val, row) => {
                 // return moment(val).format("MMMM DD, YYYY (h:mm a)");
-                return moment(val).format("YYYY-MM-d");
+                return moment(val).format("YYYY-MM-DD");
             },
         },
         {
@@ -196,7 +196,7 @@ const table = reactive({
             sortable: true,
             align: 'left',
             format: (val, row) => {
-                return moment(val).format("YYYY-MM-d");
+                return moment(val).format("YYYY-MM-DD");
             }
         }
     ],
