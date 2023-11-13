@@ -68,8 +68,9 @@
                 </template>
                 <template #body-cell-action="props">
                     <q-td :props="props">
-                        <div class="row justify-start q-gutter-sm">
+                        <div class="row justify-end q-gutter-sm">
                             <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" />
+                            <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row.id"/>
                         </div>
                     </q-td>
                 </template>
@@ -143,7 +144,7 @@ const table = reactive({
         {
             label: "Action",
             name: "action",
-            align: 'left'
+            align: 'right'
         },
     ],
     pagination: {

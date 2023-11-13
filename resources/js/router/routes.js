@@ -42,11 +42,24 @@ const routes = [
             // Billing
             {
                 path: "/billing",
-                component: () => import("../pages/Billing/IndexPage.vue"),
-                meta: {
-                    title: "Billing",
-                    requiresAuth: true
-                }
+                children:[
+                    {
+                        path: "",
+                        component: () => import("../pages/Billing/IndexPage.vue"),
+                        meta: {
+                            title: "Billing",
+                            requiresAuth: true
+                        },
+                    },
+                    {
+                        path: ":id",
+                        component: () => import("../pages/Billing/UpdatePage.vue"),
+                        meta: {
+                            title: "Billing Update",
+                            requiresAuth: true
+                        },
+                    },
+                ]
             },
 
             // Consumers
