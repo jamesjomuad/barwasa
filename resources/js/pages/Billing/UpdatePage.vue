@@ -89,6 +89,13 @@
                         </div>
                     </q-td>
                 </template>
+                <template #body-cell-action="props">
+                    <q-td :props="props">
+                        <div class="row justify-end q-gutter-sm">
+                            <q-btn round icon="delete" size="sm" color="primary" @click="onTrash(props)"/>
+                        </div>
+                    </q-td>
+                </template>
             </q-table>
         </q-form>
     </q-page>
@@ -158,7 +165,12 @@ const table = reactive({
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
             }
-        }
+        },
+        {
+            label: "Action",
+            name: "action",
+            align: 'right'
+        },
     ],
     pagination: {
         sortBy: "id",
@@ -208,11 +220,30 @@ function onAddVolume(){
         cancel: true,
         persistent: true
     }).onOk(async (volume) => {
+        table.loading = true
         const { data } = await axios.post(`/api/consumption`, {
             id: $form.value.meter_id,
             volume: volume
         })
         table.rows.push(data)
+        table.loading = false
+    })
+}
+
+function onTrash(props){
+    $q.dialog({
+        title: 'Confirm',
+        message: 'Would you like to trash volume?',
+        cancel: true,
+        persistent: true
+    }).onOk(async () => {
+        table.loading = true
+        const { data } = await axios.post(`/api/consumption/${props.row.id}`, {
+            _method: 'delete',
+        })
+        if(data)
+        table.rows.splice(props.rowIndex, 1);
+        table.loading = false
     })
 }
 

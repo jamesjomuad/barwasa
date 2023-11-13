@@ -95,7 +95,7 @@ class ConsumptionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Model::findOrFail($id)->delete();
     }
 
 }
