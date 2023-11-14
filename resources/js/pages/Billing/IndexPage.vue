@@ -69,7 +69,7 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
-                            <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" />
+                            <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" @click="onPay(props)"/>
                             <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row.id"/>
                         </div>
                     </q-td>
@@ -80,6 +80,8 @@
             </q-table>
         </div>
     </q-page>
+
+    <payment ref="terminal"/>
 </template>
 
 
@@ -87,6 +89,7 @@
 import { ref, reactive, onMounted } from "vue";
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import payment from '../../components/payment.vue'
 
 
 const $router = useRouter();
@@ -155,6 +158,7 @@ const table = reactive({
         rowsNumber: 10,
     }
 })
+const terminal = ref()
 
 
 onMounted(() => {
@@ -216,6 +220,10 @@ function onRefresh(){
         pagination: table.pagination,
         filter: null,
     });
+}
+
+function onPay(props){
+    terminal.value.show(props.row)
 }
 
 </script>
