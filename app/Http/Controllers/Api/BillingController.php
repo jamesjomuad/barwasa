@@ -46,7 +46,16 @@ class BillingController extends Controller
 
     public function show($id)
     {
-        //
+        try {
+            return Consumer::with(['consumptions' => function($q){
+                $q->where('is_paid', 0);
+            }])->findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response([
+                'status' => false,
+                'message' => '404 not found'
+            ], 404);
+        }
     }
 
     public function update(Request $request, $id)
@@ -54,8 +63,8 @@ class BillingController extends Controller
         //
     }
 
-    public function destroy($id)
+    public function destroy($ids)
     {
-        //
+        return Consumption::whereIn('id', explode(',', $ids))->delete();
     }
 }

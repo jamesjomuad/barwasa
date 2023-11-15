@@ -83,7 +83,7 @@ class ConsumerController extends Controller
     public function show($id)
     {
         try {
-            return Model::findorfail($id);
+            return Model::findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([
                 'status' => false,

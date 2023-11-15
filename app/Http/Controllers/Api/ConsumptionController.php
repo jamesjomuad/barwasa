@@ -72,7 +72,14 @@ class ConsumptionController extends Controller
      */
     public function show($id)
     {
-        return Model::findOrFail($id);
+        try {
+            return Model::findOrFail($id);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response([
+                'status' => false,
+                'message' => '404 not found'
+            ], 404);
+        }
     }
 
     /**
@@ -93,9 +100,9 @@ class ConsumptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ids)
     {
-        return Model::findOrFail($id)->delete();
+        return Model::whereIn('id', explode(',', $ids))->delete();
     }
 
 }

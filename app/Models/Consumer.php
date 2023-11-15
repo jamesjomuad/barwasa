@@ -36,12 +36,6 @@ class Consumer extends Model
         return $this->hasMany(Consumption::class, 'consumer_id');
     }
 
-    public function bills()
-    {
-        return $this->hasMany(Bill::class, 'consumer_id');
-    }
-
-
     public function getTotalVolumeAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){

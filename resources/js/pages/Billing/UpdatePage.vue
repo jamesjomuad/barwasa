@@ -64,7 +64,9 @@
                 binary-state-sort
                 title="Consumptions"
                 row-key="id"
+                selection="multiple"
                 v-model:pagination="table.pagination"
+                v-model:selected="table.selected"
                 :rows="table.rows"
                 :columns="table.columns"
                 :loading="table.loading"
@@ -79,6 +81,14 @@
                         class="q-ml-sm"
                         icon="add"
                         @click="onAddVolume">
+                    </q-btn>
+                    <q-btn
+                        round
+                        size="md"
+                        color="warning"
+                        class="q-ml-sm"
+                        icon="delete"
+                        @click="onTrash(table.selected)">
                     </q-btn>
                 </template>
                 <template #body-cell-is_paid="props">
@@ -178,15 +188,20 @@ const table = reactive({
         page: 1,
         rowsPerPage: 10,
         rowsNumber: 10,
-    }
+    },
+    selected: []
 })
 
 
 onMounted(async ()=>{
-    const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
+    fetch();
+})
+
+async function fetch(){
+    const { data } = await axios.get(`/api/billing/${$route.params.id}`)
     $form.value = {...$form, ...data}
     table.rows = data.consumptions
-})
+}
 
 
 async function onUpdate(){
@@ -233,16 +248,16 @@ function onAddVolume(){
 function onTrash(props){
     $q.dialog({
         title: 'Confirm',
-        message: 'Would you like to trash volume?',
+        message: 'Would you like to trash items?',
         cancel: true,
         persistent: true
     }).onOk(async () => {
         table.loading = true
-        const { data } = await axios.post(`/api/consumption/${props.row.id}`, {
+        const { data } = await axios.post(`/api/billing/${_.map(props, o => o.id).join(',')}`, {
             _method: 'delete',
         })
         if(data)
-        table.rows.splice(props.rowIndex, 1);
+        fetch()
         table.loading = false
     })
 }
