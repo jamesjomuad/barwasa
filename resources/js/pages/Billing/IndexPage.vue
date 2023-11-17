@@ -81,7 +81,7 @@
         </div>
     </q-page>
 
-    <payment ref="terminal"/>
+    <payment ref="terminal" @payment:success="onRefresh"/>
 </template>
 
 

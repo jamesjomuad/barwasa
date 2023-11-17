@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Consumer;
 use App\Models\Consumption;
+use App\Models\Invoice;
 
 
 class BillingController extends Controller
@@ -15,10 +16,11 @@ class BillingController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Consumer::with(['consumptions' => function($q){
-            $q->where('is_paid', 0);
-        }]);
+        $query = Consumer::with('consumptions');
 
+        $query->whereHas('consumptions', function($q){
+            $q->where('is_paid', 0);
+        });
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
@@ -41,8 +43,20 @@ class BillingController extends Controller
 
     public function store(Request $request)
     {
+        $consumer = $this->show($request->input('id'));
 
-        return $this->show($request->input('id'));
+        $invoice = new Invoice( $request->all() );
+
+        $invoice->is_paid = 1;
+
+        $consumer
+            ->invoices()
+            ->save($invoice)
+        ;
+
+        Consumption::whereIn('id', $request->input('consumptions'))->update(['is_paid' => 1]);
+
+        return $invoice;
     }
 
     public function show($id)
