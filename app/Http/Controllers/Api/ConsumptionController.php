@@ -52,13 +52,17 @@ class ConsumptionController extends Controller
             $consumer = Consumer::where('meter_id', $request->input('id'))->firstOrFail();
 
             $consumption = new Consumption([
-                'volume'    => $request->input('volume'),
+                'previous' => $request->input('previous'),
+                'current' => $request->input('current'),
+                'volume' => $request->input('volume'),
             ]);
 
-            return $consumer
+            $consumer
                 ->consumptions()
                 ->save($consumption)
             ;
+
+            return $consumption;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'ID not found'], 404);
         }

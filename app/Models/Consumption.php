@@ -13,6 +13,8 @@ class Consumption extends Model
 
     protected $fillable = [
         'meter_id',
+        'previous',
+        'current',
         'volume',
         'is_paid',
     ];
@@ -28,9 +30,9 @@ class Consumption extends Model
         });
     }
 
-
     public function consumer()
     {
         return $this->belongsTo(Consumer::class, 'consumer_id');
     }
+
 }

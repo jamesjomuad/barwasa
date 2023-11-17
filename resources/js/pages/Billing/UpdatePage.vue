@@ -88,8 +88,47 @@
                         color="warning"
                         class="q-ml-sm"
                         icon="delete"
+                        :disabled="_.isEmpty(table.selected)"
                         @click="onTrash(table.selected)">
                     </q-btn>
+                </template>
+                <template #body-cell-previous="props">
+                    <q-td :props="props">
+                        <q-input
+                            dense
+                            outlined
+                            type="number"
+                            v-if="props.row.previousEdit"
+                            v-model="props.row.previous"
+                            @blur="props.row.previousEdit = false"
+                            @keyup.enter="props.row.previousEdit = false"
+                        />
+                        <span
+                            v-else
+                            @click="props.row.previousEdit = true;">
+                            {{ props.row.previous }}
+                        </span>
+                    </q-td>
+                </template>
+                <template #body-cell-current="props">
+                    <q-td :props="props">
+                        <q-input
+                            dense
+                            outlined
+                            type="number"
+                            v-if="props.row.currentEdit"
+                            v-model="props.row.current"
+                            @blur="props.row.currentEdit = false"
+                            @keyup.enter="props.row.currentEdit = false"
+                        />
+                        <span v-else  @click="props.row.currentEdit = true">{{ props.row.current }}</span>
+                    </q-td>
+                </template>
+                <template #body-cell-volume="props">
+                    <q-td :props="props">
+                        <span v-if="!isNaN(props.row.current - props.row.previous)">{{ props.row.current - props.row.previous }}</span>
+                        <span v-else>{{ props.row.volume }}</span>
+                    </q-td>
                 </template>
                 <template #body-cell-is_paid="props">
                     <q-td :props="props">
@@ -102,7 +141,14 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
-                            <q-btn round icon="delete" size="sm" color="primary" @click="onTrash(props)"/>
+                            <q-btn
+                                v-if="!props.row.id"
+                                round
+                                icon="save"
+                                size="sm"
+                                color="primary"
+                                @click="onSaveCell(this, props)"
+                            />
                         </div>
                     </q-td>
                 </template>
@@ -116,6 +162,8 @@
 import { ref, reactive, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import _ from 'lodash'
+import axios from "axios";
 
 
 const $route = useRoute()
@@ -131,6 +179,7 @@ const $form = ref({
     billing_address: "",
     phone: "",
     phone_2: "",
+    meter_id: ""
 });
 const table = reactive({
     loading: false,
@@ -142,14 +191,28 @@ const table = reactive({
             name: "id",
             field: "id",
             align: 'left',
-            sortable: true,
+            sortable: false,
+        },
+        {
+            label: "Previous",
+            name: "previous",
+            field: "previous",
+            align: 'left',
+            sortable: false,
+        },
+        {
+            label: "Current",
+            name: "current",
+            field: "current",
+            align: 'left',
+            sortable: false,
         },
         {
             label: "Volume",
             name: "volume",
             field: "volume",
             align: 'left',
-            sortable: true,
+            sortable: false,
         },
         {
             label: "Is Paid",
@@ -160,7 +223,7 @@ const table = reactive({
         {
             label: 'Created',
             field: 'created_at',
-            sortable: true,
+            sortable: false,
             align: 'left',
             format: (val, row) => {
                 // return moment(val).format("MMMM DD, YYYY (h:mm a)");
@@ -170,7 +233,7 @@ const table = reactive({
         {
             label: 'Updated',
             field: 'updated_at',
-            sortable: true,
+            sortable: false,
             align: 'left',
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
@@ -193,6 +256,7 @@ const table = reactive({
 })
 
 
+
 onMounted(async ()=>{
     fetch();
 })
@@ -202,7 +266,6 @@ async function fetch(){
     $form.value = {...$form, ...data}
     table.rows = data.consumptions
 }
-
 
 async function onUpdate(){
     ui.loading = true
@@ -226,6 +289,17 @@ catch(error){
 }
 
 function onAddVolume(){
+    table.rows.push({
+        previousEdit:true,
+        previousRef: ref(),
+        currentEdit: true,
+        currentRef: ref(),
+        previous: '',
+        current: '',
+    })
+}
+
+function onAddVolumeOld(){
     $q.dialog({
         title: 'Add Volume',
         prompt: {
@@ -246,6 +320,7 @@ function onAddVolume(){
 }
 
 function onTrash(props){
+    console.log(props)
     $q.dialog({
         title: 'Confirm',
         message: 'Would you like to trash items?',
@@ -262,4 +337,19 @@ function onTrash(props){
     })
 }
 
+function onDeleteRow(props){
+    console.log(props)
+    // table.rows.splice(props.rowIndex, 1);
+}
+
+async function onSaveCell(event, props){
+    const { data } = await axios.post(`/api/consumption`, {
+        id: $form.value.meter_id,
+        previous: props.row.previous,
+        current: props.row.current,
+        volume: props.row.current - props.row.previous,
+    })
+
+    table.rows[props.rowIndex] = data
+}
 </script>
