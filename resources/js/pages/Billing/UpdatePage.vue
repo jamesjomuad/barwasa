@@ -126,7 +126,7 @@
                 </template>
                 <template #body-cell-volume="props">
                     <q-td :props="props">
-                        <span v-if="!isNaN(props.row.current - props.row.previous)">{{ props.row.current - props.row.previous }}</span>
+                        <span v-if="!props.row.id">{{ props.row.current - props.row.previous }}</span>
                         <span v-else>{{ props.row.volume }}</span>
                     </q-td>
                 </template>
@@ -258,13 +258,16 @@ const table = reactive({
 
 
 onMounted(async ()=>{
-    fetch();
+    let data = await fetch();
+    $form.value = {...$form, ...data}
+    table.rows = data.consumptions
+    console.log( data )
 })
 
 async function fetch(){
     const { data } = await axios.get(`/api/billing/${$route.params.id}`)
-    $form.value = {...$form, ...data}
-    table.rows = data.consumptions
+    return data
+
 }
 
 async function onUpdate(){

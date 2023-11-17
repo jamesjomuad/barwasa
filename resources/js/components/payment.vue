@@ -7,8 +7,8 @@
                         <h1 class="text-h4 text-weight-bold">Barwsa</h1>
                     </div>
                     <div class="col-5">
-                        <b>Invoice #: 123</b><br />
-                        <b>Created:</b> January 1, 2023<br />
+                        <b>Invoice #: {{ invoice.number }}</b><br />
+                        <b>Date:</b> {{ invoice.date }}<br />
                     </div>
                 </div>
                 <div class="row">
@@ -59,8 +59,8 @@
             </q-card-section>
             <q-separator/>
             <q-card-actions align="right">
-                <q-btn flat label="Close" v-close-popup />
-                <q-btn flat label="Transact" color="primary" v-close-popup />
+                <q-btn flat label="Close" color="negative" v-close-popup />
+                <q-btn flat label="Transact" color="primary" @click="onTransact" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -73,6 +73,8 @@ import { date } from 'quasar'
 
 const dialog = ref()
 const invoice = reactive({
+    number: '',
+    date: null,
     price: 7.5,
     subtotal: computed(()=>{
         return _.sumBy(table.rows, function (o) { return o.volume * invoice.price; });
@@ -95,9 +97,9 @@ const table = reactive({
             align: 'left',
         },
         {
-            label: "Present",
-            name: "present",
-            field: "present",
+            label: "Current",
+            name: "current",
+            field: "current",
             align: 'left',
         },
         {
@@ -123,6 +125,10 @@ const table = reactive({
     }
 })
 
+onMounted(()=>{
+    invoice.date = date.formatDate(Date.now(), 'MMMM DD, YYYY')
+})
+
 
 function show(data){
     dialog.value.show()
@@ -130,6 +136,11 @@ function show(data){
     consumer.period = `${data.consumption_dates.from} - ${data.consumption_dates.to} `
     table.rows = data.consumptions
     console.log(data)
+    invoice.number = date.formatDate(Date.now(), 'YYYYMMDD') + `${data.id}`
+}
+
+function onTransact(){
+
 }
 
 defineExpose({
