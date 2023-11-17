@@ -41,7 +41,8 @@ class BillingController extends Controller
 
     public function store(Request $request)
     {
-        //
+
+        return $this->show($request->input('id'));
     }
 
     public function show($id)

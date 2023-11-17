@@ -34,28 +34,43 @@
                     :rows="table.rows"
                     :columns="table.columns"
                 >
-                <template v-slot:bottom>
-                    <div class="col-12 row justify-between">
-                        <div class="col"></div>
-                        <div class="col-4">
-                            <table>
-                                <tr>
-                                    <td class="text-right"><b>Subtotal:</b></td>
-                                    <td>₱{{ invoice.subtotal }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>Tax:</b></td>
-                                    <td>{{ invoice.tax }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>Total:</b></td>
-                                    <td>₱{{ invoice.total }}</td>
-                                </tr>
-                            </table>
+                    <template v-slot:bottom>
+                        <div class="col-12 row justify-between">
+                            <div class="col"></div>
+                            <div class="col-4">
+                                <table>
+                                    <tr class="text-subtitle1 text-weight-bold">
+                                        <td class="text-right"><b>Subtotal:</b></td>
+                                        <td>₱{{ invoice.subtotal }}</td>
+                                    </tr>
+                                    <!-- <tr class="text-subtitle1 text-weight-bold">
+                                        <td class="text-right"><b>Tax:</b></td>
+                                        <td>{{ invoice.tax }}</td>
+                                    </tr> -->
+                                    <tr class="text-subtitle1 text-weight-bold">
+                                        <td class="text-right"><b>Total:</b></td>
+                                        <td>₱{{ invoice.total }}</td>
+                                    </tr>
+                                    <tr class="text-subtitle1 text-weight-bold">
+                                        <td class="text-right"><b>Change:</b></td>
+                                        <td>₱{{ invoice.changed }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
                 </q-table>
+            </q-card-section>
+            <q-separator/>
+            <q-card-section>
+                <div class="row q-gutter-md">
+                    <div class="col">
+                        <q-input dense outlined label="Reference #" v-model="invoice.receipt"></q-input>
+                    </div>
+                    <div class="col">
+                        <q-input dense outlined label="Cash" v-model="invoice.cash"></q-input>
+                    </div>
+                </div>
             </q-card-section>
             <q-separator/>
             <q-card-actions align="right">
@@ -69,10 +84,14 @@
 
 <script setup>
 import { ref, reactive, onMounted, defineExpose, computed } from "vue";
-import { date } from 'quasar'
+import { useQuasar, date } from 'quasar'
 
+
+const $q = useQuasar()
 const dialog = ref()
+const consumer = reactive({})
 const invoice = reactive({
+    id: null,
     number: '',
     date: null,
     price: 7.5,
@@ -82,9 +101,16 @@ const invoice = reactive({
     tax: 0,
     total: computed(()=>{
         return invoice.subtotal
+    }),
+    reciept: '',
+    cash: '',
+    changed: computed(()=>{
+        if( invoice.cash >= invoice.total )
+            return invoice.cash - invoice.total
+        else
+            return 0
     })
 })
-const consumer = reactive({})
 const table = reactive({
     loading: false,
     filter: '',
@@ -124,6 +150,9 @@ const table = reactive({
         rowsNumber: 10,
     }
 })
+const ui = reactive({
+    loading: false
+})
 
 onMounted(()=>{
     invoice.date = date.formatDate(Date.now(), 'MMMM DD, YYYY')
@@ -135,12 +164,26 @@ function show(data){
     consumer.name = `${data.first_name} ${data.last_name} `
     consumer.period = `${data.consumption_dates.from} - ${data.consumption_dates.to} `
     table.rows = data.consumptions
-    console.log(data)
     invoice.number = date.formatDate(Date.now(), 'YYYYMMDD') + `${data.id}`
+    invoice.id = data.id
+    console.log(data)
 }
 
-function onTransact(){
-
+async function onTransact(){
+    $q.loading.show()
+    let params = {
+        ...invoice
+    }
+    try{
+        const { data } = await axios.post(`api/billing`, params)
+    }catch(e){
+        console.log(e)
+        $q.notify({
+            type: 'negative',
+            message: 'Error occured!'
+        })
+    }
+    $q.loading.hide()
 }
 
 defineExpose({
