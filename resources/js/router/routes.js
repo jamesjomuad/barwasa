@@ -53,7 +53,7 @@ const routes = [
                     },
                     {
                         path: ":id",
-                        component: () => import("../pages/Billing/UpdatePage.vue"),
+                        component: () => import("../pages/Consumption/CreatePage.vue"),
                         meta: {
                             title: "Billing Update",
                             requiresAuth: true
@@ -96,11 +96,24 @@ const routes = [
             // Consumptions
             {
                 path: "/consumptions",
-                component: () => import("../pages/Consumption/IndexPage.vue"),
-                meta: {
-                    title: "Consumptions",
-                    requiresAuth: true
-                }
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/Consumption/IndexPage.vue"),
+                        meta: {
+                            title: "Consumptions",
+                            requiresAuth: true
+                        }
+                    },
+                    {
+                        path: "create/:id",
+                        component: () => import("../pages/Consumption/CreatePage.vue"),
+                        meta: {
+                            title: "Create",
+                            requiresAuth: true
+                        }
+                    }
+                ]
             },
 
             // Users

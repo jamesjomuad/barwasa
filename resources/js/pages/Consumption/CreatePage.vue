@@ -1,15 +1,27 @@
 <!-- eslint-disable brace-style -->
 <template>
     <q-page padding class="bg-grey-2">
-        <q-form class="q-pa-md row q-col-gutter-md" @submit="onUpdate">
-            <div class="col-md-12">
-                <q-card>
+        <div class="col-md-12">
+            <q-card>
                 <!-- Title -->
                 <q-card-section class="q-py-sm">
-                    <div class="text-h6">
-                    Account
+                    <div class="text-h6">Consumer</div>
+                </q-card-section>
+                <q-card-section>
+                    <div class="row q-col-gutter-md">
+                    <q-input
+                        v-model="$form.meter_id"
+                        dense
+                        outlined
+                        label="Meter ID"
+                        lazy-rules
+                        class="col-12"
+                        readonly
+                    >
+                    </q-input>
                     </div>
                 </q-card-section>
+                <q-separator />
                 <!-- Fields -->
                 <q-card-section>
                     <div class="row q-col-gutter-md">
@@ -39,149 +51,10 @@
                             <q-icon name="account_circle" />
                             </template>
                         </q-input>
-
-                        <q-input
-                            v-model="$form.phone"
-                            dense
-                            outlined
-                            label="Phone"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="phone" />
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.phone_2"
-                            dense
-                            outlined
-                            label="Work Phone"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="phone" />
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.email"
-                            dense
-                            outlined
-                            label="Email"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="email" />
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.dob"
-                            dense
-                            outlined
-                            label="Date of Birth"
-                            lazy-rules
-                            class="col-6"
-                            readonly
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="calendar_month" />
-                            </template>
-                            <template v-slot:after>
-                                <q-btn icon="event" round color="primary">
-                                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="$form.dob">
-                                        <div class="row items-center justify-end q-gutter-sm">
-                                            <q-btn label="Cancel" color="primary" flat v-close-popup />
-                                            <q-btn label="OK" color="primary" flat v-close-popup />
-                                        </div>
-                                        </q-date>
-                                    </q-popup-proxy>
-                                </q-btn>
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.barangay"
-                            dense
-                            outlined
-                            label="Barangay"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                                <q-icon name="place" />
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.sitio"
-                            dense
-                            outlined
-                            label="Sitio"
-                            lazy-rules
-                            class="col-6"
-                        >
-                            <template v-slot:prepend>
-                                <q-icon name="place" />
-                            </template>
-                        </q-input>
-
-                        <q-input
-                            v-model="$form.billing_address"
-                            dense
-                            outlined
-                            label="Billing Address"
-                            lazy-rules
-                            class="col-12"
-                        >
-                            <template v-slot:prepend>
-                            <q-icon name="home" />
-                            </template>
-                        </q-input>
                     </div>
                 </q-card-section>
-                <q-separator />
-                <q-card-section>
-                    <div class="row q-col-gutter-md">
-                    <q-input
-                        v-model="$form.meter_id"
-                        dense
-                        outlined
-                        label="Meter ID"
-                        lazy-rules
-                        class="col-12"
-                        readonly
-                    >
-                    </q-input>
-                    </div>
-                </q-card-section>
-                <q-separator />
-                <q-card-actions align="right">
-                    <q-btn
-                    color="negative"
-                    @click="onRemove"
-                    :disable="ui.loading"
-                    :loading="ui.loading"
-                    >
-                    Remove
-                    </q-btn>
-                    <q-btn
-                    color="primary"
-                    type="submit"
-                    :disable="ui.loading"
-                    :loading="ui.loading"
-                    >
-                    Update
-                    </q-btn>
-                </q-card-actions>
-                </q-card>
-            </div>
-        </q-form>
+            </q-card>
+        </div>
 
         <q-table
             :dark="$q.dark.isActive"
@@ -200,6 +73,25 @@
             :filter="table.filter"
             :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
         >
+            <template v-slot:top-right="props">
+                <q-btn
+                    round
+                    size="md"
+                    color="info"
+                    class="q-ml-sm"
+                    icon="add"
+                    @click="onAddVolume">
+                </q-btn>
+                <q-btn
+                    round
+                    size="md"
+                    color="warning"
+                    class="q-ml-sm"
+                    icon="delete"
+                    :disabled="_.isEmpty(table.selected)"
+                    @click="onTrash(table.selected)">
+                </q-btn>
+            </template>
             <template #body-cell-previous="props">
                 <q-td :props="props">
                     <q-input
@@ -287,6 +179,7 @@ const $form = ref({
     billing_address: "",
     phone: "",
     phone_2: "",
+    meter_id: ""
 });
 const table = reactive({
     loading: false,
@@ -363,63 +256,71 @@ const table = reactive({
 })
 
 
+
 onMounted(async ()=>{
-    const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
+    let data = await fetch();
     $form.value = {...$form, ...data}
     table.rows = data.consumptions
+    console.log( data )
 })
 
+async function fetch(){
+    const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
+    return data
 
-async function onUpdate(){
-    ui.loading = true
-    try{
-        const { data } = await axios.put(`/api/consumers/${$route.params.id}`, $form.value)
-        if(data.status){
-            $q.notify({
-                type: 'positive',
-                message: `${data.data.first_name} ${data.data.last_name} updated successfully!`
-            })
-        }
-    }
-catch(error){
-        console.log(error)
-        $q.notify({
-            type: 'negative',
-            message: "Error!"
-        })
-    }
-    ui.loading = false
 }
 
-function onRemove(){
+function onAddVolume(){
+    table.rows.push({
+        previousEdit:true,
+        previousRef: ref(),
+        currentEdit: true,
+        currentRef: ref(),
+        previous: '',
+        current: '',
+    })
+}
+
+
+function onTrash(props){
+    console.log(props)
     $q.dialog({
         title: 'Confirm',
-        message: 'Would you like to procceed?',
+        message: 'Would you like to trash items?',
         cancel: true,
         persistent: true
     }).onOk(async () => {
-        ui.loading = true
-        try{
-            const { data } = await axios.post(`/api/consumers/${$route.params.id}`, {
-                _method: 'delete'
-            })
-            if(data){
-                $router.push('/consumers')
-                $q.notify({
-                    type: 'positive',
-                    message: `${$form.value.first_name} ${$form.value.last_name} remove successfully!`
-                })
-            }
-        } catch(error){
-            console.log(error)
-            $q.notify({
-                type: 'negative',
-                message: "Error!"
-            })
-        }
-        ui.loading = false
+        table.loading = true
+        const { data } = await axios.post(`/api/billing/${_.map(props, o => o.id).join(',')}`, {
+            _method: 'delete',
+        })
+        if(data)
+        fetch()
+        table.loading = false
     })
-
 }
 
+async function onSaveCell(event, props){
+    try{
+        const { data } = await axios.post(`/api/consumption`, {
+            id: $form.value.meter_id,
+            previous: props.row.previous,
+            current: props.row.current,
+            volume: props.row.current - props.row.previous,
+        })
+
+        table.rows[props.rowIndex] = data
+        $q.notify({
+            color: 'positive',
+            message: 'Consumption added.'
+        })
+    }
+    catch(e){
+        console.log(e)
+        $q.notify({
+            color: 'negative',
+            message: 'Saving fail!'
+        })
+    }
+}
 </script>

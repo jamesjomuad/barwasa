@@ -1,114 +1,147 @@
 <template>
     <q-page padding class="bg-grey-2">
-          <!-- Table -->
-          <div class="col-auto">
-              <q-table
-                  :dark="$q.dark.isActive"
-                  flat
-                  bordered
-                  binary-state-sort
-                  title="Consumptions"
-                  row-key="id"
-                  v-model:pagination="table.pagination"
-                  :rows="table.rows"
-                  :columns="table.columns"
-                  :loading="table.loading"
-                  :filter="table.filter"
-                  :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
-                  @request="onRequest"
-              >
-                  <template v-slot:top-right="props">
-                      <q-input
-                          outlined
-                          dense
-                          ref="search"
-                          debounce="300"
-                          v-model="table.filter"
-                          placeholder="Search"
-                          class="q-ma-xs"
-                      >
-                          <template v-slot:append>
-                              <q-icon name="search" />
-                          </template>
-                      </q-input>
-                      <q-btn
-                          round
-                          size="md"
-                          color="info"
-                          class="q-ml-sm"
-                          icon="refresh"
-                          @click="onRefresh">
-                      </q-btn>
-                      <q-btn
-                          flat
-                          round
-                          size="md"
-                          class="q-ml-sm"
-                          color="grey-5"
-                          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                          @click="props.toggleFullscreen"
-                      >
-                          <q-tooltip>Toggle Fullscreen</q-tooltip>
-                      </q-btn>
-                  </template>
-                  <template #body-cell-invoice="props">
-                      <q-td :props="props">
-                          <div class="q-gutter-md" style="font-size: 2em">
-                              <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
-                              <q-icon v-else name="warning" color="negative"/>
-                          </div>
-                      </q-td>
-                  </template>
-                  <template #body-cell-payment="props">
-                      <q-td :props="props">
-                          <div class="q-gutter-md" style="font-size: 2em">
-                              <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
-                              <q-icon v-else name="warning" color="negative"/>
-                          </div>
-                      </q-td>
-                  </template>
-                  <template #body-cell-action="props">
-                      <q-td :props="props">
-                          <div class="row justify-end q-gutter-sm">
-                              <q-btn-dropdown
-                                  flat
-                                  rounded
-                                  color="primary"
-                                  dropdown-icon="more_vert"
-                                  class="card-action"
-                              >
-                                  <q-list>
-                                      <q-item clickable @click="onView(props)">
-                                          <q-item-section>
-                                              <q-item-label>View</q-item-label>
-                                          </q-item-section>
-                                      </q-item>
-                                      <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                          <q-item-section>
-                                              <q-item-label>Generate Invoice</q-item-label>
-                                          </q-item-section>
-                                      </q-item>
-                                      <q-item clickable>
-                                          <q-item-section>
-                                              <q-item-label>Resend Email</q-item-label>
-                                          </q-item-section>
-                                      </q-item>
-                                      <q-item clickable @click="mailTo(props.row)">
-                                          <q-item-section>
-                                              <q-item-label>Email</q-item-label>
-                                          </q-item-section>
-                                      </q-item>
-                                  </q-list>
-                              </q-btn-dropdown>
-                          </div>
-                      </q-td>
-                  </template>
+        <!-- Table -->
+        <div class="col-auto">
+            <q-table
+                :dark="$q.dark.isActive"
+                flat
+                bordered
+                binary-state-sort
+                title="Consumptions"
+                row-key="id"
+                v-model:pagination="table.pagination"
+                :rows="table.rows"
+                :columns="table.columns"
+                :loading="table.loading"
+                :filter="table.filter"
+                :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
+                @request="onRequest"
+            >
+                <template v-slot:top-right="props">
+                    <q-input
+                        outlined
+                        dense
+                        ref="search"
+                        debounce="300"
+                        v-model="table.filter"
+                        placeholder="Search"
+                        class="q-ma-xs"
+                    >
+                        <template v-slot:append>
+                            <q-icon name="search" />
+                        </template>
+                    </q-input>
+                    <q-btn
+                        round
+                        size="md"
+                        color="primary"
+                        class="q-ml-sm"
+                        icon="add"
+                        @click="onCreate">
+                    </q-btn>
+                    <q-btn
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="refresh"
+                        @click="onRefresh">
+                    </q-btn>
+                    <q-btn
+                        flat
+                        round
+                        size="md"
+                        class="q-ml-sm"
+                        color="grey-5"
+                        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                        @click="props.toggleFullscreen"
+                    >
+                        <q-tooltip>Toggle Fullscreen</q-tooltip>
+                    </q-btn>
+                </template>
+                <template #body-cell-invoice="props">
+                    <q-td :props="props">
+                        <div class="q-gutter-md" style="font-size: 2em">
+                            <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
+                            <q-icon v-else name="warning" color="negative"/>
+                        </div>
+                    </q-td>
+                </template>
+                <template #body-cell-payment="props">
+                    <q-td :props="props">
+                        <div class="q-gutter-md" style="font-size: 2em">
+                            <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
+                            <q-icon v-else name="warning" color="negative"/>
+                        </div>
+                    </q-td>
+                </template>
+                <template #body-cell-action="props">
+                    <q-td :props="props">
+                        <div class="row justify-end q-gutter-sm">
+                            <q-btn-dropdown
+                                flat
+                                rounded
+                                color="primary"
+                                dropdown-icon="more_vert"
+                                class="card-action"
+                            >
+                                <q-list>
+                                    <q-item clickable @click="onView(props)">
+                                        <q-item-section>
+                                            <q-item-label>View</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
+                                        <q-item-section>
+                                            <q-item-label>Generate Invoice</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                    <q-item clickable>
+                                        <q-item-section>
+                                            <q-item-label>Resend Email</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                    <q-item clickable @click="mailTo(props.row)">
+                                        <q-item-section>
+                                            <q-item-label>Email</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-btn-dropdown>
+                        </div>
+                    </q-td>
+                </template>
+                <template v-slot:loading>
+                    <q-inner-loading showing color="primary" />
+                </template>
+            </q-table>
+        </div>
 
-                  <template v-slot:loading>
-                      <q-inner-loading showing color="primary" />
-                  </template>
-              </q-table>
-          </div>
+        <!-- Select Customer -->
+        <q-dialog ref="dialog">
+            <q-card style=" width: 500px; ">
+                <q-card-section>
+                    <div class="text-h6">Select Consumer</div>
+                </q-card-section>
+                <q-separator/>
+                <q-card-section>
+                    <q-select
+                        outlined
+                        dense
+                        map-options
+                        use-input
+                        input-debounce="300"
+                        clearable
+                        label="Find Consumer"
+                        v-model="ui.client_id"
+                        :options="ui.clients"
+                        :loading="ui.loading"
+                        @update:model-value="onConsumerSelect"
+                        @filter="filterFn"
+                    />
+                </q-card-section>
+            </q-card>
+        </q-dialog>
     </q-page>
 </template>
 
@@ -121,6 +154,7 @@ import { useRouter } from 'vue-router'
 
 const $router = useRouter();
 const $q = useQuasar()
+const dialog = ref()
 const table = reactive({
     loading: false,
     filter: '',
@@ -176,6 +210,12 @@ const table = reactive({
         rowsPerPage: 10,
         rowsNumber: 10,
     }
+})
+const ui = reactive({
+    loading:false ,
+    clientsStore: [],
+    clients: [],
+    client_id: [],
 })
 
 
@@ -244,5 +284,48 @@ function onRefresh(){
     });
 }
 
+async function onCreate(){
+    ui.loading = true
+    dialog.value.show()
+    const { data } = await axios.get(`/api/consumers`)
+    ui.clientsStore = _.map(data.data, (v)=>{
+        return {
+            label: `${v.first_name} ${v.last_name}`,
+            value: v.id,
+            data: v
+        }
+    })
+    ui.loading = false
+}
 
+async function filterFn (val, update, abort) {
+    if (val === '') {
+        update(() => {
+            ui.clients = ui.clientsStore
+        })
+        return
+    }
+
+    if (val.length < 3) {
+        abort()
+        return
+    }
+
+    const { data } = await axios.get(`/api/consumers?filter=${val}`)
+
+    update(() => {
+        ui.clients = _.map(data.data, (v)=>{
+            return {
+                label: `${v.first_name} ${v.last_name}`,
+                value: v.id,
+                data: v
+            }
+        })
+    })
+
+}
+
+function onConsumerSelect(v){
+    $router.push(`/consumptions/create/${v.value}`)
+}
 </script>

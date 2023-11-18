@@ -183,11 +183,9 @@ function show(data){
     table.rows = data.consumptions
     invoice.number = 'INV-' + date.formatDate(Date.now(), 'YYYYMMDD') + `${data.id}`
     invoice.id = data.id
-    console.log(data)
 }
 
 async function onTransact(){
-    console.log('onTransact')
     $q.loading.show()
     let params = {
         ...invoice,
