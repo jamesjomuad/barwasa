@@ -31,9 +31,10 @@ class ConsumptionController extends Controller
         //  Filter/Search
         $query->when($request->get('filter'), function($q) use ($request) {
             $filter = $request->get('filter');
-            $q->where( 'first_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'email', 'LIKE', "%$filter%" );
+            $q->whereHas( 'consumer', function($c) use($filter) {
+                $c->where( 'first_name', 'LIKE', "%$filter%" );
+                $c->orWhere( 'last_name', 'LIKE', "%$filter%" );
+            });
             return $q;
         });
 
