@@ -75,39 +75,11 @@
                         </div>
                     </q-td>
                 </template>
-                <template #body-cell-action="props">
+                <template #body-cell-is_paid="props">
                     <q-td :props="props">
-                        <div class="row justify-end q-gutter-sm">
-                            <q-btn-dropdown
-                                flat
-                                rounded
-                                color="primary"
-                                dropdown-icon="more_vert"
-                                class="card-action"
-                            >
-                                <q-list>
-                                    <q-item clickable @click="onView(props)">
-                                        <q-item-section>
-                                            <q-item-label>View</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                        <q-item-section>
-                                            <q-item-label>Generate Invoice</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-item-label>Resend Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable @click="mailTo(props.row)">
-                                        <q-item-section>
-                                            <q-item-label>Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-btn-dropdown>
+                        <div class="q-gutter-md" style="font-size: 2em">
+                            <q-icon v-if="props.row.is_paid" name="check_circle" color="positive"/>
+                            <q-icon v-else name="warning" color="negative"/>
                         </div>
                     </q-td>
                 </template>
@@ -190,6 +162,12 @@ const table = reactive({
             label: "Unit",
             name: "unit",
             field: "unit",
+            sortable: false,
+        },
+        {
+            label: "Paid",
+            name: "is_paid",
+            field: "is_paid",
             sortable: false,
         },
         {
