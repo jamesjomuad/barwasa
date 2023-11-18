@@ -17,34 +17,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $date = Carbon::now();
-        $startOfYear = $date->copy()->startOfYear();
-        $endOfYear   = $date->copy()->endOfYear();
-
-        $monthly = Consumption::whereBetween('created_at', [$startOfYear, $endOfYear])
-            ->get()
-            ->groupBy(function($item){
-                return $item->created_at->format('M');
-            })
-            ->map(function($item){
-                return count($item);
-            })
-        ;
-
-        $weekly = Consumption::where( 'created_at','>=', Carbon::now()->subDays(7) )
-            ->orderBy( 'created_at', 'ASC' )
-            ->get()
-            ->groupBy(function($item){
-                return $item->created_at->format('l');
-            })
-            ->map(function($item){
-                return count($item);
-            })
-        ;
-
         return response()->json([
-            'monthly' => $monthly,
-            'weekly'  => $weekly,
+            'monthly' => $this->monthly(),
+            'weekly'  => $this->weekly(),
         ]);
     }
 
@@ -91,5 +66,54 @@ class DashboardController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function monthly()
+    {
+        $months = collect(range(1,12))->map(function($m){
+            return ['name' => date('M', mktime(0, 0, 0, $m, 10))];
+        })->keyBy('name')->map(function($i){ return 0; });
+
+        $date  = Carbon::now();
+        $start = $date->copy()->subMonths(11)->startOfMonth();
+        $end   = $date->copy()->endOfMonth();
+
+        $monthly = Consumption::whereBetween('created_at', [$start, $end])
+            ->get()
+            ->groupBy(function($item){
+                return $item->created_at->format('M');
+            })
+            ->map(function($item){
+                return count($item);
+            })
+        ;
+
+        return $months->merge($monthly);
+    }
+
+    private function weekly()
+    {
+        $weeks = collect([
+            Carbon::now()->subDays(6)->format('l') => 0,
+            Carbon::now()->subDays(5)->format('l') => 0,
+            Carbon::now()->subDays(4)->format('l') => 0,
+            Carbon::now()->subDays(3)->format('l') => 0,
+            Carbon::now()->subDays(2)->format('l') => 0,
+            Carbon::now()->subDays(1)->format('l') => 0,
+            Carbon::now()->format('l') => 0
+        ]);
+
+        $weekly = Consumption::where( 'created_at','>=', Carbon::now()->subDays(7) )
+            ->orderBy( 'created_at', 'ASC' )
+            ->get()
+            ->groupBy(function($item){
+                return $item->created_at->format('l');
+            })
+            ->map(function($item){
+                return count($item);
+            })
+        ;
+
+        return $weeks->merge($weekly);
     }
 }

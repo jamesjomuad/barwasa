@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-
+// php artisan db:seed --class=ConsumptionSeeder
 class ConsumptionSeeder extends Seeder
 {
     /**
@@ -17,16 +17,6 @@ class ConsumptionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('customer_consumption')->insert([
-            // 'name' => Str::random(10),
-            // 'email' => Str::random(10).'@gmail.com',
-            // 'password' => Hash::make('password'),
-            // 'consumer_id',
-            // 'meter_id',
-            // 'previous',
-            // 'current',
-            // 'volume',
-            // 'is_paid',
-        ]);
+        \App\Models\Consumption::factory(50)->create();
     }
 }
