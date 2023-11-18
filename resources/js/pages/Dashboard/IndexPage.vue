@@ -12,7 +12,7 @@
                             :series="chartMonthly.series"
                         ></apexcharts>
                     </q-card-section>
-                    <q-inner-loading :showing="loading"/>
+                    <q-inner-loading :showing="ui.loading"/>
                 </q-card>
             </div>
 
@@ -27,7 +27,7 @@
                             :series="chartWeekly.series"
                         ></apexcharts>
                     </q-card-section>
-                    <q-inner-loading :showing="loading"/>
+                    <q-inner-loading :showing="ui.loading"/>
                 </q-card>
             </div>
 
@@ -56,12 +56,13 @@
 
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import apexcharts from "vue3-apexcharts";
 import _ from 'lodash'
 
-
-
+const ui = reactive({
+    loading: true
+})
 const loading = ref(false)
 const chartMonthly = reactive({
     options: {
@@ -73,19 +74,14 @@ const chartMonthly = reactive({
             align: 'left', // You can also specify alignment (left, center, right)
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            categories: [],
         },
-        // colors: ['#DA1F33']
     },
     series: [
         {
-            name: "year",
-            data: [30, 40, 35, 50, 49, 60, 70, 91, 20, 30, 40, 50],
-        },
-        // {
-        //     name: "last-year",
-        //     data: [40, 40, 65, 70, 49, 80, 100, 91, 20, 30, 40, 50],
-        // },
+            name: "Month",
+            data: [0],
+        }
     ],
 })
 const chartWeekly = reactive({
@@ -100,22 +96,58 @@ const chartWeekly = reactive({
         xaxis: {
             categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         },
-        // colors: ['#DA1F33']
     },
     series: [
         {
-            name: "year",
-            data: [12,32,56,15,24,48,62],
+            name: "weeks",
+            data: [0,0,0,0,0,0,0],
         },
-        // {
-        //     name: "last-year",
-        //     data: [40, 40, 65, 70, 49, 80, 100, 91, 20, 30, 40, 50],
-        // },
     ],
 })
 const consumers = reactive({
     loading: false,
     list: ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred"]
 })
+
+
+onMounted(async ()=>{
+    const { data } = await axios.get(`/api/dashboard`)
+
+    updateMonthly(data.monthly)
+
+    updateWeekly(data.weekly)
+
+    ui.loading = false
+})
+
+function updateMonthly(data){
+    chartMonthly.series = [
+        {
+            name: "Month",
+            data: _.map(data, (v,k)=>v)
+        }
+    ]
+
+    chartMonthly.options = {
+        xaxis: {
+            categories: _.map(data, (v,k)=>k),
+        },
+    }
+}
+
+function updateWeekly(data){
+    chartWeekly.options = {
+        xaxis: {
+            categories: _.map(data, (v,k)=>k),
+        },
+    }
+
+    chartWeekly.series = [
+        {
+            name: "weeks",
+            data: _.map(data, (v,k)=>v)
+        }
+    ]
+}
 
 </script>

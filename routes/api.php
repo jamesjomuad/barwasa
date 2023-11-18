@@ -38,3 +38,6 @@ Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController')
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
 
 // Route::resource('activity', 'App\Http\Controllers\Api\ConsumptionController');
+
+# Dashboard
+Route::resource('dashboard', 'App\Http\Controllers\Api\DashboardController');
