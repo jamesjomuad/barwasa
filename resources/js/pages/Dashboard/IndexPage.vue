@@ -32,7 +32,7 @@
             </div>
 
             <!-- Top Consumers -->
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <!-- <div class="col-xs-12 col-sm-6 col-md-6">
                 <q-card flat bordered class="radius-8">
                     <q-card-section>
                         <div class="flex justify-between">
@@ -49,7 +49,7 @@
                     </q-card-section>
                     <q-inner-loading :showing="consumers.loading"/>
                 </q-card>
-            </div>
+            </div> -->
         </div>
     </q-page>
 </template>
