@@ -70,20 +70,9 @@ class DashboardController extends Controller
 
     private function monthly()
     {
-        $months = collect([
-            Carbon::now()->subMonths(11)->format('M') => 0,
-            Carbon::now()->subMonths(10)->format('M') => 0,
-            Carbon::now()->subMonths(9)->format('M') => 0,
-            Carbon::now()->subMonths(8)->format('M') => 0,
-            Carbon::now()->subMonths(7)->format('M') => 0,
-            Carbon::now()->subMonths(6)->format('M') => 0,
-            Carbon::now()->subMonths(5)->format('M') => 0,
-            Carbon::now()->subMonths(4)->format('M') => 0,
-            Carbon::now()->subMonths(3)->format('M') => 0,
-            Carbon::now()->subMonths(2)->format('M') => 0,
-            Carbon::now()->subMonths(1)->format('M') => 0,
-            Carbon::now()->format('M') => 0,
-        ]);
+        $months = collect(range(0,11))->mapWithKeys(function($m){
+            return [Carbon::now()->subMonths($m)->format('M') => 0];
+        })->reverse();
 
         $date  = Carbon::now();
         $start = $date->copy()->subMonths(11)->startOfMonth();
