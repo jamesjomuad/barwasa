@@ -17,7 +17,7 @@ Route::post('/auth/register', 'App\Http\Controllers\Api\AuthController@createUse
 Route::post('/auth/login', 'App\Http\Controllers\Api\AuthController@loginUser');
 
 // Requires api token to access routes
-Route::group(['middleware' => ['auth:sanctum'], 'namespace' => 'App\Http\Controllers\Api'], function(){
+Route::group(['middleware' => ['auth:sanctum','throttle:160,1'], 'namespace' => 'App\Http\Controllers\Api'], function(){
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

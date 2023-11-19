@@ -1,6 +1,6 @@
 <!-- eslint-disable brace-style -->
 <template>
-    <q-page padding class="bg-grey-2">
+    <q-page padding>
         <div class="col-md-12">
             <q-card>
                 <!-- Title -->
