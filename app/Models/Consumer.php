@@ -26,6 +26,7 @@ class Consumer extends Model
     ];
 
     protected $appends = [
+        'fullname',
         'total_volume',
         'total_payable',
         'consumption_dates'
@@ -72,6 +73,11 @@ class Consumer extends Model
             'from' => '',
             'to' => '',
         ];
+    }
+
+    public function getFullnameAttribute()
+    {
+        return "$this->first_name $this->last_name";
     }
 
 }

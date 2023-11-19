@@ -25,14 +25,17 @@ Route::group(['middleware' => ['auth:sanctum','throttle:160,1'], 'namespace' => 
     # Dashboard
     Route::resource('dashboard', 'DashboardController');
 
-    # Users
-    Route::resource('users', 'UserController');
+    # Billing
+    Route::resource('billing', 'BillingController');
+
+    # Transactions
+    Route::resource('transactions', 'TransactionController');
 
     # Consumers
     Route::resource('consumers', 'ConsumerController');
 
-    # Billing
-    Route::resource('billing', 'BillingController');
+    # Users
+    Route::resource('users', 'UserController');
 });
 
 // Consumptions endpoint; Ardiuno endpoint

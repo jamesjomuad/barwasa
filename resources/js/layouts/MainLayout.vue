@@ -62,6 +62,7 @@
 
                     <q-item-label header>Customers</q-item-label>
                     <menu-item label="Billing" icon="receipt" to="/billing"/>
+                    <menu-item label="Transactions" icon="checklist" to="/transactions"/>
                     <menu-item label="Consumptions" icon="water_drop" to="/consumptions"/>
                     <menu-item label="Consumers" icon="people" to="/consumers"/>
                     <q-separator />

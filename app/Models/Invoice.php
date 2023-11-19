@@ -25,4 +25,24 @@ class Invoice extends Model
         'consumptions',
     ];
 
+    protected $appends = [
+        'fullname',
+        'total_volume',
+    ];
+
+    public function consumer()
+    {
+        return $this->belongsTo(Consumer::class);
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->consumer->first_name ." " . $this->consumer->last_name;
+    }
+
+    public function getTotalVolumeAttribute()
+    {
+        return collect($this->consumptions)->sum();
+    }
+
 }

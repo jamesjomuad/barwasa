@@ -31,13 +31,13 @@
                         </template>
                     </q-input>
                     <q-btn
-                          round
-                          size="md"
-                          color="info"
-                          class="q-ml-sm"
-                          icon="refresh"
-                          @click="onRefresh">
-                      </q-btn>
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="refresh"
+                        @click="onRefresh">
+                    </q-btn>
                     <q-btn
                         flat
                         round

@@ -246,20 +246,6 @@
                     </div>
                 </q-td>
             </template>
-            <template #body-cell-action="props">
-                <q-td :props="props">
-                    <div class="row justify-end q-gutter-sm">
-                        <q-btn
-                            v-if="!props.row.id"
-                            round
-                            icon="save"
-                            size="sm"
-                            color="primary"
-                            @click="onSaveCell(this, props)"
-                        />
-                    </div>
-                </q-td>
-            </template>
             <template v-slot:bottom>
             </template>
         </q-table>
@@ -345,11 +331,6 @@ const table = reactive({
             format: (val, row) => {
                 return moment(val).format("YYYY-MM-DD");
             }
-        },
-        {
-            label: "Action",
-            name: "action",
-            align: 'right'
         },
     ],
     pagination: {

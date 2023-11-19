@@ -7,7 +7,6 @@
                 flat
                 bordered
                 binary-state-sort
-                title="Users"
                 row-key="id"
                 v-model:pagination="table.pagination"
                 :rows="table.rows"
@@ -33,6 +32,14 @@
                         </template>
                     </q-input>
                     <q-btn
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="refresh"
+                        @click="onRefresh">
+                    </q-btn>
+                    <q-btn
                         flat
                         round
                         size="md"
@@ -44,59 +51,14 @@
                         <q-tooltip>Toggle Fullscreen</q-tooltip>
                     </q-btn>
                 </template>
-                <template #body-cell-invoice="props">
+                <template #body-cell-is_paid="props">
                     <q-td :props="props">
                         <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.xero_invoice_id" name="check_circle" color="positive"/>
+                            <q-icon v-if="props.row.is_paid" name="check_circle" color="positive"/>
                             <q-icon v-else name="warning" color="negative"/>
                         </div>
                     </q-td>
                 </template>
-                <template #body-cell-payment="props">
-                    <q-td :props="props">
-                        <div class="q-gutter-md" style="font-size: 2em">
-                            <q-icon v-if="props.row.payment" name="check_circle" color="positive"/>
-                            <q-icon v-else name="warning" color="negative"/>
-                        </div>
-                    </q-td>
-                </template>
-                <template #body-cell-action="props">
-                    <q-td :props="props">
-                        <div class="row justify-end q-gutter-sm">
-                            <q-btn-dropdown
-                                flat
-                                rounded
-                                color="primary"
-                                dropdown-icon="more_vert"
-                                class="card-action"
-                            >
-                                <q-list>
-                                    <q-item clickable @click="onView(props)">
-                                        <q-item-section>
-                                            <q-item-label>View</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item v-if="!props.row.xero_invoice_id" clickable>
-                                        <q-item-section>
-                                            <q-item-label>Generate Invoice</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable>
-                                        <q-item-section>
-                                            <q-item-label>Resend Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                    <q-item clickable @click="mailTo(props.row)">
-                                        <q-item-section>
-                                            <q-item-label>Email</q-item-label>
-                                        </q-item-section>
-                                    </q-item>
-                                </q-list>
-                            </q-btn-dropdown>
-                        </div>
-                    </q-td>
-                </template>
-
                 <template v-slot:loading>
                     <q-inner-loading showing color="primary" />
                 </template>
@@ -126,28 +88,53 @@ const table = reactive({
             sortable: true,
         },
         {
-            label: "Username",
-            name: "name",
-            field: "name",
-            sortable: true,
+            label: "Name",
+            name: "fullname",
+            field: "fullname",
+            sortable: false,
+            align: 'left'
         },
         {
-            label: "Email",
-            name: "email",
-            field: "email",
-            sortable: true,
+            label: "Invoice #",
+            name: "number",
+            field: "number",
+            sortable: false,
+            align: 'left'
         },
         {
-            label: "First name",
-            name: "first_name",
-            field: "first_name",
-            sortable: true,
+            label: "Volume",
+            name: "total_volume",
+            field: "total_volume",
+            sortable: false,
+            align: 'left'
         },
         {
-            label: "Last name",
-            name: "last_name",
-            field: "last_name",
+            label: "Total",
+            name: "total",
+            field: "total",
+            sortable: false,
+            align: 'left'
+        },
+        {
+            label: "Cash",
+            name: "cash",
+            field: "cash",
             sortable: true,
+            align: 'left'
+        },
+        {
+            label: "Paid",
+            name: "is_paid",
+            field: "is_paid",
+            sortable: true,
+            align: 'left'
+        },
+        {
+            label: "Reference",
+            name: "reference",
+            field: "reference",
+            sortable: true,
+            align: 'left'
         },
         {
             label: 'Created At',
@@ -198,7 +185,7 @@ async function onRequest(props) {
     };
 
     try {
-        const { data } = await axios.get(`/api/users`, {params})
+        const { data } = await axios.get(`/api/transactions`, {params})
 
         table.pagination.rowsNumber = data.total;
 
@@ -227,5 +214,12 @@ async function onRequest(props) {
 
 function onRow(evt, row, index){
     $router.push(`/system/users/${row.id}`)
+}
+
+function onRefresh(){
+    onRequest({
+        pagination:table.pagination,
+        filter: null,
+    });
 }
 </script>
