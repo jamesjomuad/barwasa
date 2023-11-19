@@ -142,14 +142,14 @@ const table = reactive({
             label: "First name",
             name: "consumer",
             field: "consumer",
-            format: (val, row) => val.first_name,
+            format: (val, row) => val?.first_name,
             sortable: false,
         },
         {
             label: "Last name",
             name: "consumer",
             field: "consumer",
-            format: (val, row) => val.last_name,
+            format: (val, row) => val?.last_name,
             sortable: false,
         },
         {
@@ -176,7 +176,6 @@ const table = reactive({
             sortable: true,
             align: 'left',
             format: (val, row) => {
-                // return moment(val).format("MMMM DD, YYYY (h:mm a)");
                 return moment(val).format("YYYY-MM-d");
             },
         }
