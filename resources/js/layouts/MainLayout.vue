@@ -1,5 +1,5 @@
 <template>
-    <q-layout view="lHh Lpr lff">
+    <q-layout view="lHh Lpr lff" :class="{'bg-dark':$q.dark.isActive,'bg-light':!$q.dark.isActive}">
         <q-header elevated class="text-white" :class="{'bg-dark':$q.dark.isActive}">
             <q-toolbar>
                 <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
@@ -68,7 +68,7 @@
 
                     <q-item-label header>System</q-item-label>
                     <menu-item label="Users" icon="people" to="/system/users"/>
-                    <menu-item label="Manual" icon="description" to="/system/manual"/>
+                    <!-- <menu-item label="Manual" icon="description" to="/system/manual"/> -->
                     <q-separator />
                 </q-list>
             </q-scroll-area>
@@ -83,7 +83,7 @@
             </div>
         </q-drawer>
 
-        <q-page-container class="bg-grey-3">
+        <q-page-container :class="{'bg-grey-9':$q.dark.isActive,'bg-grey-2':!$q.dark.isActive}">
             <router-view />
         </q-page-container>
     </q-layout>

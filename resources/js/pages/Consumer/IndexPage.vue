@@ -1,5 +1,5 @@
 <template>
-    <q-page padding class="bg-grey-2">
+    <q-page padding>
             <!-- Table -->
             <div class="col-auto">
                 <q-table

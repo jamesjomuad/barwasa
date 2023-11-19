@@ -148,6 +148,8 @@
                             size="sm"
                             color="primary"
                             @click="onSaveCell(this, props)"
+                            :loading="table.loading"
+                            :disable="table.loading"
                         />
                     </div>
                 </q-td>
@@ -169,9 +171,6 @@ import _ from 'lodash'
 const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
-const ui = reactive({
-    loading: false
-})
 const $form = ref({
     first_name: "",
     last_name: "",
@@ -260,8 +259,7 @@ const table = reactive({
 onMounted(async ()=>{
     let data = await fetch();
     $form.value = {...$form, ...data}
-    table.rows = data.consumptions
-    console.log( data )
+    table.rows = data.consumptions.reverse()
 })
 
 async function fetch(){
@@ -271,7 +269,7 @@ async function fetch(){
 }
 
 function onAddVolume(){
-    table.rows.push({
+    table.rows.unshift({
         previousEdit:true,
         previousRef: ref(),
         currentEdit: true,
@@ -301,6 +299,7 @@ function onTrash(props){
 }
 
 async function onSaveCell(event, props){
+    table.loading = true
     try{
         const { data } = await axios.post(`/api/consumption`, {
             id: $form.value.meter_id,
@@ -322,5 +321,6 @@ async function onSaveCell(event, props){
             message: 'Saving fail!'
         })
     }
+    table.loading = false
 }
 </script>

@@ -31,6 +31,21 @@
                 </q-card>
             </div>
 
+            <!-- Daily Consumptions -->
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <q-card flat bordered class="radius-8" style="min-height:400px;">
+                    <q-card-section>
+                        <apexcharts
+                            height="350"
+                            type="bar"
+                            :options="chartDaily.options"
+                            :series="chartDaily.series"
+                        ></apexcharts>
+                    </q-card-section>
+                    <q-inner-loading :showing="ui.loading"/>
+                </q-card>
+            </div>
+
             <!-- Top Consumers -->
             <!-- <div class="col-xs-12 col-sm-6 col-md-6">
                 <q-card flat bordered class="radius-8">
@@ -104,10 +119,30 @@ const chartWeekly = reactive({
         },
     ],
 })
-const consumers = reactive({
-    loading: false,
-    list: ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred"]
+const chartDaily = reactive({
+    options: {
+        chart: {
+            id: "daily-consumption",
+        },
+        title: {
+            text: 'Daily Consumptions (Past 12Hrs)', // Set your chart title here
+            align: 'left', // You can also specify alignment (left, center, right)
+        },
+        xaxis: {
+            categories: [],
+        },
+    },
+    series: [
+        {
+            name: "weeks",
+            data: [0,0,0,0,0,0,0,0,0,0,0,0],
+        },
+    ],
 })
+// const consumers = reactive({
+//     loading: false,
+//     list: ["Adam", "Alex", "Aaron", "Ben", "Carl", "Dan", "David", "Edward", "Fred"]
+// })
 
 
 onMounted(async ()=>{
@@ -117,8 +152,25 @@ onMounted(async ()=>{
 
     updateWeekly(data.weekly)
 
+    updateDaily(data.daily)
+
     ui.loading = false
 })
+
+function updateDaily(data){
+    chartDaily.options = {
+        xaxis: {
+            categories: _.map(data, (v,k)=>k),
+        },
+    }
+
+    chartDaily.series = [
+        {
+            name: "Daily",
+            data: _.map(data, (v,k)=>v)
+        }
+    ]
+}
 
 function updateMonthly(data){
     chartMonthly.series = [

@@ -18,8 +18,9 @@ class DashboardController extends Controller
     public function index()
     {
         return response()->json([
-            'monthly' => $this->monthly(),
+            'daily'   => $this->daily(),
             'weekly'  => $this->weekly(),
+            'monthly' => $this->monthly(),
         ]);
     }
 
@@ -115,5 +116,25 @@ class DashboardController extends Controller
         ;
 
         return $weeks->merge($weekly);
+    }
+
+    private function daily()
+    {
+        $hourly = collect(range(0,11))->mapWithKeys(function($h){
+            return [Carbon::now()->subHours($h)->format('H') => 0];
+        })->reverse();
+
+        $daily = Consumption::where( 'created_at','>=', Carbon::now()->subHours(12) )
+            ->orderBy( 'created_at', 'ASC' )
+            ->get()
+            ->groupBy(function($item){
+                return $item->created_at->format('H');
+            })
+            ->map(function($item){
+                return count($item);
+            })
+        ;
+
+        return $hourly->merge($daily);
     }
 }
