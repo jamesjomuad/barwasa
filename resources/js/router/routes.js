@@ -5,8 +5,7 @@ const routes = [
     {
         path: "/auth",
         component: () => import("../layouts/BlankLayout.vue"),
-        children: [
-            {
+        children: [{
                 name: "Login",
                 path: "/login",
                 component: () => import("../pages/Auth/LoginPage.vue"),
@@ -16,7 +15,7 @@ const routes = [
                 path: "/register",
                 component: () => import("../pages/Auth/RegisterPage.vue"),
                 beforeEnter: (to, from) => {
-                    if(store.getters['auth/isAuthenticated']){
+                    if (store.getters['auth/isAuthenticated']) {
                         return false;
                     }
                 }
@@ -42,8 +41,7 @@ const routes = [
             // Billing
             {
                 path: "/billing",
-                children:[
-                    {
+                children: [{
                         path: "",
                         component: () => import("../pages/Billing/IndexPage.vue"),
                         meta: {
@@ -65,23 +63,20 @@ const routes = [
             // Transactions
             {
                 path: "/transactions",
-                children:[
-                    {
-                        path: "",
-                        component: () => import("../pages/Transaction/IndexPage.vue"),
-                        meta: {
-                            title: "Transactions",
-                            requiresAuth: true
-                        },
+                children: [{
+                    path: "",
+                    component: () => import("../pages/Transaction/IndexPage.vue"),
+                    meta: {
+                        title: "Transactions",
+                        requiresAuth: true
                     },
-                ]
+                }, ]
             },
 
             // Consumers
             {
                 path: "/consumers",
-                children: [
-                    {
+                children: [{
                         path: "",
                         component: () => import("../pages/Consumer/IndexPage.vue"),
                         meta: {
@@ -111,8 +106,7 @@ const routes = [
             // Consumptions
             {
                 path: "/consumptions",
-                children: [
-                    {
+                children: [{
                         path: "",
                         component: () => import("../pages/Consumption/IndexPage.vue"),
                         meta: {
@@ -134,8 +128,7 @@ const routes = [
             // Users
             {
                 path: "/system/users",
-                children: [
-                    {
+                children: [{
                         path: "",
                         component: () => import("../pages/User/IndexPage.vue"),
                         meta: {
@@ -154,6 +147,28 @@ const routes = [
                 ]
             },
 
+            // Roles
+            {
+                path: "/system/roles",
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/Role/IndexPage.vue"),
+                        meta: {
+                            title: "Roles",
+                            requiresAuth: true
+                        },
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Role/CreatePage.vue"),
+                        meta: {
+                            title: "Roles",
+                            requiresAuth: true
+                        },
+                    }
+                ]
+            },
         ]
     },
 

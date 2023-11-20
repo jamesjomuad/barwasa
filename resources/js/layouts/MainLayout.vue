@@ -46,9 +46,10 @@
         @mouseout="miniState = true" -->
         <q-drawer
             bordered
+            elevated
             show-if-above
             v-model="drawer"
-            :style="!miniState?'margin-top: 170px;':''"
+            :style="!miniState?'padding-top: 170px;':''"
             :dark="$q.dark.isActive"
             :mini="miniState"
             :width="200"
@@ -69,6 +70,7 @@
 
                     <q-item-label header>System</q-item-label>
                     <menu-item label="Users" icon="people" to="/system/users"/>
+                    <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/>
                     <!-- <menu-item label="Manual" icon="description" to="/system/manual"/> -->
                     <q-separator />
                 </q-list>

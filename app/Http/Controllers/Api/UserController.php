@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 use App\Models\User as Model;
 
 class UserController extends Controller
@@ -18,7 +19,7 @@ class UserController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::query();
+        $query = Model::with('role');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {

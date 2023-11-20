@@ -121,14 +121,14 @@ class DashboardController extends Controller
     private function daily()
     {
         $hourly = collect(range(0,11))->mapWithKeys(function($h){
-            return [Carbon::now()->subHours($h)->format('H') => 0];
+            return [Carbon::now()->subHours($h)->format('g A') => 0];
         })->reverse();
 
         $daily = Consumption::where( 'created_at','>=', Carbon::now()->subHours(12) )
             ->orderBy( 'created_at', 'ASC' )
             ->get()
             ->groupBy(function($item){
-                return $item->created_at->format('H');
+                return $item->created_at->format('g A');
             })
             ->map(function($item){
                 return count($item);

@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-        <q-form class="q-pa-md row q-col-gutter-md" @submit="onCreate">
+        <q-form class="row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
                 <q-card>
                 <!-- Title -->
