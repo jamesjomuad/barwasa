@@ -2,21 +2,26 @@
 #include "ESP8266WiFi.h"
 #include "ESP8266HTTPClient.h"
 #include "WiFiClient.h"
+#include "WiFiClientSecure.h"
 
 
 // WiFi parameters to be configured
-const char * ssid = "Dlink"; // Write here your router's username
-const char * password = "jandavid"; // Write here your router's passward
-const char * URL = "https://barwsa.tribelink.me/api/consumption";
+const char *ssid = "Dlink"; // Write here your router's username
+const char *password = "jandavid"; // Write here your router's passward
 
-WiFiClient client;
+// WiFiClient client;
+WiFiClientSecure client;
 HTTPClient http;
+
+// Sensor
+const int digitalPin = D2;
 
 void setup(void) {
     Serial.begin(9600);
     // Connect to WiFi
     WiFi.begin(ssid, password);
 
+    Serial.println("Connecting");
     // while wifi not connected yet, print '.'
     // then after it connected, get out of the loop
     while (WiFi.status() != WL_CONNECTED) {
@@ -29,31 +34,50 @@ void setup(void) {
     // Print the IP address
     Serial.println(WiFi.localIP());
 
-    http_get();
+    http_get(random(100));
 }
 
-void loop() {}
+void loop()
+{
+//    http_get(random(100));
+    delay(10000);
+}
 
-void http_get() {
-    if (WiFi.status() == WL_CONNECTED) {
-        String endPoint = "https://barwsa.tribelink.me";
 
-        // Your Domain name with URL path or IP address with path
-        http.begin(client, endPoint.c_str());
+void http_get(int volume)
+{
+    const char*  server = "barwsa.tribelink.me";
 
-        // Specify content-type header
-        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    client.setInsecure();
 
-        // Data to send with HTTP POST
-        String httpRequestData = "id=654ed642b1ba9&volume=23";
+    Serial.println("\nStarting connection to server...");
+    if (!client.connect(server, 443))
+        Serial.println("Connection failed!");
+    else {
+        Serial.println("Connected to server!");
+        // Make a HTTP request:
+        client.print("GET http://barwsa.tribelink.me/api/log?id=6555da3c4bde1&volume=");
+        client.print(volume);
+        client.println(" HTTP/1.0");
+        client.println("Host: barwsa.tribelink.me");
+        client.println("Connection: close");
+        client.println();
 
-        // Send HTTP POST request
-        int httpResponseCode = http.POST(httpRequestData);
+        while (client.connected()) {
+            String line = client.readStringUntil('\n');
+            if (line == "\r") {
+                Serial.println("headers received");
+                break;
+            }
+        }
+        // if there are incoming bytes available
+        // from the server, read them and print them:
+        while (client.available()) {
+            char c = client.read();
+            Serial.write(c);
+        }
 
-        Serial.print("HTTP Response code: ");
-        Serial.println(httpResponseCode);
-
-        // Free resources
-        http.end();
+        client.stop();
     }
+
 }

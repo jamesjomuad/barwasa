@@ -1,4 +1,4 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include "ESP8266WiFi.h"
 #include "ESP8266HTTPClient.h"
 #include "WiFiClient.h"
@@ -13,6 +13,12 @@ const char *password = "jandavid"; // Write here your router's passward
 WiFiClientSecure client;
 HTTPClient http;
 
+// Sensor
+static const uint8_t D2 = 4;
+const int sensorPin = D2;
+volatile long pulse;
+unsigned long lastTime;
+float volume;
 
 void setup(void) {
     Serial.begin(9600);
@@ -31,14 +37,26 @@ void setup(void) {
     Serial.println("WiFi connected");
     // Print the IP address
     Serial.println(WiFi.localIP());
+
+    // Sensor
+    pinMode(sensorPin, INPUT);
+    attachInterrupt(digitalPinToInterrupt(sensorPin), increase, RISING);
 }
 
 void loop()
 {
-    http_get(random(100));
-    delay(9000);
+    volume = 2.663 * pulse / 1000 * 30;
+    if (millis() - lastTime > 2000) {
+        pulse = 0;
+        lastTime = millis();
+    }
+    Serial.println(pulse);
+    delay(500);
 }
 
+ICACHE_RAM_ATTR void increase() {
+    pulse++;
+}
 
 void http_get(int volume)
 {
@@ -47,12 +65,14 @@ void http_get(int volume)
     client.setInsecure();
 
     Serial.println("\nStarting connection to server...");
+    Serial.println("\nSending value: " + volume);
+
     if (!client.connect(server, 443))
         Serial.println("Connection failed!");
     else {
         Serial.println("Connected to server!");
         // Make a HTTP request:
-        client.print("GET http://barwsa.tribelink.me/api/log?id=6545a22f1a453&volume=");
+        client.print("GET http://barwsa.tribelink.me/api/log?id=6555da3c4bde1&volume=");
         client.print(volume);
         client.println(" HTTP/1.0");
         client.println("Host: barwsa.tribelink.me");
@@ -76,30 +96,4 @@ void http_get(int volume)
         client.stop();
     }
 
-}
-
-void http_post()
-{
-    // Your Domain name with URL path or IP address with path
-    http.begin(client, "http://httpbin.org/post");
-
-    // Specify content-type header
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // Send HTTP POST request
-    int httpResponseCode = http.POST("id=655031d9a9da8&volume=20");
-
-    if (httpResponseCode>0) {
-        Serial.print("HTTP Response code: ");
-        Serial.println(httpResponseCode);
-        String payload = http.getString();
-        Serial.println(payload);
-    }
-    else {
-        Serial.print("Error code: ");
-        Serial.println(httpResponseCode);
-    }
-
-    // Free resources
-    http.end();
 }

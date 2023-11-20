@@ -1,3 +1,4 @@
+static const uint8_t D2 = 4;
 int sensorPin = D2;
 volatile long pulse;
 unsigned long lastTime;
@@ -17,7 +18,7 @@ void loop() {
     }
     Serial.print(pulse);
     Serial.println(" L/m");
-    delay(1000);
+    delay(3000);
 }
 
 ICACHE_RAM_ATTR void increase() {
