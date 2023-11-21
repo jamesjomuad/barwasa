@@ -21,7 +21,7 @@ class ConsumerController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::query();
+        $query = User::with('consumer')->whereHas('consumer');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
@@ -93,7 +93,10 @@ class ConsumerController extends Controller
     public function show($id)
     {
         try {
-            return Model::findOrFail($id);
+            return User::with('consumer')
+                ->whereHas('consumer')
+                ->findOrFail($id)
+            ;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([
                 'status' => false,

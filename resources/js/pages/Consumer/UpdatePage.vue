@@ -1,7 +1,7 @@
 <!-- eslint-disable brace-style -->
 <template>
     <q-page padding>
-        <q-form class="q-pa-md row q-col-gutter-md" @submit="onUpdate">
+        <q-form class="row q-col-gutter-md" @submit="onUpdate">
             <div class="col-md-12">
                 <q-card>
                 <!-- Title -->
@@ -41,7 +41,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.phone"
+                            v-model="$form.consumer.phone"
                             dense
                             outlined
                             label="Phone"
@@ -54,7 +54,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.phone_2"
+                            v-model="$form.consumer.phone_2"
                             dense
                             outlined
                             label="Work Phone"
@@ -80,7 +80,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.dob"
+                            v-model="$form.consumer.dob"
                             dense
                             outlined
                             label="Date of Birth"
@@ -94,7 +94,7 @@
                             <template v-slot:after>
                                 <q-btn icon="event" round color="primary">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="$form.dob">
+                                        <q-date v-model="$form.consumer.dob">
                                         <div class="row items-center justify-end q-gutter-sm">
                                             <q-btn label="Cancel" color="primary" flat v-close-popup />
                                             <q-btn label="OK" color="primary" flat v-close-popup />
@@ -106,7 +106,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.barangay"
+                            v-model="$form.consumer.barangay"
                             dense
                             outlined
                             label="Barangay"
@@ -119,7 +119,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.sitio"
+                            v-model="$form.consumer.sitio"
                             dense
                             outlined
                             label="Sitio"
@@ -132,7 +132,7 @@
                         </q-input>
 
                         <q-input
-                            v-model="$form.billing_address"
+                            v-model="$form.consumer.billing_address"
                             dense
                             outlined
                             label="Billing Address"
@@ -149,7 +149,7 @@
                 <q-card-section>
                     <div class="row q-col-gutter-md">
                     <q-input
-                        v-model="$form.meter_id"
+                        v-model="$form.consumer.meter_id"
                         dense
                         outlined
                         label="Meter ID"
@@ -270,9 +270,7 @@ const $form = ref({
     first_name: "",
     last_name: "",
     email: "",
-    billing_address: "",
-    phone: "",
-    phone_2: "",
+    consumer: {}
 });
 const table = reactive({
     loading: false,

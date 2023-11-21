@@ -46,4 +46,4 @@ Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController')
 
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
 
-Route::resource('test', 'App\Http\Controllers\Api\RoleController');
+Route::resource('test', 'App\Http\Controllers\Api\ConsumerController');
