@@ -47,7 +47,6 @@
         <q-drawer
             bordered
             elevated
-            show-if-above
             v-model="drawer"
             :style="!miniState?'padding-top: 170px;':''"
             :dark="$q.dark.isActive"
@@ -96,7 +95,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from "vuex"
 import { useRoute, useRouter } from 'vue-router'
-import { copyToClipboard } from 'quasar'
+import { copyToClipboard, debounce } from 'quasar'
 import  store  from '../store/index'
 import menuItem from "../components/MenuItem";
 
@@ -105,10 +104,9 @@ import menuItem from "../components/MenuItem";
 const $route = useRoute();
 const $router = useRouter();
 const $store = useStore();
-const drawer = ref(false)
+const drawer = ref(true)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
-
 
 
 

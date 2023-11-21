@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function consumer()
+    {
+        return $this->hasOne(Consumer::class);
+    }
+
 
     public function getFullnameAttribute()
     {

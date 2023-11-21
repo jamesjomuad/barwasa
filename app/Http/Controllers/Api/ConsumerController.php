@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use App\Models\Consumer as Model;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Consumer;
 
 class ConsumerController extends Controller
 {
@@ -66,11 +68,19 @@ class ConsumerController extends Controller
         // Generate Meter ID
         $data['meter_id'] = uniqid();       //Str::uuid()->toString();
 
-        $consumer = Model::create($data);
+        $user = User::create([
+            'name'       => $request->name,
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'password'   => Hash::make($request->password)
+        ]);
+
+        $user->consumer()->create($data);
 
         return response()->json([
             'message' => 'Customer created successfully',
-            'data'    => $consumer
+            'data'    => $user
         ], 201);
     }
 

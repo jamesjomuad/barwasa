@@ -15,32 +15,33 @@ class Consumer extends Model
         "age",
         "billing_address",
         "dob",
-        "email",
         "barangay",
         "sitio",
-        "first_name",
-        "last_name",
         "meter_id",
         "phone_2",
         "phone",
     ];
 
     protected $appends = [
-        'fullname',
         'total_volume',
         'total_payable',
         'consumption_dates'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function consumptions()
     {
         return $this->hasMany(Consumption::class, 'consumer_id');
     }
 
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class, 'consumer_id');
-    }
+    // public function invoices()
+    // {
+    //     return $this->hasMany(Invoice::class, 'consumer_id');
+    // }
 
     public function getTotalVolumeAttribute()
     {
@@ -73,11 +74,6 @@ class Consumer extends Model
             'from' => '',
             'to' => '',
         ];
-    }
-
-    public function getFullnameAttribute()
-    {
-        return "$this->first_name $this->last_name";
     }
 
 }
