@@ -113,7 +113,7 @@ const table = reactive({
             align: 'left',
             sortable: true,
             format: (v, row) => {
-                return `${v.first_name}`
+                return `${v?.first_name ?? 'deleted'}`
             }
         },
         {
@@ -123,7 +123,7 @@ const table = reactive({
             align: 'left',
             sortable: true,
             format: (v, row) => {
-                return `${v.last_name}`
+                return `${v?.last_name ?? 'deleted'}`
             }
         },
         {

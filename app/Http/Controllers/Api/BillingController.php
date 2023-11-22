@@ -22,6 +22,8 @@ class BillingController extends Controller
             $q->where('is_paid', 0);
         });
 
+        $query->whereHas('user');
+
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
             $sortBy  = $request->get('sortBy');
