@@ -14,6 +14,19 @@
                 <q-card-section>
                     <div class="row q-col-gutter-md">
                         <q-input
+                            dense
+                            outlined
+                            v-model="$form.name"
+                            label="Username"
+                            class="col-12"
+                            readonly
+                        >
+                            <template v-slot:prepend>
+                                <q-icon name="perm_identity" />
+                            </template>
+                        </q-input>
+
+                        <q-input
                             v-model="$form.first_name"
                             dense
                             outlined
@@ -162,22 +175,22 @@
                 </q-card-section>
                 <q-separator />
                 <q-card-actions align="right">
-                    <q-btn
-                    color="negative"
-                    @click="onRemove"
-                    :disable="ui.loading"
-                    :loading="ui.loading"
-                    >
-                    Remove
-                    </q-btn>
-                    <q-btn
-                    color="primary"
-                    type="submit"
-                    :disable="ui.loading"
-                    :loading="ui.loading"
-                    >
-                    Update
-                    </q-btn>
+                    <div class="row q-gutter-md">
+                        <q-btn
+                            label="Remove"
+                            color="negative"
+                            @click="onRemove"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        />
+                        <q-btn
+                            label="Update"
+                            color="primary"
+                            type="submit"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                        />
+                    </div>
                 </q-card-actions>
                 </q-card>
             </div>

@@ -142,7 +142,7 @@ const table = reactive({
             label: "Name",
             name: "consumer",
             field: "consumer",
-            format: (val, row) => val?.user.fullname,
+            format: (val, row) => val?.user?.fullname,
             align: 'left',
             sortable: false,
         },
