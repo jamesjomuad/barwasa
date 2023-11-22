@@ -93,10 +93,13 @@ class ConsumerController extends Controller
     public function show($id)
     {
         try {
-            return User::with('consumer')
-                ->whereHas('consumer')
+            $query = User::whereHas('consumer')
+                ->with(['consumer.consumptions'=>function($q){
+                    $q->orderBy( 'is_paid', 'ASC' );
+                }])
                 ->findOrFail($id)
             ;
+            return $query;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([
                 'status' => false,
