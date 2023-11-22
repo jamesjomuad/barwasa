@@ -37,7 +37,10 @@ class Invoice extends Model
 
     public function getFullnameAttribute()
     {
-        return $this->consumer->first_name ." " . $this->consumer->last_name;
+        if($this->consumer)
+        {
+            return $this->consumer->user->first_name ." " . $this->consumer->user->last_name;
+        }
     }
 
     public function getTotalVolumeAttribute()

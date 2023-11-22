@@ -139,17 +139,11 @@ const table = reactive({
             sortable: true,
         },
         {
-            label: "First name",
+            label: "Name",
             name: "consumer",
             field: "consumer",
-            format: (val, row) => val?.first_name,
-            sortable: false,
-        },
-        {
-            label: "Last name",
-            name: "consumer",
-            field: "consumer",
-            format: (val, row) => val?.last_name,
+            format: (val, row) => val?.user.fullname,
+            align: 'left',
             sortable: false,
         },
         {

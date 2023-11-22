@@ -10,7 +10,7 @@
                 <q-card-section>
                     <div class="row q-col-gutter-md">
                     <q-input
-                        v-model="$form.meter_id"
+                        v-model="$form.consumer.meter_id"
                         dense
                         outlined
                         label="Meter ID"
@@ -175,10 +175,7 @@ const $form = ref({
     first_name: "",
     last_name: "",
     email: "",
-    billing_address: "",
-    phone: "",
-    phone_2: "",
-    meter_id: ""
+    consumer: {}
 });
 const table = reactive({
     loading: false,
@@ -259,13 +256,12 @@ const table = reactive({
 onMounted(async ()=>{
     let data = await fetch();
     $form.value = {...$form, ...data}
-    table.rows = data.consumptions.reverse()
 })
 
 async function fetch(){
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
+    table.rows = data.consumer.consumptions
     return data
-
 }
 
 function onAddVolume(){
@@ -302,7 +298,7 @@ async function onSaveCell(event, props){
     table.loading = true
     try{
         const { data } = await axios.post(`/api/consumption`, {
-            id: $form.value.meter_id,
+            id: $form.value.consumer.meter_id,
             previous: props.row.previous,
             current: props.row.current,
             volume: props.row.current - props.row.previous,

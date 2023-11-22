@@ -19,7 +19,7 @@ class ConsumptionController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::with('consumer');
+        $query = Model::with('consumer.user');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
