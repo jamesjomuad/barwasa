@@ -109,16 +109,22 @@ const table = reactive({
         {
             label: "First name",
             name: "first_name",
-            field: "first_name",
+            field: "user",
             align: 'left',
             sortable: true,
+            format: (v, row) => {
+                return `${v.first_name}`
+            }
         },
         {
             label: "Last Name",
             name: "last_name",
-            field: "last_name",
+            field: "user",
             align: 'left',
             sortable: true,
+            format: (v, row) => {
+                return `${v.last_name}`
+            }
         },
         {
             label: "Consumptions",

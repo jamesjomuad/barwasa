@@ -85,7 +85,13 @@
                     <q-separator/>
                     <q-card-actions align="right">
                         <q-btn flat label="Close" color="negative" v-close-popup />
-                        <q-btn flat label="Transact" color="primary" type="submit" />
+                        <q-btn
+                            flat
+                            label="Transact"
+                            :disable="!canTransact"
+                            :class="{'bg-primary':canTransact,'bg-grey':!canTransact}"
+                            type="submit"
+                        />
                     </q-card-actions>
                 </q-card>
             </q-form>
@@ -165,16 +171,19 @@ const table = reactive({
 const ui = reactive({
     loading: false
 })
-
 const $emit = defineEmits([
     'payment:error',
     'payment:success'
 ])
 
+const canTransact = computed(()=>{
+    return invoice.cash >= invoice.total
+})
+
+
 onMounted(()=>{
     invoice.date = date.formatDate(Date.now(), 'MMMM DD, YYYY')
 })
-
 
 function show(data){
     dialog.value.show()
