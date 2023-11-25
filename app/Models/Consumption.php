@@ -9,7 +9,7 @@ class Consumption extends Model
 {
     use HasFactory;
 
-    protected $table = "customer_consumption";
+    protected $table = "consumption";
 
     protected $fillable = [
         'meter_id',

@@ -12,7 +12,6 @@ class Consumer extends Model
     protected $table = "customer";
 
     protected $fillable = [
-        "age",
         "billing_address",
         "dob",
         "barangay",

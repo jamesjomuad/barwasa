@@ -45,6 +45,16 @@ class AuthController extends Controller
                 'password'   => Hash::make($request->password)
             ]);
 
+            $user->consumer()->create([
+                "billing_address" => '',
+                "dob"             => null,
+                "barangay"        => '',
+                "sitio"           => '',
+                "meter_id"        => uniqid(),
+                "phone_2"         => '',
+                "phone"           => '',
+            ]);
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',

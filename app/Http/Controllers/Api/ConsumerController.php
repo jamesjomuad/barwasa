@@ -117,9 +117,29 @@ class ConsumerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $model = Model::findOrFail($id);
+        $model = User::findOrFail($id);
+
+        if( $request->filled('password') ){
+            $model->password = Hash::make($request->password);
+        }
+
+        $model->name = $request->input('name');
+        $model->email = $request->input('email');
+        $model->first_name = $request->input('first_name');
+        $model->last_name = $request->input('last_name');
+
+        $model->save();
+
         return [
-            'status' => $model->update($request->all()),
+            'status' => $model->consumer()->update([
+                "billing_address" => $request->input('billing_address'),
+                "dob"             => $request->input('dob'),
+                "barangay"        => $request->input('barangay'),
+                "sitio"           => $request->input('sitio'),
+                "meter_id"        => $request->input('meter_id'),
+                "phone_2"         => $request->input('phone_2'),
+                "phone"           => $request->input('phone'),
+            ]),
             'data'   => $model
         ];
     }

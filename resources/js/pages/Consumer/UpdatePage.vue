@@ -184,6 +184,13 @@
                             :loading="ui.loading"
                         />
                         <q-btn
+                            label="Reset Password"
+                            color="warning"
+                            :disable="ui.loading"
+                            :loading="ui.loading"
+                            @click="onResetPassword"
+                        />
+                        <q-btn
                             label="Update"
                             color="primary"
                             type="submit"
@@ -357,7 +364,7 @@ const table = reactive({
 
 onMounted(async ()=>{
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
-    $form.value = {...$form, ...data}
+    $form.value = {...$form.value, ...data}
     table.rows = data.consumptions
 })
 
@@ -373,7 +380,7 @@ async function onUpdate(){
             })
         }
     }
-catch(error){
+    catch(error){
         console.log(error)
         $q.notify({
             type: 'negative',
@@ -414,4 +421,39 @@ function onRemove(){
 
 }
 
+async function onResetPassword(){
+    $q.dialog({
+        title: 'Set new password',
+        prompt: {
+            model: '',
+            type: 'password',
+            outlined: true,
+            flat: true
+        },
+        cancel: true,
+        persistent: true
+    }).onOk(async(password) => {
+        ui.loading = true
+        try{
+            const { data } = await axios.put(`/api/consumers/${$route.params.id}`, {
+                ...$form.value,
+                password: password
+            })
+            if(data.status){
+                $q.notify({
+                    type: 'positive',
+                    message: `Password updated!`
+                })
+            }
+        }
+        catch(e){
+            $q.notify({
+                message: 'Error changing password',
+                color: 'negative'
+            })
+        }
+        ui.loading = dalse
+    })
+}
 </script>
+
