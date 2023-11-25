@@ -37,7 +37,7 @@ class Invoice extends Model
 
     public function getFullnameAttribute()
     {
-        if($this->consumer)
+        if($this->consumer && isset($this->consumer->user))
         {
             return $this->consumer->user->first_name ." " . $this->consumer->user->last_name;
         }
