@@ -69,8 +69,7 @@
 
                     <q-item-label header>System</q-item-label>
                     <menu-item label="Users" icon="people" to="/system/users"/>
-                    <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/>
-                    <!-- <menu-item label="Manual" icon="description" to="/system/manual"/> -->
+                    <!-- <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/> -->
                     <q-separator />
                 </q-list>
             </q-scroll-area>

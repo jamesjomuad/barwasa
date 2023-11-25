@@ -45,5 +45,3 @@ Route::group(['middleware' => ['auth:sanctum','throttle:160,1'], 'namespace' => 
 Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController');
 
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
-
-Route::resource('test', 'App\Http\Controllers\Api\ConsumerController');

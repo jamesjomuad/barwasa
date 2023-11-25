@@ -33,6 +33,14 @@
                         </template>
                     </q-input>
                     <q-btn
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="refresh"
+                        @click="onRefresh">
+                    </q-btn>
+                    <q-btn
                         flat
                         round
                         size="md"
@@ -130,24 +138,28 @@ const table = reactive({
             name: "name",
             field: "name",
             sortable: true,
-        },
-        {
-            label: "Email",
-            name: "email",
-            field: "email",
-            sortable: true,
+            align: 'left'
         },
         {
             label: "First name",
             name: "first_name",
             field: "first_name",
             sortable: true,
+            align: 'left'
         },
         {
             label: "Last name",
             name: "last_name",
             field: "last_name",
             sortable: true,
+            align: 'left'
+        },
+        {
+            label: "Email",
+            name: "email",
+            field: "email",
+            sortable: true,
+            align: 'left'
         },
         {
             label: 'Created At',
@@ -227,5 +239,12 @@ async function onRequest(props) {
 
 function onRow(evt, row, index){
     $router.push(`/system/users/${row.id}`)
+}
+
+function onRefresh(){
+    onRequest({
+        pagination: table.pagination,
+        filter: null,
+    });
 }
 </script>

@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::with('role');
+        $query = Model::with('role')->whereDoesntHave('consumer');
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
