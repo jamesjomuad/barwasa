@@ -70,7 +70,7 @@
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
                             <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" @click="onPay(props)"/>
-                            <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row.id"/>
+                            <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row?.user.id"/>
                         </div>
                     </q-td>
                 </template>
