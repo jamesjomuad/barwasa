@@ -32,10 +32,11 @@ mix.disableSuccessNotifications();
 
 mix.js('resources/js/app.js', 'public/build/js')
     .vue()
-    .sass('resources/css/quasar.variables.scss', 'public/build/css')
-    .postCss('resources/css/app.css', 'public/build/css', [
-        //
-    ])
+    .sass('resources/css/app.scss', 'public/build/css')
+    // .sass('resources/css/quasar.variables.scss', 'public/build/css')
+    // .postCss('resources/css/app.css', 'public/build/css', [
+    //     //
+    // ])
     .version()
 
 mix.browserSync({
