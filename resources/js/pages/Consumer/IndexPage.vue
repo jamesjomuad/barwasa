@@ -32,20 +32,6 @@
                                 <q-icon name="search" />
                             </template>
                         </q-input>
-                        <!-- <q-btn
-                            round
-                            size="md"
-                            icon="event"
-                            class="q-ml-sm"
-                            color="primary">
-                            <q-menu ref="qDateMenu" anchor="bottom start" self="top left">
-                                <q-date
-                                    range
-                                    v-model="dateRange.ref"
-                                    @range-end="onDateSelect">
-                                </q-date>
-                            </q-menu>
-                        </q-btn> -->
                         <q-btn
                             round
                             size="md"
@@ -53,6 +39,14 @@
                             class="q-ml-sm"
                             icon="add"
                             to="/consumers/create">
+                        </q-btn>
+                        <q-btn
+                            round
+                            size="md"
+                            color="info"
+                            class="q-ml-sm"
+                            icon="refresh"
+                            @click="onRefresh">
                         </q-btn>
                         <q-btn
                             flat
@@ -268,4 +262,10 @@ function onRow(evt, row, index){
     $router.push(`/consumers/${row.id}`)
 }
 
+function onRefresh(){
+    onRequest({
+        pagination: table.pagination,
+        filter: null,
+    });
+}
 </script>
