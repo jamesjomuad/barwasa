@@ -153,7 +153,7 @@ const customerRoute = [
     // Dashboard
     {
         path: "",
-        component: () => import("../pages/Dashboard/IndexPage.vue"),
+        component: () => import("../pages/Announcement/IndexPage.vue"),
         meta: {
             title: "Dashboard",
             requiresAuth: true
@@ -164,7 +164,7 @@ const customerRoute = [
         path: "/billing",
         children: [{
                 path: "",
-                component: () => import("../pages/Billing/IndexCustomerPage.vue"),
+                component: () => import("../pages/Billing/IndexPage.vue"),
                 meta: {
                     title: "Billing",
                     requiresAuth: true

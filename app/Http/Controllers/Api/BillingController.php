@@ -22,7 +22,7 @@ class BillingController extends Controller
             $q->where('is_paid', 0);
         });
 
-        if( $request->filled('user') )
+        if( $request->user()->is_consumer )
         {
             $query->where('user_id', $request->input('user'));
         }

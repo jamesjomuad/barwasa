@@ -69,8 +69,11 @@
                 <template #body-cell-action="props">
                     <q-td :props="props">
                         <div class="row justify-end q-gutter-sm">
-                            <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" @click="onPay(props)"/>
-                            <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row?.user.id"/>
+                            <template v-if="!isCustomer">
+                                <q-btn v-if="props.row.total_payable" size="sm" color="primary" label="Pay" @click="onPay(props)"/>
+                                <q-btn size="sm" color="warning" label="Update" :to="'/billing/'+props.row?.user.id"/>
+                            </template>
+                            <q-btn v-if="isCustomer" size="sm" color="primary" label="Bill" @click="onViewBill(props)"/>
                         </div>
                     </q-td>
                 </template>
@@ -86,16 +89,18 @@
 
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useStore } from "vuex"
 import payment from '../../components/payment.vue'
 
 
+
 const $router = useRouter();
 const $store = useStore();
 const $q = useQuasar()
+const terminal = ref()
 const table = reactive({
     loading: false,
     filter: '',
@@ -166,7 +171,7 @@ const table = reactive({
         rowsNumber: 10,
     }
 })
-const terminal = ref()
+const isCustomer = $store.getters['auth/isCustomer'];
 
 
 onMounted(() => {
@@ -193,7 +198,7 @@ async function onRequest(props) {
         sortBy: sortBy,
         orderBy: descending ? "desc" : "asc",
         page: page,
-        per_page: rowsPerPage
+        per_page: rowsPerPage,
     };
 
     try {
@@ -209,7 +214,8 @@ async function onRequest(props) {
         table.pagination.rowsPerPage = rowsPerPage;
         table.pagination.sortBy = sortBy;
         table.pagination.descending = descending;
-    } catch (error) {
+    }
+    catch (error) {
         $q.notify({
             color: 'negative',
             message: error.response.statusText,
@@ -231,6 +237,10 @@ function onRefresh(){
 }
 
 function onPay(props){
+    terminal.value.show(props.row)
+}
+
+function onViewBill(props){
     terminal.value.show(props.row)
 }
 

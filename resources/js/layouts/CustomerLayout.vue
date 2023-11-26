@@ -50,6 +50,7 @@
         >
             <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
                 <q-list>
+                    <menu-item label="Announcement" icon="campaign" to="/" exact/>
                     <menu-item label="Billing" icon="receipt" to="/billing"/>
                 </q-list>
             </q-scroll-area>

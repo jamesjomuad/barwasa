@@ -64,8 +64,8 @@
                             </template>
                         </q-table>
                     </q-card-section>
-                    <q-separator/>
-                    <q-card-section>
+                    <q-separator v-if="!isCustomer" />
+                    <q-card-section v-if="!isCustomer">
                         <div class="row q-gutter-md">
                             <div class="col">
                                 <q-input dense outlined label="Reference #" v-model="invoice.receipt"></q-input>
@@ -86,6 +86,7 @@
                     <q-card-actions align="right">
                         <q-btn flat label="Close" color="negative" v-close-popup />
                         <q-btn
+                            v-if="!isCustomer"
                             flat
                             label="Transact"
                             :disable="!canTransact"
@@ -103,9 +104,12 @@
 <script setup>
 import { ref, reactive, onMounted, defineExpose, computed, defineEmits } from "vue";
 import { useQuasar, date } from 'quasar'
+import { useStore } from "vuex"
 
 
 const $q = useQuasar()
+const $store = useStore();
+const isCustomer = $store.getters['auth/isCustomer'];
 const dialog = ref()
 const consumer = reactive({})
 const invoice = reactive({
@@ -187,7 +191,7 @@ onMounted(()=>{
 
 function show(data){
     dialog.value.show()
-    consumer.name = `${data.first_name} ${data.last_name} `
+    consumer.name = `${data.user.first_name} ${data.user.last_name} `
     consumer.period = `${data.consumption_dates.from} - ${data.consumption_dates.to} `
     table.rows = data.consumptions
     invoice.number = 'INV-' + date.formatDate(Date.now(), 'YYYYMMDD') + `${data.id}`
