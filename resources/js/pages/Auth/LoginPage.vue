@@ -105,7 +105,8 @@ async function onLogin(params) {
             $store.commit('auth/setUser', response.data)
             $router.push(`/`)
         }
-    } catch (error) {
+    }
+    catch (error) {
         ui.isInvalid = true
         $q.notify({
             message: error.response.data.message,

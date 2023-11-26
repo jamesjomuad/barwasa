@@ -37,7 +37,8 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'fullname'
+        'fullname',
+        'is_consumer',
     ];
 
     /**
@@ -60,9 +61,13 @@ class User extends Authenticatable
         return $this->hasOne(Consumer::class);
     }
 
-
     public function getFullnameAttribute()
     {
         return $this->first_name ? $this->first_name . " " . $this->last_name : $this->name;
+    }
+
+    public function getIsConsumerAttribute()
+    {
+        return $this->consumer()->exists();
     }
 }

@@ -15,3 +15,9 @@ export function user(state){
     return state.user
 }
 
+
+export function isCustomer(state){
+    state.user = LocalStorage.getItem('user')
+    return state.user?.is_consumer
+}
+

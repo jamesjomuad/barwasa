@@ -1,7 +1,7 @@
-static const uint8_t D2 = 4;
 int sensorPin = D2;
 volatile long pulse;
 unsigned long lastTime;
+
 float volume;
 
 void setup() {
@@ -16,9 +16,8 @@ void loop() {
         pulse = 0;
         lastTime = millis();
     }
-    Serial.print(pulse);
+    Serial.print(volume);
     Serial.println(" L/m");
-    delay(3000);
 }
 
 ICACHE_RAM_ATTR void increase() {

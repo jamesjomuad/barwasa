@@ -4,11 +4,6 @@
             <q-toolbar>
                 <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
                 <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>
-                <!-- <q-toolbar-title>
-                    <q-avatar>
-                        <img src="/images/logo.png" />
-                    </q-avatar>
-                </q-toolbar-title> -->
 
                 <q-space />
 
@@ -30,8 +25,8 @@
                             <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
-                            <q-item clickable @click.prevent="copyToClipboard(store.getters['auth/token'])">
-                                <q-item-section>{{store.getters['auth/token']}}</q-item-section>
+                            <q-item clickable @click.prevent="copyToClipboard($store.getters['auth/token'])">
+                                <q-item-section>{{$store.getters['auth/token']}}</q-item-section>
                             </q-item>
                             <q-item clickable @click.prevent="onLogout">
                                 <q-item-section>Logout</q-item-section>
@@ -55,20 +50,7 @@
         >
             <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
                 <q-list>
-                    <menu-item label="Dashboard" icon="dashboard" to="/" exact/>
-                    <q-separator />
-
-                    <q-item-label header>Customers</q-item-label>
                     <menu-item label="Billing" icon="receipt" to="/billing"/>
-                    <menu-item label="Transactions" icon="checklist" to="/transactions"/>
-                    <menu-item label="Consumptions" icon="water_drop" to="/consumptions"/>
-                    <menu-item label="Consumers" icon="people" to="/consumers"/>
-                    <q-separator />
-
-                    <q-item-label header>System</q-item-label>
-                    <menu-item label="Users" icon="people" to="/system/users"/>
-                    <!-- <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/> -->
-                    <q-separator />
                 </q-list>
             </q-scroll-area>
             <div v-show="!miniState" class="absolute-top bg-accent" style="height: 170px">

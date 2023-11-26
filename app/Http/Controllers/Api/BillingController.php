@@ -16,11 +16,16 @@ class BillingController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Consumer::with('consumptions','user');
+        $query = Consumer::with(['consumptions','user']);
 
         $query->whereHas('consumptions', function($q){
             $q->where('is_paid', 0);
         });
+
+        if( $request->filled('user') )
+        {
+            $query->where('user_id', $request->input('user'));
+        }
 
         $query->whereHas('user');
 

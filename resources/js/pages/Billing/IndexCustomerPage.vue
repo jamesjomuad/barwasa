@@ -193,7 +193,8 @@ async function onRequest(props) {
         sortBy: sortBy,
         orderBy: descending ? "desc" : "asc",
         page: page,
-        per_page: rowsPerPage
+        per_page: rowsPerPage,
+        user: $store.getters['auth/user'].id
     };
 
     try {
@@ -209,7 +210,8 @@ async function onRequest(props) {
         table.pagination.rowsPerPage = rowsPerPage;
         table.pagination.sortBy = sortBy;
         table.pagination.descending = descending;
-    } catch (error) {
+    }
+    catch (error) {
         $q.notify({
             color: 'negative',
             message: error.response.statusText,
