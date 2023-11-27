@@ -168,7 +168,6 @@
                         label="Meter ID"
                         lazy-rules
                         class="col-12"
-                        readonly
                     >
                     </q-input>
                     </div>

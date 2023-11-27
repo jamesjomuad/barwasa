@@ -132,13 +132,13 @@ class ConsumerController extends Controller
 
         return [
             'status' => $model->consumer()->update([
-                "billing_address" => $request->input('billing_address'),
-                "dob"             => $request->input('dob'),
-                "barangay"        => $request->input('barangay'),
-                "sitio"           => $request->input('sitio'),
-                "meter_id"        => $request->input('meter_id'),
-                "phone_2"         => $request->input('phone_2'),
-                "phone"           => $request->input('phone'),
+                "billing_address" => $request->input('consumer.billing_address'),
+                "dob"             => $request->input('consumer.dob'),
+                "barangay"        => $request->input('consumer.barangay'),
+                "sitio"           => $request->input('consumer.sitio'),
+                "meter_id"        => $request->input('consumer.meter_id'),
+                "phone_2"         => $request->input('consumer.phone_2'),
+                "phone"           => $request->input('consumer.phone'),
             ]),
             'data'   => $model
         ];
