@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth:sanctum','throttle:160,1'], 'namespace' => 
     # Consumers
     Route::resource('consumers', 'ConsumerController');
 
+    # Announcement
+    Route::resource('announcement', 'AnnouncementController');
+
     # Users
     Route::resource('users', 'UserController');
 

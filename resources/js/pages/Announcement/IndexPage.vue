@@ -1,197 +1,228 @@
 <template>
     <q-page padding>
-        <div class="row q-mb-lg q-col-gutter-md">
-
-            <!-- Announcement -->
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <q-card flat bordered class="radius-8">
-                    <q-card-section>
-                        <div class="flex justify-between">
-                            <h2 class="text-h6 q-ma-none">Announcements</h2>
-                            <!-- <div class="text-subtitle2">This Month</div> -->
-                        </div>
-                    </q-card-section>
-                    <q-card-section>
-
-                    </q-card-section>
-                </q-card>
-            </div>
-
-            <!-- Monthly Consumptions -->
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <q-card flat bordered class="radius-8" style="min-height:400px;">
-                    <q-card-section>
-                        <apexcharts
-                            height="350"
-                            type="bar"
-                            :options="chartMonthly.options"
-                            :series="chartMonthly.series"
-                        ></apexcharts>
-                    </q-card-section>
-                    <q-inner-loading :showing="ui.loading"/>
-                </q-card>
-            </div>
-
-            <!-- Weekly Consumptions -->
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <q-card flat bordered class="radius-8" style="min-height:400px;">
-                    <q-card-section>
-                        <apexcharts
-                            height="350"
-                            type="bar"
-                            :options="chartWeekly.options"
-                            :series="chartWeekly.series"
-                        ></apexcharts>
-                    </q-card-section>
-                    <q-inner-loading :showing="ui.loading"/>
-                </q-card>
-            </div>
-
-            <!-- Daily Consumptions -->
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <q-card flat bordered class="radius-8" style="min-height:400px;">
-                    <q-card-section>
-                        <apexcharts
-                            height="350"
-                            type="bar"
-                            :options="chartDaily.options"
-                            :series="chartDaily.series"
-                        ></apexcharts>
-                    </q-card-section>
-                    <q-inner-loading :showing="ui.loading"/>
-                </q-card>
-            </div>
+        <!-- Table -->
+        <div class="col-auto">
+            <q-table
+                :dark="$q.dark.isActive"
+                flat
+                bordered
+                binary-state-sort
+                title="Announcements"
+                row-key="id"
+                v-model:pagination="table.pagination"
+                :rows="table.rows"
+                :columns="table.columns"
+                :loading="table.loading"
+                :filter="table.filter"
+                :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
+                @request="onRequest"
+                @row-click="onRow"
+            >
+                <template v-slot:top-right="props">
+                    <q-input
+                        outlined
+                        dense
+                        ref="search"
+                        debounce="300"
+                        v-model="table.filter"
+                        placeholder="Search"
+                        class="q-ma-xs"
+                    >
+                        <template v-slot:append>
+                            <q-icon name="search" />
+                        </template>
+                    </q-input>
+                    <q-btn
+                        round
+                        size="md"
+                        color="primary"
+                        class="q-ml-sm"
+                        icon="add"
+                        to="/system/announcement/create">
+                    </q-btn>
+                    <q-btn
+                        round
+                        size="md"
+                        color="info"
+                        class="q-ml-sm"
+                        icon="refresh"
+                        @click="onRefresh">
+                    </q-btn>
+                    <q-btn
+                        flat
+                        round
+                        size="md"
+                        class="q-ml-sm"
+                        color="grey-5"
+                        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                        @click="props.toggleFullscreen"
+                    >
+                        <q-tooltip>Toggle Fullscreen</q-tooltip>
+                    </q-btn>
+                </template>
+                <template #body-cell-type="props">
+                    <q-td :props="props">
+                        <q-badge class="q-pa-sm" :color="ui.typeBg(props.row.type)">{{ props.row.type }}</q-badge>
+                    </q-td>
+                </template>
+                <template v-slot:loading>
+                    <q-inner-loading showing color="primary" />
+                </template>
+            </q-table>
         </div>
     </q-page>
 </template>
 
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import apexcharts from "vue3-apexcharts";
-import _ from 'lodash'
+import { ref, reactive, onMounted, computed } from "vue";
+import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 
+
+const $router = useRouter();
+const $q = useQuasar()
 const ui = reactive({
-    loading: true
+    loading: false,
+    typeBg(type){
+        let colors = {
+            'Emergency': 'red',
+            'Alert': 'warning',
+            'Update': 'green-4',
+            'Reminder': 'info'
+        }
+        return colors[type]
+    }
 })
-const loading = ref(false)
-const chartMonthly = reactive({
-    options: {
-        chart: {
-            id: "monthly-consumption",
-        },
-        title: {
-            text: 'Monthly Consumptions', // Set your chart title here
-            align: 'left', // You can also specify alignment (left, center, right)
-        },
-        xaxis: {
-            categories: [],
-        },
-    },
-    series: [
+const table = reactive({
+    loading: false,
+    filter: '',
+    rows: [],
+    columns: [
         {
-            name: "Month",
-            data: [0],
+            label: "#",
+            name: "id",
+            field: "id",
+            sortable: true,
+        },
+        {
+            label: "Title",
+            name: "title",
+            field: "title",
+            align: 'left',
+            sortable: true,
+        },
+        {
+            label: 'Type',
+            name: 'type',
+            field: 'type',
+            sortable: false,
+            align: 'left',
+        },
+        {
+            label: 'Start Date Time',
+            field: 'date_start',
+            sortable: false,
+            align: 'left',
+        },
+        {
+            label: 'End Date Time',
+            field: 'date_end',
+            sortable: false,
+            align: 'left',
+        },
+        {
+            label: 'Created',
+            field: 'created_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                return moment(val).format("YYYY-MM-DD");
+            },
+        },
+        {
+            label: 'Updated',
+            field: 'updated_at',
+            sortable: true,
+            align: 'left',
+            format: (val, row) => {
+                return moment(val).format("YYYY-MM-DD");
+            }
         }
     ],
-})
-const chartWeekly = reactive({
-    options: {
-        chart: {
-            id: "weekly-consumption",
-        },
-        title: {
-            text: 'Weekly Consumptions', // Set your chart title here
-            align: 'left', // You can also specify alignment (left, center, right)
-        },
-        xaxis: {
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        },
-    },
-    series: [
-        {
-            name: "weeks",
-            data: [0,0,0,0,0,0,0],
-        },
-    ],
-})
-const chartDaily = reactive({
-    options: {
-        chart: {
-            id: "daily-consumption",
-        },
-        title: {
-            text: 'Daily Consumptions (Past 12Hrs)', // Set your chart title here
-            align: 'left', // You can also specify alignment (left, center, right)
-        },
-        xaxis: {
-            categories: [],
-        },
-    },
-    series: [
-        {
-            name: "weeks",
-            data: [0,0,0,0,0,0,0,0,0,0,0,0],
-        },
-    ],
+    pagination: {
+        sortBy: "id",
+        descending: true,
+        page: 1,
+        rowsPerPage: 10,
+        rowsNumber: 10,
+    }
 })
 
 
-onMounted(async ()=>{
-    const { data } = await axios.get(`/api/dashboard`)
+onMounted(() => {
+    onRequest({
+        pagination: table.pagination,
+        filter: null,
+    });
+});
 
-    updateMonthly(data.monthly)
 
-    updateWeekly(data.weekly)
+//  Server Request
+async function onRequest(props) {
+    const { page, rowsPerPage, sortBy, descending } = props.pagination;
+    const filter = props.filter; //  Search bar value
 
-    updateDaily(data.daily)
+    table.loading = true;
 
-    ui.loading = false
-})
+    // get all rows if "All" (0) is selected
+    const fetchCount = (rowsPerPage === 0) ? table.pagination.rowsNumber : rowsPerPage;
 
-function updateDaily(data){
-    chartDaily.options = {
-        xaxis: {
-            categories: _.map(data, (v,k)=>k),
-        },
+    const params = {
+        filter: filter,
+        limit: fetchCount == 1 ? -1 : fetchCount,
+        sortBy: sortBy,
+        orderBy: descending ? "desc" : "asc",
+        page: page,
+        per_page: rowsPerPage
+    };
+
+    try {
+        const { data } = await axios.get(`/api/announcement`, {params})
+
+        table.pagination.rowsNumber = data.total;
+
+        // clear out existing data and add new
+        table.rows.splice(0, table.rows.length, ...data.data);
+
+        // don't forget to update local pagination object
+        table.pagination.page = page;
+        table.pagination.rowsPerPage = rowsPerPage;
+        table.pagination.sortBy = sortBy;
+        table.pagination.descending = descending;
+    }
+    catch (error) {
+        $q.notify({
+            color: 'negative',
+            message: error.response.statusText,
+            icon: 'report_problem',
+            position: 'bottom-right'
+        })
+        table.loading = false;
     }
 
-    chartDaily.series = [
-        {
-            name: "Daily",
-            data: _.map(data, (v,k)=>v)
-        }
-    ]
+    // ...and turn of loading indicator
+    table.loading = false;
 }
 
-function updateMonthly(data){
-    chartMonthly.series = [
-        {
-            name: "Month",
-            data: _.map(data, (v,k)=>v)
-        }
-    ]
-
-    chartMonthly.options = {
-        xaxis: {
-            categories: _.map(data, (v,k)=>k),
-        },
-    }
+function onRow(evt, row, index){
+    $router.push(`/system/announcement/${row.id}`)
 }
 
-function updateWeekly(data){
-    chartWeekly.options = {
-        xaxis: {
-            categories: _.map(data, (v,k)=>k),
-        },
-    }
-
-    chartWeekly.series = [
-        {
-            name: "weeks",
-            data: _.map(data, (v,k)=>v)
-        }
-    ]
+function onRefresh(){
+    onRequest({
+        pagination: table.pagination,
+        filter: null,
+    });
 }
-
 </script>

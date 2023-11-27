@@ -103,6 +103,37 @@ const adminRoute = [
         ]
     },
 
+    // Announcement
+    {
+        path: "/system/announcement",
+        children: [
+            {
+                path: "",
+                component: () => import("../pages/Announcement/IndexPage.vue"),
+                meta: {
+                    title: "Announcement",
+                    requiresAuth: true
+                }
+            },
+            {
+                path: "create",
+                component: () => import("../pages/Announcement/CreatePage.vue"),
+                meta: {
+                    title: "New Announcement",
+                    requiresAuth: true
+                }
+            },
+            {
+                path: ":id",
+                component: () => import("../pages/Announcement/UpdatePage.vue"),
+                meta: {
+                    title: "Update Announcement",
+                    requiresAuth: true
+                }
+            },
+        ]
+    },
+
     // Users
     {
         path: "/system/users",
@@ -153,7 +184,7 @@ const customerRoute = [
     // Dashboard
     {
         path: "",
-        component: () => import("../pages/Announcement/IndexPage.vue"),
+        component: () => import("../pages/Dashboard/IndexCustomerPage.vue"),
         meta: {
             title: "Dashboard",
             requiresAuth: true

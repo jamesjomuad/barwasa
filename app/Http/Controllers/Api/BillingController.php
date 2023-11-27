@@ -24,7 +24,7 @@ class BillingController extends Controller
 
         if( $request->user()->is_consumer )
         {
-            $query->where('user_id', $request->input('user'));
+            $query->where('user_id', $request->user()->id);
         }
 
         $query->whereHas('user');
