@@ -32,7 +32,7 @@
                                     <q-icon :color="ui.typeBg" name="error" />
                                 </template>
                             </q-select>
-                            <q-input dense outlined v-model="$form.date_start" class="col-6" hint="Schedule posting">
+                            <q-input dense outlined v-model="$form.date_start" class="col-6" hint="Schedule posting" readonly>
                                 <template v-slot:prepend>
                                     <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -57,7 +57,7 @@
                                     </q-icon>
                                 </template>
                             </q-input>
-                            <q-input dense outlined v-model="$form.date_end" class="col-6" hint="Schedule hiding">
+                            <q-input dense outlined v-model="$form.date_end" class="col-6" hint="Schedule hiding" readonly>
                                 <template v-slot:prepend>
                                     <q-icon name="event" class="cursor-pointer">
                                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -96,7 +96,7 @@
                     <q-separator />
                     <q-card-actions align="right">
                         <q-btn
-                            label="Save"
+                            label="Create"
                             color="primary"
                             type="submit"
                             :disable="ui.loading"
@@ -236,11 +236,17 @@ async function onSave(){
         const params = $form
         params.content = $editor.content
         const { data } = await axios.post(`/api/announcement`, params)
-        if( data )
-        $q.notify({
-            type: 'positive',
-            message: `${data.data.first_name} ${data.data.last_name} created successfully!`
-        })
+        if( data?.error ){
+            $q.notify({
+                type: 'negative',
+                message: data?.error
+            })
+        }else{
+            $q.notify({
+                type: 'positive',
+                message: `Created successfully!`
+            })
+        }
     }
     catch(error){
         console.log(error)

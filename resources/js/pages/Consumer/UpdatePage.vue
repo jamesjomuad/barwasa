@@ -370,9 +370,11 @@ const table = reactive({
 
 
 onMounted(async ()=>{
+    ui.loading = true
     const { data } = await axios.get(`/api/consumers/${$route.params.id}`)
     $form.value = {...$form.value, ...data}
     table.rows = data.consumptions
+    ui.loading = false
 })
 
 

@@ -55,12 +55,11 @@
                 </q-list>
             </q-scroll-area>
             <div v-show="!miniState" class="absolute-top bg-accent" style="height: 170px">
-                <div class="absolute-bottom bg-transparent q-pa-md">
-                    <q-avatar size="90px" class="q-mb-sm">
+                <div class="absolute-bottom bg-transparent q-pa-md text-center">
+                    <q-avatar size="130px">
                         <img src="/images/logo.png">
                     </q-avatar>
-                    <div class="text-weight-bold">{{ user?.fullname }}</div>
-                    <!-- <div>@{{ $store.getters['auth/user']?.email }}</div> -->
+                    <!-- <div class="text-weight-bold">{{ user?.fullname }}</div> -->
                 </div>
             </div>
         </q-drawer>

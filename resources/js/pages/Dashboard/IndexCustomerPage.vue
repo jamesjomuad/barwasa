@@ -12,7 +12,23 @@
                         </div>
                     </q-card-section>
                     <q-card-section>
-
+                        <q-scroll-area style="height: 300px;">
+                            <q-list>
+                                <template v-for="(item, i) in announcements" :key="i">
+                                    <q-item>
+                                        <q-item-section>
+                                            <q-item-label>{{ item.title }}</q-item-label>
+                                            <q-item-label caption lines="2" v-html="item.content"></q-item-label>
+                                        </q-item-section>
+                                        <q-item-section side top>
+                                            <q-item-label caption>5 min ago</q-item-label>
+                                            <q-icon name="star" color="yellow" />
+                                        </q-item-section>
+                                    </q-item>
+                                    <q-separator spaced inset />
+                                </template>
+                            </q-list>
+                        </q-scroll-area>
                     </q-card-section>
                 </q-card>
             </div>
@@ -135,6 +151,7 @@ const chartDaily = reactive({
         },
     ],
 })
+const announcements = ref()
 
 
 onMounted(async ()=>{
@@ -145,6 +162,8 @@ onMounted(async ()=>{
     updateWeekly(data.weekly)
 
     updateDaily(data.daily)
+
+    announcements.value = await getAnnouncements()
 
     ui.loading = false
 })
@@ -192,6 +211,16 @@ function updateWeekly(data){
             data: _.map(data, (v,k)=>v)
         }
     ]
+}
+
+async function getAnnouncements(){
+    const params = {
+        sortBy: 'id',
+        orderBy: "desc",
+        // per_page: rowsPerPage
+    };
+    const { data } = await axios.get(`/api/announcement`, {params})
+    return data.data
 }
 
 </script>

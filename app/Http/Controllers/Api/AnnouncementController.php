@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Announcement;
 
 class AnnouncementController extends Controller
@@ -46,6 +47,21 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title'      => ['required'],
+            'content'    => ['required'],
+            'date_start' => ['required'],
+            "date_end"   => ["required"],
+        ]);
+
+        // Validator
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()->first(),
+            ]);
+        }
+
         $announcement = new Announcement([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
