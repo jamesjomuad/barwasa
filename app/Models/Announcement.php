@@ -11,6 +11,10 @@ class Announcement extends Model
 
     protected $table = 'announcement';
 
+    protected $casts = [
+        'created_at' => 'datetime'
+    ];
+
     protected $fillable = [
         'title',
         'content',
@@ -18,4 +22,14 @@ class Announcement extends Model
         'date_start',
         'date_end'
     ];
+
+    protected $appends = [
+        'time'
+    ];
+
+    function getTimeAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
 }

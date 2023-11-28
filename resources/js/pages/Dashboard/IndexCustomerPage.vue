@@ -14,15 +14,18 @@
                     <q-card-section>
                         <q-scroll-area style="height: 300px;">
                             <q-list>
-                                <template v-for="(item, i) in announcements" :key="i">
+                                <template v-for="(item, i) in announcements.data" :key="i">
                                     <q-item>
                                         <q-item-section>
                                             <q-item-label>{{ item.title }}</q-item-label>
                                             <q-item-label caption lines="2" v-html="item.content"></q-item-label>
                                         </q-item-section>
                                         <q-item-section side top>
-                                            <q-item-label caption>5 min ago</q-item-label>
-                                            <q-icon name="star" color="yellow" />
+                                            <q-icon
+                                                :name="announcements.icon(item.type)"
+                                                :color="announcements.color(item.type)"
+                                            />
+                                            <q-item-label caption>{{ item.time }}</q-item-label>
                                         </q-item-section>
                                     </q-item>
                                     <q-separator spaced inset />
@@ -151,7 +154,27 @@ const chartDaily = reactive({
         },
     ],
 })
-const announcements = ref()
+const announcements = reactive({
+    data: [],
+    icon (type) {
+        let icons = {
+            'Emergency': 'error',
+            'Alert': 'warning',
+            'Update': 'tips_and_updates',
+            'Reminder': 'notifications'
+        }
+        return icons[type]
+    },
+    color (type) {
+        let colors = {
+            'Emergency': 'red',
+            'Alert': 'warning',
+            'Update': 'green-4',
+            'Reminder': 'info'
+        }
+        return colors[type]
+    }
+})
 
 
 onMounted(async ()=>{
@@ -163,7 +186,9 @@ onMounted(async ()=>{
 
     updateDaily(data.daily)
 
-    announcements.value = await getAnnouncements()
+    announcements.data = await getAnnouncements()
+
+    console.log(announcements.data)
 
     ui.loading = false
 })
