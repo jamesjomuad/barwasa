@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Announcement;
+use Carbon\Carbon;
 
 class AnnouncementController extends Controller
 {
@@ -19,6 +20,12 @@ class AnnouncementController extends Controller
         $per_page = $request->get('per_page') ? : 50;
 
         $query = Announcement::query();
+
+        if( $request->user()->is_consumer )
+        {
+            $query->whereDate('date_start', '<=', Carbon::now());
+            $query->whereDate('date_end', '>=', Carbon::now());
+        }
 
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
