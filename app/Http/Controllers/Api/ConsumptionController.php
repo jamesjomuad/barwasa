@@ -21,6 +21,11 @@ class ConsumptionController extends Controller
 
         $query = Model::with('consumer.user');
 
+        if( $request->user() && $request->user()->is_consumer )
+        {
+            $query->where('consumer_id', $request->user()->consumer->id);
+        }
+
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
             $sortBy  = $request->get('sortBy');

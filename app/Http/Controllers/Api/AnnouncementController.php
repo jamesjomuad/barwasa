@@ -21,7 +21,7 @@ class AnnouncementController extends Controller
 
         $query = Announcement::query();
 
-        if( $request->user()->is_consumer )
+        if( $request->user() && $request->user()->is_consumer )
         {
             $query->whereDate('date_start', '<=', Carbon::now());
             $query->whereDate('date_end', '>=', Carbon::now());

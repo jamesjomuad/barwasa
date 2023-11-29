@@ -20,6 +20,11 @@ class TransactionController extends Controller
 
         $query = Model::query();
 
+        if( $request->user() && $request->user()->is_consumer )
+        {
+            $query->where('consumer_id', $request->user()->consumer->id);
+        }
+
         //  Sort & Order
         $query->when($request->exists('sortBy') && $request->exists('orderBy'), function($q) use ($request) {
             $sortBy  = $request->get('sortBy');

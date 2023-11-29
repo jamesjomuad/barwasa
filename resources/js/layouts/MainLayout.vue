@@ -60,14 +60,14 @@
 
                     <q-item-label header>Customers</q-item-label>
                     <menu-item label="Billing" icon="receipt" to="/billing"/>
-                    <menu-item label="Transactions" icon="checklist" to="/transactions"/>
                     <menu-item label="Consumptions" icon="water_drop" to="/consumptions"/>
-                    <menu-item label="Consumers" icon="people" to="/consumers"/>
+                    <menu-item label="Transactions" icon="checklist" to="/transactions"/>
+                    <menu-item v-if="hasAdminAccess" label="Consumers" icon="people" to="/consumers"/>
                     <q-separator />
 
-                    <q-item-label header>System</q-item-label>
-                    <menu-item label="Announcement" icon="campaign" to="/system/announcement"/>
-                    <menu-item label="Users" icon="people" to="/system/users"/>
+                    <q-item-label v-if="hasAdminAccess" header>System</q-item-label>
+                    <menu-item v-if="hasAdminAccess" label="Announcement" icon="campaign" to="/system/announcement"/>
+                    <menu-item v-if="hasAdminAccess" label="Users" icon="people" to="/system/users"/>
                     <!-- <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/> -->
                     <q-separator />
                 </q-list>
@@ -103,6 +103,7 @@ const $store = useStore();
 const drawer = ref(true)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
+const hasAdminAccess = computed(()=>!$store.getters['auth/isCustomer'])
 
 function onLogout(){
     console.log('logout')
