@@ -42,9 +42,11 @@ Route::group(['middleware' => ['auth:sanctum','throttle:160,1'], 'namespace' => 
 
     # Role
     Route::resource('roles', 'RoleController');
+
+    # Consumptions
+    Route::resource('consumption', 'ConsumptionController');
 });
 
-// Consumptions endpoint; Ardiuno endpoint
-Route::resource('consumption', 'App\Http\Controllers\Api\ConsumptionController');
 
+// Consumptions endpoint; Ardiuno endpoint
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
