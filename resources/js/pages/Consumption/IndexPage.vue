@@ -170,7 +170,8 @@ const table = reactive({
             sortable: true,
             align: 'left',
             format: (val, row) => {
-                return moment(val).format("YYYY-MM-d");
+                let time = moment(val)
+                return time.format("YYYY-MM-d HH:mm A") + ' (' + time.fromNow() + ')'
             },
         }
     ],
