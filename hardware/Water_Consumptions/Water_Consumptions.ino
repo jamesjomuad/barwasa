@@ -1,17 +1,15 @@
-#define USE_SERIAL Serial
 #include "Arduino.h"
-#include "EEPROM.h"
 #include "ESP8266WiFi.h"
 #include "ESP8266HTTPClient.h"
+#include "WiFiClient.h"
+#include "WiFiClientSecure.h"
 
-// Variable init
-static const uint8_t D2 = 4;
-static const uint8_t D7 = 2;
-int buttonPin = D2;
-const int ledPin = D7;
-char push_data[200]; //string used to send info to the server ThingSpeak
-int addr = 0; //endereço eeprom
-byte sensorInterrupt = 0; // 0 = digital pin 2
+
+// WiFi parameters to be configured
+const char *ssid = "Dlink"; // Write here your router's username
+const char *password = "jandavid"; // Write here your router's password
+const int dataPin = D2;
+byte sensorInterrupt = 0;
 
 // The hall-effect flow sensor outputs approximately 4.5 pulses per second per
 // litre/minute of flow.
@@ -22,47 +20,54 @@ volatile byte pulseCount;
 float flowRate;
 unsigned int flowMilliLitres;
 unsigned long totalMilliLitres;
+unsigned long totalvolume;
 
 unsigned long oldTime;
 
-//SSID and PASSWORD for the AP (swap the XXXXX for real ssid and password )
-const char * ssid = "Dlink";
-const char * password = "jandavid";
-
-//HTTP client init
+// WiFiClient client;
+WiFiClientSecure client;
 HTTPClient http;
 
-void setup() {
-    Serial.begin(9600); // Start the Serial communication to send messages to the computer
-    delay(10);
-    Serial.println('\n');
 
-    startWIFI();
-
-    // Initialization of the variable “buttonPin” as INPUT (D2 pin)
-    pinMode(buttonPin, INPUT);
-
-    // Two types of blinking
-    // 1: Connecting to Wifi
-    // 2: Push data to the cloud
-    pinMode(ledPin, OUTPUT);
+void setup(void) {
+    Serial.begin(9600);
 
     pulseCount = 0;
     flowRate = 0.0;
     flowMilliLitres = 0;
     totalMilliLitres = 0;
+    totalvolume = 0;
     oldTime = 0;
 
-    digitalWrite(buttonPin, HIGH);
-    attachInterrupt(digitalPinToInterrupt(buttonPin), pulseCounter, RISING);
+    // Connect to WiFi
+    WiFi.begin(ssid, password);
 
+    Serial.println("Connecting");
+    // while wifi not connected yet, print '.'
+    // then after it connected, get out of the loop
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    //print a new line, then print WiFi connected and the IP address
+    Serial.println("");
+    Serial.println("WiFi connected");
+    // Print the IP address
+    Serial.println(WiFi.localIP());
+
+    attachInterrupt(digitalPinToInterrupt(dataPin), pulseCounter, RISING);
 }
 
-void loop() {
-    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 1000) // Only process counters once per second
+ICACHE_RAM_ATTR void pulseCounter() {
+    // Increment the pulse counter
+    pulseCount++;
+}
+
+void loop()
+{
+    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 10000) // Only process counters once per second
     {
-        // Disable the interrupt while calculating flow rate and sending the value to
-        // the host
+        // Disable the interrupt while calculating flow rate and sending the value to the host
         detachInterrupt(sensorInterrupt);
 
         // Because this loop may not complete in exactly 1 second intervals we calculate
@@ -85,99 +90,54 @@ void loop() {
 
         // Add the millilitres passed in this second to the cumulative total
         totalMilliLitres += flowMilliLitres;
+        totalvolume = totalMilliLitres/1000;// send data per liters
 
         unsigned int frac;
 
-        // Print the flow rate for this second in litres / minute
-        Serial.print("Flow rate: ");
-        Serial.print(int(flowRate)); // Print the integer part of the variable
-        Serial.print("."); // Print the decimal point
-        // Determine the fractional part. The 10 multiplier gives us 1 decimal place.
-        frac = (flowRate - int(flowRate)) * 10;
-        Serial.print(frac, DEC); // Print the fractional part of the variable
-        Serial.print("L/min");
-        // Print the number of litres flowed in this second
-        Serial.print("  Current Liquid Flowing: "); // Output separator
-        Serial.print(flowMilliLitres);
-        Serial.print("mL/Sec");
-
-        // Print the cumulative total of litres flowed since starting
-        Serial.print("  Output Liquid Quantity: "); // Output separator
-        Serial.print(totalMilliLitres);
-        Serial.println("mL");
-
         if (flowRate > 0) {
-            digitalWrite(ledPin, HIGH); // turn the LED on (HIGH is the voltage level)
-            delay(100);
-
-            // Replace <YOUR_API_KEY> with your EmonCMS API Key 
-            sprintf(push_data, "http://emoncms.org/input/post?json={frac:%d.%d,flowml:%d,totalml:%d}&node=Penampung2&apikey=<YOUR_API_KEY>", int(flowRate), int(frac), flowMilliLitres, totalMilliLitres);
-            Serial.printf("%s\n", push_data);
-            http.begin(push_data);
-            digitalWrite(ledPin, LOW); // turn the LED off by making the voltage LOW
-            delay(100);
-            int httpCode = http.GET();
-            // httpCode_code will be a negative number if there is an error
-            Serial.print(httpCode);
-            if (httpCode > 0) {
-                digitalWrite(ledPin, HIGH); // turn the LED on (HIGH is the voltage level)
-                delay(100);
-                // file found at server
-                if (httpCode == HTTP_CODE_OK) {
-                    String payload = http.getString();
-                    Serial.print(" ");
-                    Serial.print(payload);
-                }
-                digitalWrite(ledPin, LOW); // turn the LED off by making the voltage LOW
-                delay(100);
-            } else {
-                Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-            }
-            http.end();
+            Serial.print("Sending volume: " + totalvolume);
+            http_get(totalvolume);
+            delay(9000);
         }
-        // Reset the pulse counter so we can start incrementing again
         pulseCount = 0;
-
-        // Enable the interrupt again now that we've finished sending output
-        attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
-    } else if (WiFi.status() != WL_CONNECTED) {
-        startWIFI();
     }
 }
 
-/*
-Insterrupt Service Routine
- */
-void pulseCounter() {
-    // Increment the pulse counter
-    pulseCount++;
-}
 
-void startWIFI(void) {
-    digitalWrite(ledPin, HIGH); // turn the LED on (HIGH is the voltage level)
-    delay(100);
+void http_get(long volume)
+{
+    const char*  server = "barwsa.tribelink.me";
 
-    WiFi.begin(ssid, password); // Connect to the network
-    Serial.print("Connecting to ");
-    Serial.print(ssid);
-    Serial.println(" ...");
-    oldTime = 0;
-    int i = 0;
-    digitalWrite(ledPin, LOW); // turn the LED off by making the voltage LOW
-    delay(100);
+    client.setInsecure();
 
-    while (WiFi.status() != WL_CONNECTED) { // Wait for the Wi-Fi to connect
-        digitalWrite(ledPin, HIGH); // turn the LED on (HIGH is the voltage level)
-        delay(2000);
-        Serial.print(++i);
-        Serial.print('.');
-        digitalWrite(ledPin, LOW); // turn the LED off by making the voltage LOW
-        delay(100);
+    Serial.println("\nStarting connection to server...");
+    if (!client.connect(server, 443))
+        Serial.println("Connection failed!");
+    else {
+        Serial.println("Connected to server!");
+        // Make a HTTP request:
+        client.print("GET http://barwsa.tribelink.me/api/log?id=O2ZzAsZYseznPWQ&volume="); // change id in every device/hardware
+        client.print(volume);
+        client.println(" HTTP/1.0");
+        client.println("Host: barwsa.tribelink.me");
+        client.println("Connection: close");
+        client.println();
+
+        while (client.connected()) {
+            String line = client.readStringUntil('\n');
+            if (line == "\r") {
+                Serial.println("headers received");
+                break;
+            }
+        }
+        // if there are incoming bytes available
+        // from the server, read them and print them:
+        while (client.available()) {
+            char c = client.read();
+            Serial.write(c);
+        }
+
+        client.stop();
     }
-    delay(2000);
-    Serial.print('\n');
-    Serial.print("Connection established!");
-    Serial.print("IP address:\t");
-    Serial.print(WiFi.localIP()); // Send the IP address of the ESP8266 to the computer
 
 }
