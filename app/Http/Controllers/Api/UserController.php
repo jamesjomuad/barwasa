@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User as Model;
 
 class UserController extends Controller
@@ -103,6 +104,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $model = Model::findOrFail($id);
+
+        if( $request->filled('password') ){
+            $model->password = Hash::make($request->password);
+            return $model->save();
+        }
+
         return [
             'status' => $model->update($request->all()),
             'data'   => $model

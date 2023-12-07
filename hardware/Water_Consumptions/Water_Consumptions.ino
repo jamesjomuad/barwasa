@@ -65,7 +65,7 @@ ICACHE_RAM_ATTR void pulseCounter() {
 
 void loop()
 {
-    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 10000) // Only process counters once per second
+    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 5000) // Only process counters once per second
     {
         // Disable the interrupt while calculating flow rate and sending the value to the host
         detachInterrupt(sensorInterrupt);
@@ -95,8 +95,8 @@ void loop()
         unsigned int frac;
 
         if (flowRate > 0) {
-            Serial.print("Sending volume: " + totalvolume);
-            http_get(totalvolume);
+            Serial.println("Sending volume: " + totalvolume);
+            http_get(flowRate);
             delay(9000);
         }
         pulseCount = 0;
@@ -104,7 +104,7 @@ void loop()
 }
 
 
-void http_get(long volume)
+void http_get(float volume)
 {
     const char*  server = "barwsa.tribelink.me";
 

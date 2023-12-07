@@ -110,17 +110,18 @@
                         <q-btn
                             color="negative"
                             label="Remove"
+                            class="q-mr-auto"
                             @click="onRemove"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
-                        <!-- <q-btn
+                        <q-btn
                             color="warning"
-                            label="Change Password"
+                            label="Reset Password"
                             @click="onChangePassword"
-                            :disable="ui.loading"
-                            :loading="ui.loading"
-                        /> -->
+                            :disable="ui.resetting"
+                            :loading="ui.resetting"
+                        />
                         <q-btn
                             color="primary"
                             type="submit"
@@ -146,7 +147,10 @@ const $route = useRoute()
 const $router = useRouter()
 const $q = useQuasar()
 const ui = reactive({
-    loading: false
+    loading: false,
+    updating: false,
+    resetting: false,
+    removing: false
 })
 const $form = ref({
     first_name: "",
@@ -225,8 +229,29 @@ function onChangePassword(){
         },
         cancel: true,
         persistent: true
-    }).onOk(async (data) => {
-        console.log('>>>> OK, received', data)
+    }).onOk(async (password) => {
+        ui.loading = true
+        ui.resetting = true
+        try{
+            const { data } = await axios.put(`/api/users/${$route.params.id}`, {
+                ...$form.value,
+                password: password
+            })
+            if(data.status){
+                $q.notify({
+                    type: 'positive',
+                    message: `Password updated!`
+                })
+            }
+        }
+        catch(e){
+            $q.notify({
+                message: 'Error changing password',
+                color: 'negative'
+            })
+        }
+        ui.loading = false
+        ui.resetting = false
     })
 }
 
