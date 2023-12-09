@@ -35,6 +35,14 @@
                     <q-btn
                         round
                         size="md"
+                        color="primary"
+                        class="q-ml-sm"
+                        icon="add"
+                        to="/system/users/create">
+                    </q-btn>
+                    <q-btn
+                        round
+                        size="md"
                         color="info"
                         class="q-ml-sm"
                         icon="refresh"

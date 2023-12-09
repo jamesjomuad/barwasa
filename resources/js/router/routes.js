@@ -161,13 +161,22 @@ const routes = [
             // Users
             {
                 path: "/system/users",
-                children: [{
+                children: [
+                    {
                         path: "",
                         component: () => import("../pages/User/IndexPage.vue"),
                         meta: {
                             title: "Users",
                             requiresAuth: true
                         },
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/User/CreatePage.vue"),
+                        meta: {
+                            title: "Create User",
+                            requiresAuth: true
+                        }
                     },
                     {
                         path: ":id",

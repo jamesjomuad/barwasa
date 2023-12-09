@@ -1,7 +1,7 @@
 <!-- eslint-disable brace-style -->
 <template>
     <q-page padding>
-        <q-form class="q-pa-md row q-col-gutter-md" @submit="onUpdate">
+        <q-form class="q-pa-md row q-col-gutter-md" @submit="onCreate">
             <div class="col-md-12">
                 <q-card>
                     <!-- Title -->
@@ -18,12 +18,29 @@
                                 outlined
                                 label="Username"
                                 name="name"
-                                class="col-12"
+                                class="col-6"
                             >
                                 <template v-slot:prepend>
                                     <q-icon name="account_circle" />
                                 </template>
                             </q-input>
+
+                            <q-input
+                                dense
+                                outlined
+                                v-model="$form.password"
+                                label="Password"
+                                class="col-6"
+                                :rules="[ val => val && val.length > 0 || 'Required!']"
+                                :type="ui.isPwd ? 'password' : 'text'"
+                                ><template v-slot:append>
+                                    <q-icon
+                                    :name="ui.isPwd ? 'visibility_off' : 'visibility'"
+                                    class="cursor-pointer"
+                                    @click="ui.isPwd = !ui.isPwd"
+                                    /> </template
+                            ></q-input>
+
 
                             <q-input
                                 v-model="$form.first_name"
@@ -129,16 +146,9 @@
                             :loading="ui.loading"
                         />
                         <q-btn
-                            color="warning"
-                            label="Reset Password"
-                            @click="onChangePassword"
-                            :disable="ui.resetting"
-                            :loading="ui.resetting"
-                        />
-                        <q-btn
                             color="primary"
                             type="submit"
-                            label="Update"
+                            label="Create"
                             :disable="ui.loading"
                             :loading="ui.loading"
                         />
@@ -163,9 +173,12 @@ const ui = reactive({
     loading: false,
     updating: false,
     resetting: false,
-    removing: false
+    removing: false,
+    isPwd: true
 })
 const $form = ref({
+    name: "",
+    password: null,
     first_name: "",
     last_name: "",
     email: "",
@@ -175,28 +188,24 @@ const $form = ref({
 });
 
 
-onMounted(async ()=>{
-    const { data } = await axios.get(`/api/users/${$route.params.id}`)
-    $form.value = {...$form, ...data}
-})
 
-
-async function onUpdate(){
+async function onCreate(){
     ui.loading = true
     try{
-        const { data } = await axios.put(`/api/users/${$route.params.id}`, $form.value)
+        const { data } = await axios.post(`/api/users`, $form.value)
         if(data.status){
             $q.notify({
                 type: 'positive',
-                message: `Updated successfully!`
+                message: data.message
             })
+            $router.push(`/system/users/${data.data.id}`)
         }
     }
-catch(error){
+    catch(error){
         console.log(error)
         $q.notify({
             type: 'negative',
-            message: "Error!"
+            message: error.response.data.error
         })
     }
     ui.loading = false

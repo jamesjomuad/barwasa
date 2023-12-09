@@ -15,7 +15,7 @@
                         <q-scroll-area style="height: 300px;">
                             <q-list>
                                 <template v-for="(item, i) in announcements.data" :key="i">
-                                    <q-item>
+                                    <q-item clickable v-ripple @click="onAnnouncement(item)">
                                         <q-item-section>
                                             <q-item-label>{{ item.title }}</q-item-label>
                                             <q-item-label caption lines="2" v-html="item.content"></q-item-label>
@@ -88,8 +88,11 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import apexcharts from "vue3-apexcharts";
+import { useQuasar } from 'quasar'
 import _ from 'lodash'
 
+
+const $q = useQuasar()
 const ui = reactive({
     loading: true
 })
@@ -246,6 +249,17 @@ async function getAnnouncements(){
     };
     const { data } = await axios.get(`/api/announcement`, {params})
     return data.data
+}
+
+function onAnnouncement(announcement){
+    console.log(announcement)
+    $q.dialog({
+        title: announcement.title,
+        message: announcement.content,
+        html: true
+    }).onOk(() => {
+        // console.log('OK')
+    })
 }
 
 </script>

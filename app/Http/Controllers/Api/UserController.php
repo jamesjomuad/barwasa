@@ -52,6 +52,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => ['required', 'string', 'max:80', 'unique:users'],
             "last_name" => ["required"],
+            "password" => ["required"],
         ]);
 
         // Validator
@@ -59,7 +60,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'error' => $validator->errors()->first(),
-            ]);
+            ], 500);
         }
 
         $data = $request->all();
@@ -70,8 +71,9 @@ class UserController extends Controller
         $consumer = Model::create($data);
 
         return response()->json([
-            'message' => 'User updated successfuly',
-            'data'    => $consumer
+            'message' => 'User created successfully!',
+            'data'    => $consumer,
+            'status'  => true,
         ], 201);
     }
 
