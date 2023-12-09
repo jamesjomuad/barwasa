@@ -11,6 +11,8 @@ class Consumption extends Model
 
     protected $table = "consumption";
 
+    public $cost_per_volume = 0.2;
+
     protected $casts = [
         'volume' => 'float',
     ];
@@ -21,6 +23,10 @@ class Consumption extends Model
         'current',
         'volume',
         'is_paid',
+    ];
+
+    protected $appends = [
+        'payable'
     ];
 
 
@@ -37,6 +43,11 @@ class Consumption extends Model
     public function consumer()
     {
         return $this->belongsTo(Consumer::class, 'consumer_id');
+    }
+
+    public function getPayableAttribute()
+    {
+        return number_format($this->volume * $this->cost_per_volume, 2);
     }
 
 }

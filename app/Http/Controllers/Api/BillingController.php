@@ -16,11 +16,15 @@ class BillingController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Consumer::with(['consumptions','user']);
-
-        $query->whereHas('consumptions', function($q){
+        $query = Consumer::with(['consumptions' => function($q){
             $q->where('is_paid', 0);
-        });
+            $q->where('volume', '!=', 0);
+        }, 'user']);
+
+        // $query->whereHas('consumptions', function($q){
+        //     $q->where('is_paid', 0);
+        //     $q->where('volume', '!=', 0);
+        // });
 
         if( $request->user() && $request->user()->is_consumer )
         {
@@ -71,6 +75,7 @@ class BillingController extends Controller
         try {
             return Consumer::with(['consumptions' => function($q){
                 $q->where('is_paid', 0);
+                $q->where('volume', '!=', 0);
             }])->findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([

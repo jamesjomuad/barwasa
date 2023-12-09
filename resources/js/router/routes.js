@@ -2,6 +2,8 @@ import store from '../store'
 
 // let isCustomer = store.getters['auth/isCustomer']
 
+console.log(store.getters['auth/isAuthenticated'])
+
 const routes = [
     // BlankLayout
     {

@@ -11,7 +11,7 @@ class Consumer extends Model
 
     protected $table = "customer";
 
-    protected $amount_per_volume = 0.2;
+    public $cost_per_volume = 0.2;
 
     protected $fillable = [
         "billing_address",
@@ -56,7 +56,7 @@ class Consumer extends Model
     public function getTotalPayableAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return number_format($this->consumptions->sum('volume') * $this->amount_per_volume, 2);
+            return number_format($this->consumptions->sum('volume') * $this->cost_per_volume, 2);
         }
 
         return 0;

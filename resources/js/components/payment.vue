@@ -116,10 +116,10 @@ const invoice = reactive({
     id: null,
     number: '',
     date: null,
-    price: 7.5,
+    price: 1,
     subtotal: computed(()=>{
-        let amount = _.sumBy(table.rows, function (o) { return o.volume * invoice.price; });
-        return parseFloat(amount).toFixed(2)
+        // return parseFloat(consumer.data.total_payable).toFixed(2)
+        return consumer.data.total_payable
     }),
     tax: 0,
     total: computed(()=>{
@@ -128,7 +128,7 @@ const invoice = reactive({
     reciept: '',
     cash: '',
     changed: computed(()=>{
-        if( invoice.cash >= invoice.total )
+        if( invoice.cash >= parseFloat(invoice.total) )
             return parseFloat(invoice.cash - invoice.total).toFixed(2);
         else
             return 0
@@ -165,7 +165,7 @@ const table = reactive({
             name: "payable",
             field: "payable",
             align: 'left',
-            format: (v,r) => '₱'+parseFloat(r.volume*invoice.price).toFixed(2)
+            format: (v,r) => '₱'+parseFloat(v).toFixed(2)
         },
     ],
     pagination: {
@@ -189,12 +189,17 @@ const canTransact = computed(()=>{
 })
 
 
+
 onMounted(()=>{
     invoice.date = date.formatDate(Date.now(), 'MMMM DD, YYYY')
 })
 
-function show(data){
+function show(row){
+    let data = _.cloneDeep(row)
     dialog.value.show()
+    // clear previous data
+    invoice.cash = ''
+    consumer.data = data
     consumer.name = `${data.user.first_name} ${data.user.last_name} `
     consumer.period = `${data.consumption_dates.from} - ${data.consumption_dates.to} `
     table.rows = data.consumptions
