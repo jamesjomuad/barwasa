@@ -54,7 +54,7 @@ class Consumer extends Model
     public function getTotalPayableAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return $this->consumptions->sum('volume') * 7.5;
+            return $this->consumptions->sum('volume') * 1;
         }
 
         return 0;

@@ -116,7 +116,7 @@ void http_get(float volume)
     else {
         Serial.println("Connected to server!");
         // Make a HTTP request:
-        client.print("GET http://barwsa.tribelink.me/api/log?id=O2ZzAsZYseznPWQ&volume="); // change id in every device/hardware
+        client.print("GET http://dev.barwsa.com/api/log?id=6573b8a45e783&volume="); // change id in every device/hardware
         client.print(volume);
         client.println(" HTTP/1.0");
         client.println("Host: barwsa.tribelink.me");
