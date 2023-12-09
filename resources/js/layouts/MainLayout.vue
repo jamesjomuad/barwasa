@@ -30,9 +30,9 @@
                             <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
-                            <q-item clickable @click.prevent="copyToClipboard($store.getters['auth/token'])">
+                            <!-- <q-item clickable @click.prevent="copyToClipboard($store.getters['auth/token'])">
                                 <q-item-section>{{$store.getters['auth/token']}}</q-item-section>
-                            </q-item>
+                            </q-item> -->
                             <q-item clickable @click.prevent="onLogout">
                                 <q-item-section>Logout</q-item-section>
                             </q-item>
