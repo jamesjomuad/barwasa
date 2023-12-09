@@ -118,7 +118,8 @@ const invoice = reactive({
     date: null,
     price: 7.5,
     subtotal: computed(()=>{
-        return _.sumBy(table.rows, function (o) { return o.volume * invoice.price; });
+        let amount = _.sumBy(table.rows, function (o) { return o.volume * invoice.price; });
+        return parseFloat(amount).toFixed(2)
     }),
     tax: 0,
     total: computed(()=>{
@@ -155,13 +156,16 @@ const table = reactive({
             name: "volume",
             field: "volume",
             align: 'left',
+            format(v){
+                return parseFloat(v).toFixed(2)
+            }
         },
         {
             label: "Payable",
             name: "payable",
             field: "payable",
             align: 'left',
-            format: (v,r) => '₱'+r.volume*invoice.price
+            format: (v,r) => '₱'+parseFloat(r.volume*invoice.price).toFixed(2)
         },
     ],
     pagination: {

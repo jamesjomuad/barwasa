@@ -151,6 +151,9 @@ const table = reactive({
             name: "volume",
             field: "volume",
             sortable: true,
+            format(v){
+                return parseFloat(v).toFixed(2)
+            }
         },
         {
             label: "Unit",

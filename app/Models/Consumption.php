@@ -11,6 +11,10 @@ class Consumption extends Model
 
     protected $table = "consumption";
 
+    protected $casts = [
+        'volume' => 'float',
+    ];
+
     protected $fillable = [
         'meter_id',
         'previous',

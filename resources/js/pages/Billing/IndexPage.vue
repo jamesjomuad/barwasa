@@ -237,6 +237,7 @@ function onRefresh(){
 }
 
 function onPay(props){
+    console.log(props.row)
     terminal.value.show(props.row)
 }
 
