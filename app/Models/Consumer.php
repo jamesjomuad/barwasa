@@ -47,7 +47,7 @@ class Consumer extends Model
     public function getTotalVolumeAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return $this->consumptions->sum('volume');
+            return number_format($this->consumptions->sum('volume'), 2);
         }
 
         return 0;
@@ -56,7 +56,7 @@ class Consumer extends Model
     public function getTotalPayableAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return $this->consumptions->sum('volume') * $this->amount_per_volume;
+            return number_format($this->consumptions->sum('volume') * $this->amount_per_volume, 2);
         }
 
         return 0;

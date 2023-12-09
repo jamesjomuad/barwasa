@@ -95,8 +95,7 @@ void loop()
         unsigned int frac;
 
         if (flowRate > 0) {
-            Serial.println("Sending volume: " + totalvolume);
-            http_get(flowRate);
+            http_get(flowRate/2);
             delay(9000);
         }
         pulseCount = 0;
@@ -110,7 +109,8 @@ void http_get(float volume)
 
     client.setInsecure();
 
-    Serial.println("\nStarting connection to server...");
+    Serial.println("Sending volume: " + String(volume));
+    Serial.println("Starting connection to server...");
     if (!client.connect(server, 443))
         Serial.println("Connection failed!");
     else {
