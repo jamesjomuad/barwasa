@@ -19,7 +19,7 @@
                 @row-click="onRow"
             >
                 <template v-slot:top-right="props">
-                    <q-input
+                    <!-- <q-input
                         outlined
                         dense
                         ref="search"
@@ -31,7 +31,7 @@
                         <template v-slot:append>
                             <q-icon name="search" />
                         </template>
-                    </q-input>
+                    </q-input> -->
                     <q-btn
                         round
                         size="md"

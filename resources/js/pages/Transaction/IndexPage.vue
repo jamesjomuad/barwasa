@@ -15,7 +15,6 @@
                 :filter="table.filter"
                 :rows-per-page-options="[20, 40, 60, 80, 100, 150, 200, 250, 300]"
                 @request="onRequest"
-                @row-click="onRow"
             >
                 <template v-slot:top-right="props">
                     <q-input

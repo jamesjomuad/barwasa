@@ -67,14 +67,16 @@ const routes = [
             // Transactions
             {
                 path: "/transactions",
-                children: [{
-                    path: "",
-                    component: () => import("../pages/Transaction/IndexPage.vue"),
-                    meta: {
-                        title: "Transactions",
-                        requiresAuth: true
-                    },
-                }, ]
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/Transaction/IndexPage.vue"),
+                        meta: {
+                            title: "Transactions",
+                            requiresAuth: true
+                        },
+                    }
+                ]
             },
 
             // Consumers

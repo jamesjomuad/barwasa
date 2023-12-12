@@ -35,9 +35,7 @@ class TransactionController extends Controller
         //  Filter/Search
         $query->when($request->get('filter'), function($q) use ($request) {
             $filter = $request->get('filter');
-            $q->where( 'first_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'email', 'LIKE', "%$filter%" );
+            $q->where( 'number', 'LIKE', "%$filter%" );
             return $q;
         });
 
