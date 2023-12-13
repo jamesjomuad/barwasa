@@ -25,6 +25,7 @@
                         v-model="table.filter"
                         placeholder="Search"
                         class="q-ma-xs"
+                        v-if="!isCustomer"
                     >
                         <template v-slot:append>
                             <q-icon name="search" />

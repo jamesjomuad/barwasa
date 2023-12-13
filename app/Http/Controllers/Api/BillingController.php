@@ -41,12 +41,13 @@ class BillingController extends Controller
         });
 
         //  Filter/Search
-        $query->when($request->get('filter'), function($q) use ($request) {
+        $query->when($request->get('filter'), function($query) use ($request) {
             $filter = $request->get('filter');
-            $q->where( 'first_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
-            $q->orWhere( 'email', 'LIKE', "%$filter%" );
-            return $q;
+            $query->whereHas('user', function($q) use($filter) {
+                $q->where( 'first_name', 'LIKE', "%$filter%" );
+                $q->orWhere( 'last_name', 'LIKE', "%$filter%" );
+                $q->orWhere( 'email', 'LIKE', "%$filter%" );
+            });
         });
 
         return $query->paginate($per_page);
