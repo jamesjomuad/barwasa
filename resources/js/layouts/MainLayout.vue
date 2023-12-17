@@ -4,11 +4,6 @@
             <q-toolbar>
                 <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
                 <q-toolbar-title v-if="!$q.screen.xs">{{ $route.meta?.title }} </q-toolbar-title>
-                <!-- <q-toolbar-title>
-                    <q-avatar>
-                        <img src="/images/logo.png" />
-                    </q-avatar>
-                </q-toolbar-title> -->
 
                 <q-space />
 
@@ -68,6 +63,7 @@
                     <q-item-label v-if="hasAdminAccess" header>System</q-item-label>
                     <menu-item v-if="hasAdminAccess" label="Announcement" icon="campaign" to="/system/announcement"/>
                     <menu-item v-if="hasAdminAccess" label="Users" icon="people" to="/system/users"/>
+                    <menu-item v-if="hasAdminAccess" label="Settings" icon="settings" to="/system/settings"/>
                     <!-- <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/> -->
                     <q-separator />
                 </q-list>

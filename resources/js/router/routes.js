@@ -193,6 +193,30 @@ const routes = [
                 ]
             },
 
+            // Settings
+            {
+                path: "/system/settings",
+                children: [
+                    {
+                        path: "",
+                        component: () => import("../pages/Setting/IndexPage.vue"),
+                        meta: {
+                            title: "Settings",
+                            requiresAuth: true
+                        },
+                    },
+                    {
+                        path: "create",
+                        component: () => import("../pages/Setting/CreatePage.vue"),
+                        meta: {
+                            title: "Settings",
+                            requiresAuth: true
+                        },
+                    }
+                ]
+            },
+
+
             // Roles
             {
                 path: "/system/roles",
