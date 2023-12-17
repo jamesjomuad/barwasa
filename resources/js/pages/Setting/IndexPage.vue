@@ -3,7 +3,7 @@
         <q-card>
             <q-splitter v-model="splitterModel" style="height: 250px">
                 <template v-slot:before>
-                    <q-tabs align="left" vertical v-model="tab" class="bg-grey-2 shadow-2">
+                    <q-tabs align="left" vertical v-model="tab">
                         <q-tab name="rate" icon="trending_up" label="Rate" />
                         <q-tab name="role" icon="admin_panel_settings" label="Role" />
                     </q-tabs>
