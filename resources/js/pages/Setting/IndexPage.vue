@@ -5,7 +5,7 @@
                 <template v-slot:before>
                     <q-tabs align="left" vertical v-model="tab">
                         <q-tab name="rate" icon="trending_up" label="Rate" />
-                        <q-tab name="role" icon="admin_panel_settings" label="Role" />
+                        <q-tab name="billing-cycle" icon="autorenew" label="Billing" />
                     </q-tabs>
                 </template>
                 <template v-slot:after>
@@ -50,8 +50,8 @@
                             </div>
                         </q-tab-panel>
 
-                        <q-tab-panel name="role">
-                            <div class="text-h6">Roles</div>
+                        <q-tab-panel name="billing-cycle">
+                            <div class="text-h6">Billing Cycle</div>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         </q-tab-panel>
                     </q-tab-panels>
@@ -88,13 +88,34 @@ const ui = reactive({
     }
 })
 const tab = ref('rate')
-const splitterModel = ref(8)
+const splitterModel = ref(10)
 const $form = reactive({
     volume_rate: null,
     volume_unit: ui.volume.units[2].value
 })
 
 
+onMounted(async ()=>{
+    let data = await request()
+    data     = _.mapKeys(data, 'key')
+    Object.keys(data).forEach(function(key) {
+        $form[key] = data[key].value
+    });
+})
+
+async function request(){
+    try{
+        const { data } = await axios.get(`/api/settings`)
+        return data.data
+    }
+    catch(error){
+        console.log(error)
+        $q.notify({
+            type: 'negative',
+            message: error.response.data.error
+        })
+    }
+}
 
 
 async function onSave(){

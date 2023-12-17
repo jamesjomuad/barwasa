@@ -14,9 +14,10 @@ class SettingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $per_page = $request->get('per_page') ? : 50;
+        return Setting::paginate($per_page);
     }
 
     /**
