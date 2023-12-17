@@ -25,9 +25,6 @@
                             <q-toolbar-title class="text-subtitle2">BARWSA</q-toolbar-title>
                         </q-toolbar>
                         <q-list style="min-width: 150px">
-                            <!-- <q-item clickable @click.prevent="copyToClipboard($store.getters['auth/token'])">
-                                <q-item-section>{{$store.getters['auth/token']}}</q-item-section>
-                            </q-item> -->
                             <q-item clickable @click.prevent="onLogout">
                                 <q-item-section>Logout</q-item-section>
                             </q-item>
@@ -49,7 +46,7 @@
             :class="[{'bg-white': !$q.dark.isActive}]"
         >
             <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
-                <q-list>
+                <q-list key="left-nav">
                     <menu-item label="Dashboard" icon="dashboard" to="/" exact/>
                     <q-separator />
 
