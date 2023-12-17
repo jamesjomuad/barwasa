@@ -49,6 +49,9 @@ Route::group([
 
     # Consumptions
     Route::resource('consumption', 'ConsumptionController');
+
+    # Consumptions
+    Route::resource('settings', 'SettingController');
 });
 
 

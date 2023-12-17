@@ -21,7 +21,7 @@
                             <div class="text-h6 q-mb-md">Amount Per Cubic</div>
                             <div class="row q-col-gutter-md">
                                 <q-input
-                                    v-model="$form.volume.rate"
+                                    v-model="$form.volume_rate"
                                     dense
                                     outlined
                                     label="Rate"
@@ -33,13 +33,15 @@
                                     </template>
                                 </q-input>
                                 <q-select
-                                    v-model="$form.volume.unit"
-                                    :options="$form.volume.units"
                                     dense
                                     outlined
                                     label="Unit"
                                     name="unit"
                                     class="col-3"
+                                    emit-value
+                                    map-options
+                                    v-model="$form.volume_unit"
+                                    :options="ui.volume.units"
                                 >
                                     <template v-slot:prepend>
                                         <q-icon name="water_drop" />
@@ -72,12 +74,9 @@ import { useRouter } from 'vue-router'
 
 const $router = useRouter();
 const $q = useQuasar()
-const tab = ref('rate')
-const splitterModel = ref(8)
-const $form = reactive({
+const ui = reactive({
+    loading:false ,
     volume: {
-        rate: null,
-        unit: null,
         units: [
             { label: "Milliliter (mL or ml)", value:"ml"},
             { label: "Liter (L or l)", value:"l"},
@@ -86,17 +85,37 @@ const $form = reactive({
             { label: "Cubic Foot (ft³)", value:"ft"},
             { label: "Gallon (gal)", value:"gal"},
         ]
-    },
+    }
+})
+const tab = ref('rate')
+const splitterModel = ref(8)
+const $form = reactive({
+    volume_rate: null,
+    volume_unit: ui.volume.units[2].value
 })
 
 
-onMounted(()=>{
-    $form.volume.unit = $form.volume.units[2]
-})
 
 
-function onSave(){
-
+async function onSave(){
+    ui.loading = true
+    try{
+        const { data } = await axios.post(`/api/settings`, $form)
+        if(data.status){
+            $q.notify({
+                type: 'positive',
+                message: data.message
+            })
+        }
+    }
+    catch(error){
+        console.log(error)
+        $q.notify({
+            type: 'negative',
+            message: error.response.data.error
+        })
+    }
+    ui.loading = false
 }
 
 </script>
