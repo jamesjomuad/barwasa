@@ -20,8 +20,7 @@
                         class="logo"
                     />
                     </q-card-section>
-                    <q-card-section>
-                    <q-form class="q-gutter-md">
+                    <q-card-section class="q-gutter-md">
                         <q-input
                         square
                         filled
@@ -44,7 +43,6 @@
                             @click="isPwd = !isPwd"
                             /> </template
                         ></q-input>
-                    </q-form>
                     </q-card-section>
                     <q-card-actions class="q-px-md">
                     <q-btn

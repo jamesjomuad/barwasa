@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-const baseUrl = "laravel-quasar.test"
+const baseUrl = "water-consumption.test"
 
 /*
  |--------------------------------------------------------------------------
