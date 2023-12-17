@@ -54,14 +54,13 @@
                     <menu-item label="Billing" icon="receipt" to="/billing"/>
                     <menu-item label="Consumptions" icon="water_drop" to="/consumptions"/>
                     <menu-item label="Transactions" icon="checklist" to="/transactions"/>
-                    <menu-item v-if="hasAdminAccess" label="Consumers" icon="people" to="/consumers"/>
+                    <menu-item v-if="hasAdminAccess" key="consumers" label="Consumers" icon="people" to="/consumers"/>
                     <q-separator />
 
                     <q-item-label v-if="hasAdminAccess" header>System</q-item-label>
                     <menu-item v-if="hasAdminAccess" label="Announcement" icon="campaign" to="/system/announcement"/>
                     <menu-item v-if="hasAdminAccess" label="Users" icon="people" to="/system/users"/>
                     <menu-item v-if="hasAdminAccess" label="Settings" icon="settings" to="/system/settings"/>
-                    <!-- <menu-item label="Roles" icon="admin_panel_settings" to="/system/roles"/> -->
                     <q-separator />
                 </q-list>
             </q-scroll-area>
@@ -70,7 +69,6 @@
                     <q-avatar size="130px">
                         <img src="/images/logo.png">
                     </q-avatar>
-                    <!-- <div class="text-weight-bold">{{ user?.fullname }}</div> -->
                 </div>
             </div>
         </q-drawer>
@@ -96,7 +94,7 @@ const $store = useStore();
 const drawer = ref(true)
 const miniState = ref(false)
 const user = computed(()=>$store.getters['auth/user'])
-const hasAdminAccess = computed(()=>!$store.getters['auth/isCustomer'])
+const hasAdminAccess = ref(!$store.getters['auth/isCustomer'])
 
 function onLogout(){
     console.log('logout')
