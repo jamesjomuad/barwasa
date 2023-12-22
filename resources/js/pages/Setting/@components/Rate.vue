@@ -3,19 +3,13 @@
         <div class="text-h6 q-mb-md">Amount Per Cubic</div>
         <div class="row q-col-gutter-md">
             <q-input
-                v-model="$form.unit"
-                dense
-                outlined
-                label="Unit"
-                class="col-3"
-            />
-            <q-input
                 v-model="$form.rate"
                 dense
                 outlined
                 label="Rate"
                 name="rate"
                 class="col-3"
+                @update:model-value="$emit('update:rate', $form.rate)"
             >
                 <template v-slot:prepend>
                     <q-icon name="currency_ruble" />
@@ -31,6 +25,7 @@
                 map-options
                 v-model="$form.unit"
                 :options="ui.volume.units"
+                @input-value="$emit('update:rate', $form.unit)"
             >
                 <template v-slot:prepend>
                     <q-icon name="water_drop" />
@@ -43,7 +38,7 @@
 <script setup>
 import { ref, reactive, watch, defineEmits, defineProps, onMounted } from "vue";
 
-const $emit = defineEmits(['input']);
+const $emit = defineEmits(['input:rate', 'input:unit']);
 const props = defineProps({
     rate: String,
     unit: String,
@@ -65,9 +60,8 @@ const $form = reactive({
     unit: null,
 })
 
-console.log($form)
-
 watch(()=> props.rate, (n)=>{
+    console.log( n )
     $form.rate = n
 })
 
@@ -75,4 +69,12 @@ watch(()=> props.unit, (n)=>{
     console.log( n )
     $form.unit = n
 })
+
+// watch(()=> $form.rate, (n)=>{
+//     $emit('update:rate', n)
+// })
+
+// watch(()=> $form.unit, (n)=>{
+//     $emit('update:unit', n)
+// })
 </script>

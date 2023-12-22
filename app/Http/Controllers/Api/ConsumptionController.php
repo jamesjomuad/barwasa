@@ -55,6 +55,12 @@ class ConsumptionController extends Controller
     public function store(Request $request)
     {
         try {
+            // Set default status
+            ConsumerController::setStatusDefault();
+
+            // Set status Active
+            ConsumerController::setStatusActive( $request->input('id') );
+
             $consumer = Consumer::where('meter_id', $request->input('id'))->firstOrFail();
 
             $consumption = new Consumption([

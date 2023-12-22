@@ -155,7 +155,7 @@ class ConsumerController extends Controller
         return User::findOrFail($id)->delete();
     }
 
-    public function isActive($id)
+    public static function setStatusActive($id)
     {
         $consumer = Consumer::where('meter_id', $id)->first();
 
@@ -166,9 +166,13 @@ class ConsumerController extends Controller
         return response()->json($consumer);
     }
 
-    public static function setStatus(){
-        $consumers = Consumer::whereNotNull('meter_id');
+    public static function setStatusDefault(){
+        $consumers = Consumer::whereHas('user')->whereNotNull('meter_id');
+
+        $consumers->where('updated_at', '<=', now()->subMinutes(5));
+
         $consumers->update(['is_active' => '0']);
+
         return $consumers->get();
     }
 }

@@ -12,7 +12,7 @@ const int dataPin = D2;
 byte sensorInterrupt = 0;
 
 String server = "barwsa.tribelink.me";
-String meterID = "656bdc094b66d";
+String meterID = "O2ZzAsZYseznPWQ";
 
 // The hall-effect flow sensor outputs approximately 4.5 pulses per second per
 // litre/minute of flow.
@@ -58,7 +58,7 @@ void setup(void) {
     // Print the IP address
     Serial.println(WiFi.localIP());
     // Notify server that Im active
-    // http_set_active();
+    http_set_active();
 
     attachInterrupt(digitalPinToInterrupt(dataPin), pulseCounter, RISING);
 }
@@ -99,6 +99,7 @@ void loop()
 
 
         if (flowRate > 0) {
+            Serial.println(' ');
             Serial.println("Total ml: " + String(totalMilliLitres));
             Serial.println("Flowrate: " + String(flowRate));
             Serial.println("Volume (L): " + String(totalvolume));

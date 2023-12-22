@@ -18,10 +18,36 @@
                         transition-next="jump-up"
                     >
                         <q-tab-panel name="rate" style=" min-height: 240px; ">
-                            <component-rate
-                                v-model:rate="$form.volume_rate"
-                                v-model:unit="$form.volume_unit"
-                            />
+                            <div class="text-h6 q-mb-md">Amount Per Cubic</div>
+                            <div class="row q-col-gutter-md">
+                                <q-input
+                                    v-model="$form.volume_rate"
+                                    dense
+                                    outlined
+                                    label="Rate"
+                                    name="rate"
+                                    class="col-3"
+                                >
+                                    <template v-slot:prepend>
+                                        <q-icon name="currency_ruble" />
+                                    </template>
+                                </q-input>
+                                <q-select
+                                    dense
+                                    outlined
+                                    label="Unit"
+                                    name="unit"
+                                    class="col-3"
+                                    emit-value
+                                    map-options
+                                    v-model="$form.volume_unit"
+                                    :options="ui.volume.units"
+                                >
+                                    <template v-slot:prepend>
+                                        <q-icon name="water_drop" />
+                                    </template>
+                                </q-select>
+                            </div>
                         </q-tab-panel>
 
                         <q-tab-panel name="billing-cycle">
