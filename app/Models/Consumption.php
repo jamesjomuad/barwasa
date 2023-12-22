@@ -31,7 +31,7 @@ class Consumption extends Model
     {
         parent::boot();
 
-        $unit = \App\Models\Setting::where('key', 'volume_unit')->first()->value;
+        $unit = \App\Models\Setting::option('volume_unit');
 
         static::saving(function ($model) use($unit)
         {
@@ -47,7 +47,7 @@ class Consumption extends Model
 
     public function setVolumeAttribute($value)
     {
-        $unit = \App\Models\Setting::where('key', 'volume_unit')->first()->value;
+        $unit = \App\Models\Setting::option('volume_unit');
 
         switch($unit)
         {
