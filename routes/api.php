@@ -22,7 +22,9 @@ Route::group([
     'namespace' => 'App\Http\Controllers\Api'],
     function(){
 
+    // Called every login
     Route::get('/user', function (Request $request) {
+        App\Http\Controllers\Api\ConsumerController::setStatus();
         return $request->user();
     });
 
@@ -57,4 +59,4 @@ Route::group([
 
 // Consumptions endpoint; Ardiuno endpoint
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
-Route::get('consumer/active/{id}', 'App\Http\Controllers\Api\ConsumerController@isActive');
+Route::get('consumer/set-active/{id}', 'App\Http\Controllers\Api\ConsumerController@isActive');

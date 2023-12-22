@@ -157,6 +157,18 @@ class ConsumerController extends Controller
 
     public function isActive($id)
     {
-        return dd($id);
+        $consumer = Consumer::where('meter_id', $id)->first();
+
+        $consumer->is_active = '1';
+
+        $consumer->save();
+
+        return response()->json($consumer);
+    }
+
+    public static function setStatus(){
+        $consumers = Consumer::whereNotNull('meter_id');
+        $consumers->update(['is_active' => '0']);
+        return $consumers->get();
     }
 }
