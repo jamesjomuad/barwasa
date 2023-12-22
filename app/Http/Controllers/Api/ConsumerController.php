@@ -154,4 +154,9 @@ class ConsumerController extends Controller
     {
         return User::findOrFail($id)->delete();
     }
+
+    public function isActive($id)
+    {
+        return dd($id);
+    }
 }

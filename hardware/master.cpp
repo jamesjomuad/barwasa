@@ -11,6 +11,9 @@ const char *password = "jandavid"; // Write here your router's password
 const int dataPin = D2;
 byte sensorInterrupt = 0;
 
+String server = "barwsa.tribelink.me";
+String meterID = "O2ZzAsZYseznPWQ";
+
 // The hall-effect flow sensor outputs approximately 4.5 pulses per second per
 // litre/minute of flow.
 float calibrationFactor = 4.5;
@@ -54,9 +57,12 @@ void setup(void) {
     Serial.println("WiFi connected");
     // Print the IP address
     Serial.println(WiFi.localIP());
+    // Notify server that Im active
+    http_set_active()
 
     attachInterrupt(digitalPinToInterrupt(dataPin), pulseCounter, RISING);
 }
+
 ICACHE_RAM_ATTR void pulseCounter() {
     // Increment the pulse counter
     pulseCount++;
@@ -95,7 +101,7 @@ void loop()
 
         if (flowRate > 0) {
             Serial.print("Sending volume: " + totalvolume);
-            http_get(totalvolume);
+            http_send_data(totalvolume);
             delay(9000);
         }
         pulseCount = 0;
@@ -103,10 +109,8 @@ void loop()
 }
 
 
-void http_get(long volume)
+void http_send_data(long volume)
 {
-    const char*  server = "barwsa.tribelink.me";
-
     client.setInsecure();
 
     Serial.println("\nStarting connection to server...");
@@ -115,10 +119,47 @@ void http_get(long volume)
     else {
         Serial.println("Connected to server!");
         // Make a HTTP request:
-        client.print("GET http://barwsa.tribelink.me/api/log?id=O2ZzAsZYseznPWQ&volume="); // change id in every device/hardware
+        client.print("GET http://"+String(server)+"/api/log?id=O2ZzAsZYseznPWQ&volume="); // change id in every device/hardware
         client.print(volume);
         client.println(" HTTP/1.0");
         client.println("Host: barwsa.tribelink.me");
+        client.println("Connection: close");
+        client.println();
+
+        while (client.connected()) {
+            String line = client.readStringUntil('\n');
+            if (line == "\r") {
+                Serial.println("headers received");
+                break;
+            }
+        }
+        // if there are incoming bytes available
+        // from the server, read them and print them:
+        while (client.available()) {
+            char c = client.read();
+            Serial.write(c);
+        }
+
+        client.stop();
+    }
+
+}
+
+
+void http_set_active()
+{
+    client.setInsecure();
+
+    Serial.println("\nStarting connection to server...");
+    if (!client.connect(server, 443))
+        Serial.println("Connection failed!");
+    else {
+        Serial.println("Connected to server!");
+        // Make a HTTP request:
+        client.print("GET http://"+String(server)+"/api/consumer/active/");
+        client.print(meterID);
+        client.println(" HTTP/1.0");
+        client.println("Host: " + server);
         client.println("Connection: close");
         client.println();
 

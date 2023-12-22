@@ -60,6 +60,11 @@
                             <q-tooltip>Toggle Fullscreen</q-tooltip>
                         </q-btn>
                     </template>
+                    <template #body-cell-status="props">
+                        <q-td :props="props">
+                            <q-badge rounded :color="!!props.row.consumer.is_active ? 'green' : 'red' " />
+                        </q-td>
+                    </template>
                     <template #body-cell-invoice="props">
                         <q-td :props="props">
                             <div class="q-gutter-md" style="font-size: 2em">
@@ -112,7 +117,6 @@
                             </div>
                         </q-td>
                     </template>
-
                     <template v-slot:loading>
                         <q-inner-loading showing color="primary" />
                     </template>
@@ -165,15 +169,15 @@ const table = reactive({
             field: "phone",
             sortable: true,
         },
-        // {
-        //     label: "Active",
-        //     name: "is_active",
-        //     field: "is_active",
-        //     sortable: true,
-        //     format: (val, row) => {
-        //         return !!val
-        //     },
-        // },
+        {
+            label: "Active",
+            name: "status",
+            field: "consumer",
+            sortable: true,
+            format: (val, row) => {
+                return val
+            },
+        },
         {
             label: 'Created',
             field: 'created_at',

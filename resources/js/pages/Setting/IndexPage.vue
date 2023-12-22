@@ -18,41 +18,44 @@
                         transition-next="jump-up"
                     >
                         <q-tab-panel name="rate" style=" min-height: 240px; ">
-                            <div class="text-h6 q-mb-md">Amount Per Cubic</div>
+                            <component-rate
+                                v-model:rate="$form.volume_rate"
+                                v-model:unit="$form.volume_unit"
+                            />
+                        </q-tab-panel>
+
+                        <q-tab-panel name="billing-cycle">
+                            <div class="text-h6 q-mb-md">Billing Cycle</div>
                             <div class="row q-col-gutter-md">
-                                <q-input
-                                    v-model="$form.volume_rate"
-                                    dense
-                                    outlined
-                                    label="Rate"
-                                    name="rate"
-                                    class="col-3"
-                                >
-                                    <template v-slot:prepend>
-                                        <q-icon name="currency_ruble" />
-                                    </template>
-                                </q-input>
                                 <q-select
                                     dense
                                     outlined
-                                    label="Unit"
-                                    name="unit"
+                                    label="Cycle"
                                     class="col-3"
                                     emit-value
                                     map-options
-                                    v-model="$form.volume_unit"
-                                    :options="ui.volume.units"
+                                    v-model="$form.billing_cycle"
+                                    :options="ui.billing.cycles"
+                                >
+                                    <template v-slot:prepend>
+                                        <q-icon name="water_drop" />
+                                    </template>
+                                </q-select>
+                                <q-select
+                                    dense
+                                    outlined
+                                    label="Day"
+                                    class="col-3"
+                                    emit-value
+                                    map-options
+                                    v-model="$form.billing_day"
+                                    :options="ui.billing.days"
                                 >
                                     <template v-slot:prepend>
                                         <q-icon name="water_drop" />
                                     </template>
                                 </q-select>
                             </div>
-                        </q-tab-panel>
-
-                        <q-tab-panel name="billing-cycle">
-                            <div class="text-h6">Billing Cycle</div>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         </q-tab-panel>
                     </q-tab-panels>
                 </template>
@@ -68,8 +71,9 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useQuasar } from 'quasar'
+import { debounce, useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import componentRate from './@components/Rate'
 
 
 const $router = useRouter();
@@ -85,15 +89,26 @@ const ui = reactive({
             { label: "Cubic Foot (ft³)", value:"ft"},
             { label: "Gallon (gal)", value:"gal"},
         ]
+    },
+    billing:{
+        cycles: [
+            { label: "Weekly", value:"weekly"},
+            { label: "Bi Monthly", value:"bi-monthly"},
+            { label: "Monthly", value:"monthly"},
+            { label: "Annually", value:"annually"},
+            { label: "Yearly", value:"yearly"},
+        ],
+        days: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
     }
 })
 const tab = ref('rate')
 const splitterModel = ref(10)
 const $form = reactive({
     volume_rate: null,
-    volume_unit: ui.volume.units[2].value
+    volume_unit: ui.volume.units[2].value,
+    billing_cycle: ui.billing.cycles[2].value,
+    billing_day: 1
 })
-
 
 onMounted(async ()=>{
     let data = await request()
@@ -102,6 +117,7 @@ onMounted(async ()=>{
         $form[key] = data[key].value
     });
 })
+
 
 async function request(){
     try{
@@ -116,7 +132,6 @@ async function request(){
         })
     }
 }
-
 
 async function onSave(){
     ui.loading = true
@@ -138,5 +153,4 @@ async function onSave(){
     }
     ui.loading = false
 }
-
 </script>

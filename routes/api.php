@@ -57,3 +57,4 @@ Route::group([
 
 // Consumptions endpoint; Ardiuno endpoint
 Route::get('log', 'App\Http\Controllers\Api\ConsumptionController@store');
+Route::get('consumer/active/{id}', 'App\Http\Controllers\Api\ConsumerController@isActive');

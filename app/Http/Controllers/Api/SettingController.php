@@ -38,7 +38,11 @@ class SettingController extends Controller
             );
         }
 
-        return response()->json($response);
+        return response()->json([
+            'data'    => $response,
+            'status'  => true,
+            'message' => 'Saved successfully.',
+        ]);
     }
 
     /**
