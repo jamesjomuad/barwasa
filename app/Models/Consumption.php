@@ -11,8 +11,6 @@ class Consumption extends Model
 
     protected $table = "consumption";
 
-    public $cost_per_volume = 0.2;
-
     protected $casts = [
         'volume' => 'float',
     ];
@@ -29,14 +27,16 @@ class Consumption extends Model
         'payable'
     ];
 
-
     protected static function boot()
     {
         parent::boot();
 
-        static::saving(function ($model) {
+        $unit = \App\Models\Setting::where('key', 'volume_unit')->first()->value;
+
+        static::saving(function ($model) use($unit)
+        {
             // Set a field value before saving
-            $model->unit = $model->unit ?? 'Cubic Feet';
+            $model->unit = $model->unit ?? $unit;
         });
     }
 
@@ -45,9 +45,41 @@ class Consumption extends Model
         return $this->belongsTo(Consumer::class, 'consumer_id');
     }
 
+    public function setVolumeAttribute($value)
+    {
+        $unit = \App\Models\Setting::where('key', 'volume_unit')->first()->value;
+
+        switch($unit)
+        {
+            case 'ml':
+                $this->attributes['volume'] = $value * 1000;
+            break;
+
+            case 'm³':
+                $this->attributes['volume'] = $value / 1000;
+            break;
+
+            case 'in³':
+                $this->attributes['volume'] = $value * 61.0237;
+            break;
+
+            case 'ft³':
+                $this->attributes['volume'] = $value * 0.0353147;
+            break;
+
+            case 'gal':
+                $this->attributes['volume'] = $value * 0.264172;
+            break;
+
+            default: $this->attributes['volume'] = $value;
+        }
+
+    }
+
     public function getPayableAttribute()
     {
-        return number_format($this->volume * $this->cost_per_volume, 2);
+        $rate = \App\Models\Setting::option('volume_rate');
+        return number_format($this->volume * $rate, 2);
     }
 
 }

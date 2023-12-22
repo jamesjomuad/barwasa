@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Consumer;
-use App\Models\Consumption as Model;
 use App\Models\Consumption;
 
 class ConsumptionController extends Controller
@@ -19,7 +18,7 @@ class ConsumptionController extends Controller
     {
         $per_page = $request->get('per_page') ? : 50;
 
-        $query = Model::with('consumer.user');
+        $query = Consumption::with('consumer.user');
 
         if( $request->user() && $request->user()->is_consumer )
         {
@@ -89,7 +88,7 @@ class ConsumptionController extends Controller
     public function show($id)
     {
         try {
-            return Model::findOrFail($id);
+            return Consumption::findOrFail($id);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([
                 'status' => false,
@@ -118,7 +117,7 @@ class ConsumptionController extends Controller
      */
     public function destroy($ids)
     {
-        return Model::whereIn('id', explode(',', $ids))->delete();
+        return Consumption::whereIn('id', explode(',', $ids))->delete();
     }
 
 }

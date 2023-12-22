@@ -58,7 +58,7 @@ void setup(void) {
     // Print the IP address
     Serial.println(WiFi.localIP());
     // Notify server that Im active
-    http_set_active();
+    // http_set_active();
 
     attachInterrupt(digitalPinToInterrupt(dataPin), pulseCounter, RISING);
 }

@@ -15,4 +15,9 @@ class Setting extends Model
         'key',
         'value',
     ];
+
+    public static function option($key)
+    {
+        return (new self)->where('key', $key)->first()->value;
+    }
 }

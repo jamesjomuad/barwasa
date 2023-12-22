@@ -99,7 +99,6 @@
 import { ref, reactive, onMounted } from "vue";
 import { debounce, useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
-import componentRate from './@components/Rate'
 
 
 const $router = useRouter();
@@ -108,11 +107,12 @@ const ui = reactive({
     loading:false ,
     volume: {
         units: [
+            { label: "Select", value:""},
             { label: "Milliliter (mL or ml)", value:"ml"},
             { label: "Liter (L or l)", value:"l"},
-            { label: "Cubic Meter (m³)", value:"m"},
-            { label: "Cubic Inch (in³)", value:"in"},
-            { label: "Cubic Foot (ft³)", value:"ft"},
+            { label: "Cubic Meter (m³)", value:"m³"},
+            { label: "Cubic Inch (in³)", value:"in³"},
+            { label: "Cubic Foot (ft³)", value:"ft³"},
             { label: "Gallon (gal)", value:"gal"},
         ]
     },
@@ -131,7 +131,7 @@ const tab = ref('rate')
 const splitterModel = ref(10)
 const $form = reactive({
     volume_rate: null,
-    volume_unit: ui.volume.units[2].value,
+    volume_unit: ui.volume.units[0].value,
     billing_cycle: ui.billing.cycles[2].value,
     billing_day: 1
 })

@@ -11,8 +11,6 @@ class Consumer extends Model
 
     protected $table = "customer";
 
-    public $cost_per_volume = 0.2;
-
     protected $fillable = [
         "billing_address",
         "dob",
@@ -28,6 +26,14 @@ class Consumer extends Model
         'total_payable',
         'consumption_dates'
     ];
+
+    public $cost_per_volume = 0.2;
+
+    // Constructor
+    public function __construct()
+    {
+        $this->cost_per_volume = \App\Models\Setting::option('volume_rate');
+    }
 
     public function user()
     {
@@ -47,7 +53,7 @@ class Consumer extends Model
     public function getTotalVolumeAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return number_format($this->consumptions->sum('volume'), 2);
+            return number_format($this->consumptions->sum('volume'), 5);
         }
 
         return 0;
