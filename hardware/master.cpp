@@ -12,18 +12,18 @@ const int dataPin = D2;
 byte sensorInterrupt = 0;
 
 String server = "barwsa.tribelink.me";
-String meterID = "O2ZzAsZYseznPWQ";
+String meterID = "656bdc094b66d";
 
 // The hall-effect flow sensor outputs approximately 4.5 pulses per second per
 // litre/minute of flow.
-float calibrationFactor = 4.5;
+float calibrationFactor = 0.24;
 
 volatile byte pulseCount;
 
 float flowRate;
-unsigned int flowMilliLitres;
-unsigned long totalMilliLitres;
-unsigned long totalvolume;
+float flowMilliLitres;
+float totalMilliLitres;
+float totalvolume;
 
 unsigned long oldTime;
 
@@ -58,7 +58,7 @@ void setup(void) {
     // Print the IP address
     Serial.println(WiFi.localIP());
     // Notify server that Im active
-    http_set_active()
+    // http_set_active();
 
     attachInterrupt(digitalPinToInterrupt(dataPin), pulseCounter, RISING);
 }
@@ -70,7 +70,7 @@ ICACHE_RAM_ATTR void pulseCounter() {
 
 void loop()
 {
-    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 10000) // Only process counters once per second
+    if (WiFi.status() == WL_CONNECTED && (millis() - oldTime) > 5000) // Only process counters once per second
     {
         // Disable the interrupt while calculating flow rate and sending the value to the host
         detachInterrupt(sensorInterrupt);
@@ -97,10 +97,11 @@ void loop()
         totalMilliLitres += flowMilliLitres;
         totalvolume = totalMilliLitres/1000;// send data per liters
 
-        unsigned int frac;
 
         if (flowRate > 0) {
-            Serial.print("Sending volume: " + totalvolume);
+            Serial.println("Total ml: " + String(totalMilliLitres));
+            Serial.println("Flowrate: " + String(flowRate));
+            Serial.println("Volume (L): " + String(totalvolume));
             http_send_data(totalvolume);
             delay(9000);
         }
@@ -108,8 +109,7 @@ void loop()
     }
 }
 
-
-void http_send_data(long volume)
+void http_send_data(float volume)
 {
     client.setInsecure();
 
@@ -119,10 +119,10 @@ void http_send_data(long volume)
     else {
         Serial.println("Connected to server!");
         // Make a HTTP request:
-        client.print("GET http://"+String(server)+"/api/log?id=O2ZzAsZYseznPWQ&volume="); // change id in every device/hardware
+        client.print("GET http://" + String(server) + "/api/log?id=" + meterID + "&volume="); // change id in every device/hardware
         client.print(volume);
         client.println(" HTTP/1.0");
-        client.println("Host: barwsa.tribelink.me");
+        client.println("Host: " + String(server));
         client.println("Connection: close");
         client.println();
 
@@ -156,7 +156,7 @@ void http_set_active()
     else {
         Serial.println("Connected to server!");
         // Make a HTTP request:
-        client.print("GET http://"+String(server)+"/api/consumer/active/");
+        client.print("GET http://"+String(server)+"/api/consumer/set-active/");
         client.print(meterID);
         client.println(" HTTP/1.0");
         client.println("Host: " + server);
