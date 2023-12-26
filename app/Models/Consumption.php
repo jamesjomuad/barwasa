@@ -38,7 +38,6 @@ class Consumption extends Model
         {
             // Set a field value before saving
             $model->unit = $model->unit ?? $unit;
-            $model->cost = 0;
         });
     }
 

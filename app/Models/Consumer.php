@@ -27,12 +27,15 @@ class Consumer extends Model
         'consumption_dates'
     ];
 
-    public $cost_per_volume = 0.2;
+    public $volume_cost = 0.2;
+
+    public $volume_unit = 0.2;
 
     // Constructor
     public function __construct()
     {
-        $this->cost_per_volume = \App\Models\Setting::option('volume_rate');
+        $this->volume_cost = \App\Models\Setting::option('volume_rate');
+        $this->volume_unit = \App\Models\Setting::option('volume_unit');
     }
 
     public function user()
@@ -62,7 +65,7 @@ class Consumer extends Model
     public function getTotalPayableAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return number_format($this->consumptions->sum('volume') * $this->cost_per_volume, 2);
+            return number_format($this->consumptions->sum('volume') * $this->volume_cost, 2);
         }
 
         return 0;

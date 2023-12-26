@@ -21,11 +21,6 @@ class BillingController extends Controller
             $q->where('volume', '!=', 0);
         }, 'user']);
 
-        // $query->whereHas('consumptions', function($q){
-        //     $q->where('is_paid', 0);
-        //     $q->where('volume', '!=', 0);
-        // });
-
         if( $request->user() && $request->user()->is_consumer )
         {
             $query->where('user_id', $request->user()->id);
