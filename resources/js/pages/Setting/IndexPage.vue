@@ -90,6 +90,11 @@
             <q-card-actions align="right">
                 <q-btn color="primary" @click="onSave">Save</q-btn>
             </q-card-actions>
+            <q-inner-loading
+                :showing="ui.loading"
+                label="Please wait..."
+                label-style="font-size: 1.1em"
+            />
         </q-card>
     </q-page>
 </template>
@@ -104,7 +109,7 @@ import { useRouter } from 'vue-router'
 const $router = useRouter();
 const $q = useQuasar()
 const ui = reactive({
-    loading:false ,
+    loading:true ,
     volume: {
         units: [
             { label: "Select", value:""},
@@ -142,6 +147,7 @@ onMounted(async ()=>{
     Object.keys(data).forEach(function(key) {
         $form[key] = data[key].value
     });
+    ui.loading = false
 })
 
 
