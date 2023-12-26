@@ -155,7 +155,13 @@ const table = reactive({
         {
             label: "Unit",
             name: "unit",
-            field: "unit",
+            field: "unit_formatted",
+            sortable: false,
+        },
+        {
+            label: "Cost",
+            name: "payable",
+            field: "payable",
             sortable: false,
         },
         {

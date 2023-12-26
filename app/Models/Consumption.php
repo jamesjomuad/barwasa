@@ -24,7 +24,8 @@ class Consumption extends Model
     ];
 
     protected $appends = [
-        'payable'
+        'payable',
+        'unit_formatted',
     ];
 
     protected static function boot()
@@ -37,6 +38,7 @@ class Consumption extends Model
         {
             // Set a field value before saving
             $model->unit = $model->unit ?? $unit;
+            $model->cost = 0;
         });
     }
 
@@ -74,6 +76,15 @@ class Consumption extends Model
             default: $this->attributes['volume'] = $value;
         }
 
+    }
+
+    public function getUnitFormattedAttribute()
+    {
+        switch($this->unit)
+        {
+            case 'l': return 'Liter';
+            default: return $this->unit;
+        }
     }
 
     public function getPayableAttribute()

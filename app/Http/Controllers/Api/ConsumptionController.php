@@ -73,7 +73,11 @@ class ConsumptionController extends Controller
                 ->save($consumption)
             ;
 
-            return $consumption;
+            return response()->json([
+                'id'     => $consumption->id,
+                'unit'   => $consumption->unit,
+                'volume' => $consumption->volume,
+            ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'ID not found'], 404);
         }
