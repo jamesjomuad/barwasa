@@ -56,7 +56,7 @@ class Consumer extends Model
     public function getTotalVolumeAttribute()
     {
         if( $this->consumptions->isNotEmpty() ){
-            return number_format($this->consumptions->sum('volume'), 5);
+            return number_format($this->consumptions->sum('volume'), 0);
         }
 
         return 0;
