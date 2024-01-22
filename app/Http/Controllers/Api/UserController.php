@@ -109,7 +109,9 @@ class UserController extends Controller
 
         if( $request->filled('password') ){
             $model->password = Hash::make($request->password);
-            return $model->save();
+            return response()->json([
+                'status' => $model->save()
+            ]);
         }
 
         return [
