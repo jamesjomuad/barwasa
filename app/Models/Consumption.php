@@ -79,7 +79,7 @@ class Consumption extends Model
 
     public function getVolumeAttribute($value)
     {
-        return round($value, 0);
+        return round($value, 2);
     }
 
     public function getUnitFormattedAttribute()
